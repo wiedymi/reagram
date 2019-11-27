@@ -1,9 +1,9 @@
 {
-  "name": "ts-react-starter",
+  "name": "reagram",
   "version": "0.0.1",
   "description": "",
   "author": "",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "scripts": {
     "watch": "run-p watch:*",
     "watch:nodemon": "nodemon --delay 2500ms build/server.js",
