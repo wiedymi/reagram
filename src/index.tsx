@@ -1,14 +1,16 @@
-import '@babel/polyfill'
 import React from 'react'
 import { render } from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
-// import { ThemeProvider } from 'emotion-theming'
+import { ThemeProvider } from 'emotion-theming'
 import App from './App'
 import { config } from './constants'
+import * as theme from './theme'
 
 render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>,
+  <ThemeProvider theme={{ ...theme }}>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </ThemeProvider>,
   document.getElementById('root')!,
 )

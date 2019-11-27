@@ -48,7 +48,7 @@ if (!process.env.prod) {
 }
 
 app.use(async ctx => {
-  const html = await ctx.render('index.html')
+  await ctx.render('index.html')
 })
 
 const PORT = process.env.PORT || 3000
