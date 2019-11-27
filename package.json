@@ -60,6 +60,8 @@
     "react-dom": "^16.11.0",
     "react-router": "^5.1.2",
     "react-router-dom": "^5.1.2",
+    "tdl": "^6.0.1",
+    "tdl-tdlib-ffi": "^1.4.0",
     "twig": "^1.14.0"
   }
 }

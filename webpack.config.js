@@ -17,7 +17,10 @@ const getEnv = env => {
     return prev
   }, {})
 
-  return envKeys
+  return {
+    'process.env': envKeys,
+    ...envKeys,
+  }
 }
 
 const sharedConfig = env => {
