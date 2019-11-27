@@ -1,5 +1,4 @@
-import React, { useState, useCallback } from 'react'
-import gql from 'graphql-tag'
+import React from 'react'
 import Layout from 'components/Layout'
 import Header from 'components/Header'
 import * as S from './styles'
