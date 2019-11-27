@@ -12,7 +12,7 @@ function Main(props: Props) {
   return (
     <Layout>
       <Header />
-      <S.Main>Desktop</S.Main>
+      <S.Main>Content</S.Main>
     </Layout>
   )
 }

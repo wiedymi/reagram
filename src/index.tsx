@@ -1,16 +1,15 @@
 import React from 'react'
 import { render } from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
-import { ThemeProvider } from 'emotion-theming'
+// import { ThemeProvider } from 'emotion-theming'
 import App from './App'
+import { config } from './constants'
 
-console.log(process.env)
+console.log(config)
 
 render(
-  <ThemeProvider theme={{ ...theme }}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </ThemeProvider>,
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>,
   document.getElementById('root')!,
 )
