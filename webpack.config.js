@@ -25,7 +25,7 @@ const getEnv = env => {
 
 const sharedConfig = env => {
   const config = {
-    entry: `./src/index.tsx`,
+    entry: ['@babel/polyfill', './src/index.tsx'],
     mode: env.ENVIRONMENT ? 'production' : 'development',
     output: {
       filename: `reagram.js`,

@@ -1,9 +1,17 @@
+import React from 'react'
 import Koa from 'koa'
 import views from 'koa-views'
 import logger from 'koa-logger'
 import url from 'url'
 import path from 'path'
 import fetch from 'node-fetch'
+import { Client } from 'tdl'
+import { TDLib } from 'tdl-tdlib-ffi'
+
+const client = new Client(new TDLib('./libtdjson'), {
+  apiId: process.env.APP_ID,
+  apiHash: process.env.API_HASH,
+})
 
 const app = new Koa()
 
@@ -46,3 +54,4 @@ app.use(async ctx => {
 const PORT = process.env.PORT || 3000
 
 app.listen(PORT, () => console.log(`Frontend app is now running on http://localhost:${PORT}`))
+process.setMaxListeners(0)
