@@ -6,7 +6,6 @@
   "license": "MIT",
   "scripts": {
     "watch": "run-p watch:*",
-    "watch:nodemon": "nodemon --delay 2500ms build/server.js",
     "watch:dev": "webpack-dev-server --env.ENVIRONMENT=development --config webpack.config.js",
     "build": "webpack --env.ENVIRONMENT=development --config webpack.config.js",
     "check": "tsc --noEmit",
@@ -40,10 +39,12 @@
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.9.0",
-    "webpack-merge": "^4.2.2",
-    "webpack-node-externals": "^1.7.2"
+    "webpack-node-externals": "^1.7.2",
+    "clean-webpack-plugin": "^3.0.0"
   },
   "dependencies": {
+    "@airgram/constants": "^2.1.2",
+    "@airgram/web": "^2.3.0",
     "@babel/polyfill": "^7.7.0",
     "@emotion/core": "^10.0.22",
     "@emotion/styled": "^10.0.23",
@@ -51,18 +52,14 @@
     "@types/react-dom": "^16.9.4",
     "@types/react-router": "^5.1.3",
     "@types/react-router-dom": "^5.1.2",
+    "@types/tdweb": "^1.4.0",
     "dotenv": "^8.2.0",
     "emotion-theming": "^10.0.19",
-    "koa": "^2.11.0",
-    "koa-logger": "^3.2.1",
-    "koa-views": "^6.2.1",
-    "node-fetch": "^2.6.0",
+    "npm": "^6.13.1",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-router": "^5.1.2",
     "react-router-dom": "^5.1.2",
-    "tdl": "^6.0.1",
-    "tdl-tdlib-ffi": "^1.4.0",
-    "twig": "^1.14.0"
+    "worker-plugin": "^3.2.0"
   }
 }
