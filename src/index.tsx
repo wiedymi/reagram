@@ -1,63 +1,167 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { render } from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
 import { ThemeProvider } from 'emotion-theming'
 import App from './App'
 import { config } from './constants'
 import * as theme from './theme'
-
-import { Airgram, Auth } from '@airgram/web'
+import { telegram } from 'helpers'
 import { UPDATE, AUTHORIZATION_STATE } from '@airgram/constants'
 
-const airgram = new Airgram({
-  apiId: config.APP_ID,
-  apiHash: config.API_HASH,
-})
+const {
+  authorizationStateWaitPhoneNumber,
+  authorizationStateWaitCode,
+  authorizationStateWaitPassword,
+  authorizationStateReady,
+  authorizationStateClosed,
+} = AUTHORIZATION_STATE
 
-airgram.on(UPDATE.updateAuthorizationState, async ({ update }, next) => {
-  await airgram.api.logOut()
+const { updateAuthorizationState } = UPDATE
 
+const createForm = (NAME, EVENT) => {
+  return () => {
+    const [value, setValue] = useState('')
+
+    const handleChange = ({ target }) => {
+      setValue(target.value)
+    }
+
+    const handleClick = () => {
+      telegram.emit({
+        _: updateAuthorizationState,
+        authorizationState: {
+          _: EVENT,
+        },
+        [NAME]: value,
+      })
+    }
+    const TYPES = {
+      phone: 'number',
+      code: 'password',
+      password: 'password',
+    }
+    return (
+      <>
+        <input
+          name={NAME}
+          type={TYPES[NAME]}
+          value={value}
+          onChange={handleChange}
+          placeholder={`Enter your ${NAME}`}
+        />
+        <button onClick={handleClick}>next</button>
+      </>
+    )
+  }
+}
+
+const PhoneForm = createForm('phone', authorizationStateWaitPhoneNumber)
+
+const CodeForm = createForm('code', authorizationStateWaitCode)
+
+const PassForm = createForm('password', authorizationStateWaitPassword)
+
+const UserInfo = () => {
+  const [value, setValue] = useState('')
+
+  const getUserInfo = async () => {
+    const user = await telegram.api.getMe()
+    const chats = await telegram.getListOfChats()
+
+    console.log(chats)
+  }
+
+  const search = async () => {
+    const chats = await telegram.api.searchChatsOnServer({ query: value, limit: 10 })
+    const chat = await telegram.api.getMessages({ chatId: chats.response.chatIds[0] })
+  }
+
+  const handleChange = ({ target }) => {
+    setValue(target.value)
+  }
+
+  return (
+    <div>
+      <input value={value} onChange={handleChange} />
+      <button onClick={search}>search</button>
+      <button onClick={getUserInfo}>GetUserInfo</button>
+    </div>
+  )
+}
+
+const nextStage = stage => {
+  const stages = {
+    PHONE: <PhoneForm />,
+    CODE: <CodeForm />,
+    PASSWORD: <PassForm />,
+    LOADING: 'LOADING',
+    SUCCESS: <UserInfo />,
+  }
+
+  const logout = () => {
+    telegram.emit({
+      _: updateAuthorizationState,
+      authorizationState: {
+        _: authorizationStateClosed,
+      },
+    })
+  }
+
+  render(
+    <ThemeProvider theme={{ ...theme }}>
+      <BrowserRouter>
+        <div>
+          <button onClick={logout}>log out</button>
+          {stages[stage]}
+        </div>
+      </BrowserRouter>
+    </ThemeProvider>,
+    document.getElementById('root')!,
+  )
+}
+
+telegram.on(updateAuthorizationState, async ({ update, setState, getState }, next) => {
   const { authorizationState } = update
-  console.log(authorizationState._, AUTHORIZATION_STATE)
+
+  const state = update
+  console.log(state)
   switch (authorizationState._) {
-    case AUTHORIZATION_STATE.authorizationStateWaitPhoneNumber: {
-      await airgram.api.setAuthenticationPhoneNumber({
-        phoneNumber: '',
+    case authorizationStateWaitPhoneNumber: {
+      await telegram.api.setAuthenticationPhoneNumber({
+        phoneNumber: state.phone || '',
       })
-
-      break
-    }
-    case AUTHORIZATION_STATE.authorizationStateWaitCode: {
-      await airgram.api.checkAuthenticationCode({
-        code: '',
-      })
-      break
-    }
-
-    case AUTHORIZATION_STATE.authorizationStateWaitPassword: {
-      await airgram.api.checkAuthenticationPassword({
-        password: '',
-      })
-      break
-    }
-
-    case AUTHORIZATION_STATE.authorizationStateReady: {
-      console.log('Success authorization!')
-      const me = await airgram.api.getMe()
-      console.log(me)
+      nextStage('PHONE')
       return next()
     }
+    case authorizationStateWaitCode: {
+      await telegram.api.checkAuthenticationCode({
+        code: state.code || '',
+      })
+      nextStage('CODE')
+      break
+    }
+
+    case authorizationStateWaitPassword: {
+      await telegram.api.checkAuthenticationPassword({
+        password: state.password || '',
+      })
+      nextStage('PASSWORD')
+      break
+    }
+    case authorizationStateReady: {
+      console.log('Success authorization!')
+      nextStage('SUCCESS')
+      break
+    }
+    case authorizationStateClosed: {
+      await telegram.api.logOut()
+
+      nextStage('PHONE')
+      break
+    }
     default: {
+      nextStage('LOADING')
       return next()
     }
   }
 })
-
-render(
-  <ThemeProvider theme={{ ...theme }}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </ThemeProvider>,
-  document.getElementById('root')!,
-)
