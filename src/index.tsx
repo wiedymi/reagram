@@ -5,8 +5,17 @@ import { ThemeProvider } from 'emotion-theming'
 import App from './App'
 import { config } from './constants'
 import * as theme from './theme'
-import { telegram } from 'helpers'
+import { telegram, store } from 'helpers'
 import { UPDATE, AUTHORIZATION_STATE } from '@airgram/constants'
+
+telegram.use(async (ctx, next) => {
+  // // Checks if this operation is UpdateContext
+  // if ('update' in ctx) {
+  //   console.log(`[all updates][${ctx._}]`, ctx.update)
+  // }
+
+  return next()
+})
 
 const {
   authorizationStateWaitPhoneNumber,
@@ -68,12 +77,17 @@ const UserInfo = () => {
     const user = await telegram.api.getMe()
     const chats = await telegram.getListOfChats()
 
-    console.log(chats)
+    const db = await store.init()
+
+    const newStore = await db.download({
+      id: chats[3].lastMessage.audio.audio.id,
+    })
+
+    console.log(newStore)
   }
 
   const search = async () => {
     const chats = await telegram.api.searchChatsOnServer({ query: value, limit: 10 })
-    const chat = await telegram.api.getMessages({ chatId: chats.response.chatIds[0] })
   }
 
   const handleChange = ({ target }) => {
