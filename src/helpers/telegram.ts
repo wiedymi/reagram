@@ -48,4 +48,13 @@ airgram.getListOfChats = async function(limit) {
   return chats
 }
 
+airgram.logout = function() {
+  this.emit({
+    _: updateAuthorizationState,
+    authorizationState: {
+      _: authorizationStateClosed,
+    },
+  })
+}
+
 export const telegram = airgram
