@@ -7,8 +7,8 @@ const { getColors } = styleHelpers
 export const SelectItem = styled(MenuItem)``
 
 export const Wrapper = styled.div`
+  transition: all 0.8s ease-out !important;
   display: flex;
-
   justify-content: center;
   align-items: center;
   min-height: 90vh;
@@ -111,7 +111,18 @@ export const CountryWrapper = styled.div`
 `
 
 export const NextStageButton = styled(Button)`
-  visibility: ${({ nextStageButton }) => (nextStageButton ? 'unset' : 'hidden')};
+  pointer-events: ${props => {
+    if (props.nextStageButton) {
+      return 'auto'
+    }
+    return 'none'
+  }};
+  opacity: ${props => {
+    if (props.nextStageButton) {
+      return 1
+    }
+    return 0
+  }};
   text-transform: uppercase;
   width: 100%;
   border-radius: 10px !important;
