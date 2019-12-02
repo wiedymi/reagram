@@ -8,10 +8,10 @@ export const SelectItem = styled(MenuItem)``
 
 export const Wrapper = styled.div`
   display: flex;
-  transition: all 0.8s ease-out;
+
   justify-content: center;
   align-items: center;
-  min-height: ${({ nextStageButton }) => (nextStageButton ? '80vh' : '80vh')};
+  min-height: 90vh;
   flex-wrap: nowrap;
   flex-flow: column;
 
@@ -19,7 +19,7 @@ export const Wrapper = styled.div`
     > div > div > span {
       display: none;
     }
-    > p.MuiTypography-root {
+    > div > p.MuiTypography-root {
       display: none;
     }
   }
@@ -111,6 +111,7 @@ export const CountryWrapper = styled.div`
 `
 
 export const NextStageButton = styled(Button)`
+  visibility: ${({ nextStageButton }) => (nextStageButton ? 'unset' : 'hidden')};
   text-transform: uppercase;
   width: 100%;
   border-radius: 10px !important;
