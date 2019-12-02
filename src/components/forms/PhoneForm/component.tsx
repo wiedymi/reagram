@@ -39,7 +39,7 @@ const getCountries = () => {
 
   return countries.map(country => {
     return (
-      <SelectItem key={country.dialCode} value={country.dialCode}>
+      <SelectItem key={country.iso2} value={country.dialCode}>
         <SelectWrapper>
           <CountryWrapper>
             <Flag>{country.flag}</Flag>

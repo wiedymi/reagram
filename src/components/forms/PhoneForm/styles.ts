@@ -11,9 +11,18 @@ export const Wrapper = styled.div`
   transition: all 0.8s ease-out;
   justify-content: center;
   align-items: center;
-  min-height: ${({ nextStageButton }) => (nextStageButton ? '90vh' : '80vh')};
+  min-height: ${({ nextStageButton }) => (nextStageButton ? '80vh' : '80vh')};
   flex-wrap: nowrap;
   flex-flow: column;
+
+  .MuiSelect-root.MuiSelect-select {
+    > div > div > span {
+      display: none;
+    }
+    > p.MuiTypography-root {
+      display: none;
+    }
+  }
 `
 export const Img = styled.img`
   display: flex;

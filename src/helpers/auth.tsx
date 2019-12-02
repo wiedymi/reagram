@@ -94,7 +94,7 @@ export const setupAuth = function(stages: object, defaultLoading: any) {
   telegram.on(updateAuthorizationState, async ({ update, setState, getState }, next) => {
     const { authorizationState } = update
     const user = update
-
+    console.log(user)
     switch (authorizationState._) {
       case authorizationStateWaitPhoneNumber: {
         await telegram.api.setAuthenticationPhoneNumber({
@@ -130,7 +130,7 @@ export const setupAuth = function(stages: object, defaultLoading: any) {
         break
       }
       default: {
-        nextStage(AUTH.LOADING)
+        nextStage(AUTH.PHONE)
         return next()
       }
     }

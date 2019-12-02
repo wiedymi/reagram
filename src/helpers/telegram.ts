@@ -1,5 +1,17 @@
 import { Airgram, toObject } from '@airgram/web'
-import { config } from '../constants'
+import { UPDATE, AUTHORIZATION_STATE } from '@airgram/constants'
+
+const {
+  authorizationStateWaitPhoneNumber,
+  authorizationStateWaitCode,
+  authorizationStateWaitPassword,
+  authorizationStateReady,
+  authorizationStateClosed,
+} = AUTHORIZATION_STATE
+
+const { updateAuthorizationState } = UPDATE
+
+import { config } from '@/constants'
 
 async function asyncMap(array, callback) {
   const values = []
@@ -48,11 +60,15 @@ airgram.getListOfChats = async function(limit) {
   return chats
 }
 
-airgram.logout = function() {
+airgram.logout = async function() {
+  await this.api.logOut()
+}
+
+airgram.editPhone = async function() {
   this.emit({
     _: updateAuthorizationState,
     authorizationState: {
-      _: authorizationStateClosed,
+      _: authorizationStateWaitPhoneNumber,
     },
   })
 }
