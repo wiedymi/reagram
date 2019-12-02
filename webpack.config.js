@@ -36,6 +36,9 @@ const sharedConfig = env => {
     resolve: {
       modules: [path.resolve(__dirname, 'src'), 'node_modules'],
       extensions: ['.tsx', '.ts', '.js'],
+      alias: {
+        '@': path.resolve(__dirname, 'src'),
+      },
     },
     externals: {
       tdweb: 'tdweb',
