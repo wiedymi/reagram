@@ -32,7 +32,7 @@ const airgram = new Airgram({
 })
 
 airgram.getListOfChats = async function(limit) {
-  const result = await this.api.getChats({
+  const result = await airgram.api.getChats({
     limit: limit || 10,
     offsetChatId: 0,
     offsetOrder: '9223372036854775807',
@@ -41,12 +41,12 @@ airgram.getListOfChats = async function(limit) {
   const ids = toObject(result).chatIds
 
   const callback = async chatId => {
-    const result = await this.api.getChat({ chatId })
+    const result = await airgram.api.getChat({ chatId })
 
     const { lastMessage, title } = toObject(result)
 
     const sentBy = lastMessage.senderUserId
-      ? await this.api.getUserFullInfo(lastMessage.senderUserId)
+      ? await airgram.api.getUserFullInfo(lastMessage.senderUserId)
       : 'channel'
 
     return {
@@ -61,7 +61,7 @@ airgram.getListOfChats = async function(limit) {
 }
 
 airgram.logout = async function() {
-  await this.api.logOut()
+  await airgram.api.logOut()
 }
 
 airgram.editPhone = async function() {
