@@ -1,19 +1,18 @@
-import React, { ReactNode, useState } from 'react'
-import { Card, CardHeader, Avatar } from '@material-ui/core'
-import { CollectionsBookmarkOutlined } from '@material-ui/icons'
+import React, { ReactNode } from 'react'
+import { CardHeader, Avatar } from '@material-ui/core'
 import { useTelegram, USE_TELEGRAM, toImage } from '@/helpers'
 import { TYPES } from '@/constants'
 import { Wrapper, ChatWrapper, ChatHoverable } from './styles'
 
 type ChatsProps = {
-  children: ReactNode
+  children: ReactNode;
 }
 
 type ChatProps = {
-  children: ReactNode
+  children: ReactNode;
 }
 
-const getAvatar = (id, blobs, refetch) => {
+const getAvatar = (id, blobs, refetch): string => {
   if (!id) {
     return ''
   }
@@ -26,12 +25,12 @@ const getAvatar = (id, blobs, refetch) => {
     return refetch()
   }
 
-  const { blob } = photo[0]
+  const [source] = photo
 
-  return toImage(blob)
+  return toImage(source.blob)
 }
 
-const Chat = (props: ChatProps) => {
+const Chat = (props: ChatProps): ReactNode => {
   const query = {
     id: props.photoId,
     type: TYPES.FILES.PHOTO,
@@ -52,14 +51,13 @@ const Chat = (props: ChatProps) => {
             )
           }
           title={props.title}
-          subheader={props.lastMessage._}
-        />
+          subheader={props.lastMessage._}/>
       </ChatHoverable>
     </ChatWrapper>
   )
 }
 
-const Chats = (props: ChatsProps) => {
+const Chats = (): ReactNode => {
   const { data, loading } = useTelegram(USE_TELEGRAM.GET_LIST_OF_CHATS)
 
   if (loading) {
@@ -69,7 +67,7 @@ const Chats = (props: ChatsProps) => {
   return (
     <Wrapper>
       {data.map(chat => (
-        <Chat {...chat} />
+        <Chat key={chat.id} {...chat} />
       ))}
     </Wrapper>
   )
