@@ -1,11 +1,7 @@
 import React, { ReactNode } from 'react'
 import { Wrapper, Img, Progress, Text, Content } from './styles'
 
-type Props = {
-  children: ReactNode
-}
-
-const Loading = (props: Props) => (
+const Loading = (): ReactNode => (
   <Wrapper>
     <Img src="/assert/logo.png" />
     <Content>

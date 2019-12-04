@@ -857,7 +857,7 @@ const countries = `[
   { "name": "Åland Islands", "iso2": "ax", "dialCode": "358", "priority": 1, "areaCodes": ["18"] }
 ]
 `
-export function getFlags(code) {
+export function getFlags(code): string {
   if (code === 'AD') return '🇦🇩'
   if (code === 'AE') return '🇦🇪'
   if (code === 'AF') return '🇦🇫'
@@ -1110,7 +1110,7 @@ export function getFlags(code) {
   return '🏳'
 }
 
-export const getListOfCountries = () => {
+export const getListOfCountries = (): string => {
   const list = JSON.parse(countries)
 
   const addedFlag = list.map(country => {

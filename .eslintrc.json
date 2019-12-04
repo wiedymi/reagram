@@ -1,13 +1,8 @@
 {
-  "extends": [
-    "standard",
-    "standard-react"
-  ],
-  "plugins": [
-    "prettier",
-    "react-hooks"
-  ],
-  "parser": "babel-eslint",
+  "extends": ["plugin:react/recommended", "plugin:@typescript-eslint/recommended"],
+  "plugins": ["prettier", "react-hooks"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": { "ecmaVersion": 2018, "sourceType": "module" },
   "env": {
     "node": true,
     "browser": true,
@@ -15,8 +10,8 @@
   },
   "rules": {
     "arrow-parens": ["error", "as-needed"],
-    "semi":"error",
-    "prefer-destructuring":"error",
+    "semi": 0,
+    "prefer-destructuring": "error",
     "max-len": [
       "warn",
       {
@@ -28,7 +23,10 @@
     "no-unused-vars": "warn",
     "operator-linebreak": "warn",
     "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
     "react/jsx-closing-tag-location": 2,
+    "react/jsx-fragments": "off",
+    "react/jsx-handler-names": "off",
     "react/jsx-closing-bracket-location": [
       2,
       {
@@ -39,26 +37,18 @@
     "react/jsx-max-props-per-line": [
       2,
       {
-        "maximum": 2,
+        "maximum": 4,
         "when": "always"
       }
     ],
     "react/jsx-filename-extension": [
       2,
       {
-        "extensions": [
-          ".jsx"
-        ]
+        "extensions": [".tsx", ".ts"]
       }
     ],
-    "jsx-quotes": [
-      "error",
-      "prefer-double"
-    ],
-    "comma-dangle": [
-      2,
-      "always-multiline"
-    ],
+    "jsx-quotes": ["error", "prefer-double"],
+    "comma-dangle": [2, "always-multiline"],
     "prefer-const": [
       "error",
       {
@@ -66,13 +56,11 @@
         "ignoreReadBeforeAssign": false
       }
     ],
-    "react/prop-types": [
-      1
-    ]
+    "space-before-function-paren": "off"
   },
   "overrides": [
     {
-      "files":["src/index.js"],
+      "files": ["src/index.tsx"],
       "rules": {
         "react/jsx-filename-extension": "off"
       }

@@ -36,9 +36,11 @@ const CodeForm = (props: Props) => {
 
   return (
     <Wrapper>
-      <Img src="/assert/logo.png" />
+      <Img src="/assert/monkey1.png" />
       <Content>
-        <Title variant="h4">+{state.phone}</Title>
+        <Title variant="h4">
+          +{state.phone} <button onClick={async () => await telegram.logout()}>Edit</button>
+        </Title>
         <Subtitle>We have sent you an SMS with code</Subtitle>
         <Input
           name={name}

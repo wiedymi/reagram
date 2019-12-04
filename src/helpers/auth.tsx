@@ -5,7 +5,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { ThemeProvider } from 'emotion-theming'
 import * as themeDefault from '@/theme'
 import { AUTH } from '@/constants'
-import { telegram, store } from '@/helpers'
+import { telegram } from '@/helpers'
 import { UPDATE, AUTHORIZATION_STATE } from '@airgram/constants'
 
 const theme = createMuiTheme(themeDefault)
@@ -23,14 +23,14 @@ const { updateAuthorizationState } = UPDATE
 let state = {}
 
 export const createAuthForm = (NAME, EVENT, Component) => {
-  return () => {
+  return function AuthComponent(): ReactNode {
     const [value, setValue] = useState('')
 
-    const handleChange = ({ target }) => {
+    const handleChange = ({ target }): void => {
       setValue(target.value)
     }
 
-    const handleClick = () => {
+    const handleClick = (): void => {
       state = {
         ...state,
         [NAME]: value,
@@ -64,18 +64,18 @@ export const createAuthForm = (NAME, EVENT, Component) => {
   }
 }
 
-export const setupAuth = function(stages: object, defaultLoading: any) {
+export const setupAuth = function(stages: object, defaultLoading: Any): void {
   if (!stages) {
     throw new Error('Stages are required')
   }
 
-  const renderRoot = nextStage => {
-    const Root = () => {
+  const renderRoot = (nextStage): void => {
+    const Root = (): ReactNode => {
       const [stage, setStage] = useState(defaultLoading)
 
       useEffect(() => {
         setStage(nextStage)
-      }, [nextStage])
+      }, [])
 
       return (
         <ThemeProvider theme={theme}>
@@ -84,55 +84,65 @@ export const setupAuth = function(stages: object, defaultLoading: any) {
       )
     }
 
-    render(<Root />, document.getElementById('root')!)
+    render(<Root />, document.getElementById('root'))
   }
 
-  const nextStage = stage => {
+  const nextStage = (stage): void => {
     renderRoot(stages[stage])
   }
 
-  telegram.on(updateAuthorizationState, async ({ update, setState, getState }, next) => {
-    const { authorizationState } = update
-    const user = update
+  const isLogged = localStorage.getItem('isLogged')
+  if (isLogged) {
+    return nextStage(AUTH.SUCCESS)
+  }
 
-    switch (authorizationState._) {
-      case authorizationStateWaitPhoneNumber: {
-        await telegram.api.setAuthenticationPhoneNumber({
-          phoneNumber: user.phone || '',
-        })
-        nextStage(AUTH.PHONE)
-        return next()
-      }
-      case authorizationStateWaitCode: {
-        await telegram.api.checkAuthenticationCode({
-          code: user.code || '',
-        })
-        nextStage(AUTH.CODE)
-        break
-      }
+  telegram.on(
+    updateAuthorizationState,
+    async ({ update }, next): Any => {
+      const { authorizationState } = update
+      const user = update
 
-      case authorizationStateWaitPassword: {
-        await telegram.api.checkAuthenticationPassword({
-          password: user.password || '',
-        })
-        nextStage(AUTH.PASSWORD)
-        break
+      switch (authorizationState._) {
+        case authorizationStateWaitPhoneNumber: {
+          await telegram.api.setAuthenticationPhoneNumber({
+            phoneNumber: user.phone || '',
+          })
+          nextStage(AUTH.PHONE)
+          return next()
+        }
+        case authorizationStateWaitCode: {
+          await telegram.api.checkAuthenticationCode({
+            code: user.code || '',
+          })
+          nextStage(AUTH.CODE)
+          break
+        }
+
+        case authorizationStateWaitPassword: {
+          await telegram.api.checkAuthenticationPassword({
+            password: user.password || '',
+          })
+          nextStage(AUTH.PASSWORD)
+          break
+        }
+        case authorizationStateReady: {
+          state = {}
+          localStorage.setItem('isLogged', 'true')
+          nextStage(AUTH.SUCCESS)
+          break
+        }
+        case authorizationStateClosed: {
+          localStorage.removeItem('isLogged')
+          await telegram.api.logOut()
+          state = {}
+          nextStage(AUTH.PHONE)
+          break
+        }
+        default: {
+          nextStage(AUTH.PHONE)
+          return next()
+        }
       }
-      case authorizationStateReady: {
-        state = {}
-        nextStage(AUTH.SUCCESS)
-        break
-      }
-      case authorizationStateClosed: {
-        await telegram.api.logOut()
-        state = {}
-        nextStage(AUTH.PHONE)
-        break
-      }
-      default: {
-        nextStage(AUTH.LOADING)
-        return next()
-      }
-    }
-  })
+    },
+  )
 }

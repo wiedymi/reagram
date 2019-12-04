@@ -33,7 +33,7 @@ export const Progress = styled(CircularProgress)`
   align-items: center;
   width: 30px;
   .MuiCircularProgress-svg {
-    color: ${props => getColors(props).primary};
+    color: ${(props): string => getColors(props).primary};
   }
 `
 

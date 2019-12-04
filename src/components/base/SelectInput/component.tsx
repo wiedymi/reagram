@@ -1,18 +1,15 @@
 import React, { ReactNode } from 'react'
 import { Wrapper, Input } from './styles'
 
-type Props = {
-  children: ReactNode
-}
-
-const SelectInput = (props: Props) => (
+const SelectInput = (): ReactNode => (
   <Wrapper>
     <Input
       label={`Country`}
       variant="outlined"
       select
       placeholder="Country"
-      IconComponent="/assert/down.svg">
+      IconComponent="/assert/down.svg"
+    >
       {children}
     </Input>
   </Wrapper>

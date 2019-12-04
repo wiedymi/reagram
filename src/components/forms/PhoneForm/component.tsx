@@ -39,7 +39,7 @@ const getCountries = () => {
 
   return countries.map(country => {
     return (
-      <SelectItem key={country.dialCode} value={country.dialCode}>
+      <SelectItem key={country.iso2} value={country.dialCode}>
         <SelectWrapper>
           <CountryWrapper>
             <Flag>{country.flag}</Flag>
@@ -70,9 +70,14 @@ const PhoneForm = (props: Props) => {
   }
 
   const validate = ({ target }) => {
-    const phone = target.value
+    const phone = target.value.replace('+', '')
 
     const isValid = /(7|8|9)\d{9}/.test(phone)
+    const isDigital = /^-?\d*\.?\d*$/.test(phone)
+
+    if (!isDigital) {
+      return
+    }
 
     setNextStageButton(false)
     if (isValid) {
@@ -81,13 +86,13 @@ const PhoneForm = (props: Props) => {
 
     handleChange({
       target: {
-        value: phone.replace('+', ''),
+        value: phone,
       },
     })
   }
 
   return (
-    <Wrapper nextStageButton={nextStageButton}>
+    <Wrapper>
       <Img src="/assert/logo.png" />
       <Content>
         <Title variant="h4">Sign in to Telegram</Title>
@@ -108,11 +113,14 @@ const PhoneForm = (props: Props) => {
           label={`Phone Number`}
           variant="outlined"
         />
-        {nextStageButton && (
-          <NextStageButton variant="contained" color="primary" onClick={handleClick}>
-            next
-          </NextStageButton>
-        )}
+
+        <NextStageButton
+          variant="contained"
+          color="primary"
+          onClick={handleClick}
+          nextStageButton={nextStageButton}>
+          next
+        </NextStageButton>
       </Content>
     </Wrapper>
   )

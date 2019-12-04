@@ -1,7 +1,12 @@
 import { Airgram, toObject } from '@airgram/web'
-import { config } from '../constants'
+import { UPDATE, AUTHORIZATION_STATE } from '@airgram/constants'
+import { config } from '@/constants'
+import { storage } from './store'
+const { authorizationStateWaitPhoneNumber } = AUTHORIZATION_STATE
 
-async function asyncMap(array, callback) {
+const { updateAuthorizationState } = UPDATE
+
+async function asyncMap(array, callback): array {
   const values = []
   for (let index = 0; index < array.length; index++) {
     values.push(await callback(array[index], index, array))
@@ -19,8 +24,8 @@ const airgram = new Airgram({
   // jsLogVerbosityLevel: 'debug',
 })
 
-airgram.getListOfChats = async function(limit) {
-  const result = await this.api.getChats({
+airgram.getListOfChats = async function(limit): array {
+  const result = await airgram.api.getChats({
     limit: limit || 10,
     offsetChatId: 0,
     offsetOrder: '9223372036854775807',
@@ -28,19 +33,34 @@ airgram.getListOfChats = async function(limit) {
 
   const ids = toObject(result).chatIds
 
-  const callback = async chatId => {
-    const result = await this.api.getChat({ chatId })
+  const callback = async (chatId): object => {
+    const result = await airgram.api.getChat({ chatId })
 
-    const { lastMessage, title } = toObject(result)
+    const { lastMessage, title, type } = toObject(result)
 
-    const sentBy = lastMessage.senderUserId
-      ? await this.api.getUserFullInfo(lastMessage.senderUserId)
-      : 'channel'
-
+    const sentBy =
+      lastMessage.senderUserId !== 0
+        ? await airgram.api.getUser({ userId: lastMessage.senderUserId })
+        : await airgram.api.getChat({ chatId: lastMessage.chatId })
+    const raw = toObject(result)
     return {
+      id: raw.id,
       title,
-      lastMessage: lastMessage.content,
-      sentBy,
+      lastMessage: {
+        ...lastMessage.content,
+        id: lastMessage.id,
+        isChannelPost: lastMessage.isChannelPost,
+        isOutgoing: lastMessage.isOutgoing,
+        replyToMessageId: lastMessage.replyToMessageId,
+        senderUserId: lastMessage.senderUserId,
+        type: type._,
+        date: +`${lastMessage.date}000`,
+        sentBy: toObject(sentBy),
+      },
+      unreadCount: raw.unreadCount,
+      photoId: raw.photo.big.id,
+      type: type._,
+      raw,
     }
   }
   const chats = await asyncMap(ids, callback)
@@ -48,11 +68,26 @@ airgram.getListOfChats = async function(limit) {
   return chats
 }
 
-airgram.logout = function() {
+airgram.logout = async function(): void {
+  await airgram.api.logOut()
+}
+
+airgram.getMe = async function(): void {
+  const isMe = storage.getMe()
+  if (Object.keys(isMe).length > 0) {
+    return isMe
+  }
+
+  const me = await airgram.api.getMe()
+
+  return storage.setMe(toObject(me))
+}
+
+airgram.editPhone = async function(): void {
   this.emit({
     _: updateAuthorizationState,
     authorizationState: {
-      _: authorizationStateClosed,
+      _: authorizationStateWaitPhoneNumber,
     },
   })
 }

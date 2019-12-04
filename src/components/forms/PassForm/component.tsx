@@ -45,7 +45,7 @@ const PassForm = (props: Props) => {
 
   return (
     <Wrapper>
-      <Img src="/assert/logo.png" />
+      <Img src={values.showPassword ? '/assert/monkey3.png' : '/assert/monkey4.png'} />
       <Content>
         <Title variant="h4">Enter Your Password</Title>
         <Subtitle>Your account is protected with an additional password.</Subtitle>
