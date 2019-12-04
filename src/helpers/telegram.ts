@@ -1,5 +1,6 @@
 import { Airgram, toObject } from '@airgram/web'
 import { UPDATE, AUTHORIZATION_STATE } from '@airgram/constants'
+import storage from './store'
 
 const {
   authorizationStateWaitPhoneNumber,
@@ -53,6 +54,8 @@ airgram.getListOfChats = async function(limit) {
       title,
       lastMessage: lastMessage.content,
       sentBy,
+      photoId: toObject(result).photo.big.id,
+      raw: toObject(result),
     }
   }
   const chats = await asyncMap(ids, callback)

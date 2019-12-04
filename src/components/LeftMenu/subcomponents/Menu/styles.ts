@@ -33,6 +33,12 @@ export const LeftNav = styled.div`
   .MuiSvgIcon-root {
     color: #707579 !important;
   }
+
+  .MuiIconButton-root {
+    max-width: 40px !important;
+    max-height: 40px !important;
+    padding: 0px 10px 0px 10px;
+  }
 `
 export const RightNav = styled.div`
   display: flex;

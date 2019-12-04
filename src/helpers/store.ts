@@ -30,7 +30,7 @@ const getter = db => {
     })
 }
 
-const storage = (() => {
+export const storage = (() => {
   const state = {
     blobs: [],
   }
@@ -42,7 +42,9 @@ const storage = (() => {
       })
 
       if (isExist.length === 0) {
-        return state.blobs.push(file)
+        state.blobs.push(file)
+
+        return state
       }
     },
     getState: () => state,
@@ -50,6 +52,9 @@ const storage = (() => {
 })()
 
 const download = async file => {
+  if (!file.type) {
+    throw new Error('You have to provide file type')
+  }
   const state = storage.getState()
   const isExist = state.blobs.filter(val => {
     return val.id === file.id
@@ -73,9 +78,10 @@ const download = async file => {
         const db = await connection()
         const get = getter(db)
         const blob = await get(remote.id)
-        storage.set({ id: file.id, id_string: remote.id, blob })
+        storage.set({ id: file.id, id_string: remote.id, blob, type: file.type })
         resolve(storage.getState())
       }
+      next()
     })
   })
 }
@@ -90,6 +96,13 @@ const init = async () => {
   }
 }
 
+const getAvatar = async function({ id, type }) {
+  const file = await download({ id, type })
+
+  return file
+}
+
 export default {
   init,
+  getAvatar,
 }
