@@ -1,6 +1,7 @@
 import { Airgram, toObject } from '@airgram/web'
 import { UPDATE, AUTHORIZATION_STATE } from '@airgram/constants'
 import { config } from '@/constants'
+import { storage } from './store'
 const { authorizationStateWaitPhoneNumber } = AUTHORIZATION_STATE
 
 const { updateAuthorizationState } = UPDATE
@@ -35,18 +36,31 @@ airgram.getListOfChats = async function(limit): array {
   const callback = async (chatId): object => {
     const result = await airgram.api.getChat({ chatId })
 
-    const { lastMessage, title } = toObject(result)
+    const { lastMessage, title, type } = toObject(result)
 
-    const sentBy = lastMessage.senderUserId
-      ? await airgram.api.getUserFullInfo(lastMessage.senderUserId)
-      : 'channel'
-
+    const sentBy =
+      lastMessage.senderUserId !== 0
+        ? await airgram.api.getUser({ userId: lastMessage.senderUserId })
+        : await airgram.api.getChat({ chatId: lastMessage.chatId })
+    const raw = toObject(result)
     return {
+      id: raw.id,
       title,
-      lastMessage: lastMessage.content,
-      sentBy,
-      photoId: toObject(result).photo.big.id,
-      raw: toObject(result),
+      lastMessage: {
+        ...lastMessage.content,
+        id: lastMessage.id,
+        isChannelPost: lastMessage.isChannelPost,
+        isOutgoing: lastMessage.isOutgoing,
+        replyToMessageId: lastMessage.replyToMessageId,
+        senderUserId: lastMessage.senderUserId,
+        type: type._,
+        date: +`${lastMessage.date}000`,
+        sentBy: toObject(sentBy),
+      },
+      unreadCount: raw.unreadCount,
+      photoId: raw.photo.big.id,
+      type: type._,
+      raw,
     }
   }
   const chats = await asyncMap(ids, callback)
@@ -56,6 +70,17 @@ airgram.getListOfChats = async function(limit): array {
 
 airgram.logout = async function(): void {
   await airgram.api.logOut()
+}
+
+airgram.getMe = async function(): void {
+  const isMe = storage.getMe()
+  if (Object.keys(isMe).length > 0) {
+    return isMe
+  }
+
+  const me = await airgram.api.getMe()
+
+  return storage.setMe(toObject(me))
 }
 
 airgram.editPhone = async function(): void {

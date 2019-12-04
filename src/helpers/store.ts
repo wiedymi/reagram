@@ -31,8 +31,9 @@ const getter = db => {
 }
 
 export const storage = ((): object => {
-  const state = {
+  let state = {
     files: [],
+    me: {},
   }
 
   return {
@@ -48,6 +49,15 @@ export const storage = ((): object => {
       }
     },
     getState: (): object => state,
+    setMe: (me): object => {
+      state = {
+        ...state,
+        me,
+      }
+
+      return state.me
+    },
+    getMe: (): object => state.me,
   }
 })()
 

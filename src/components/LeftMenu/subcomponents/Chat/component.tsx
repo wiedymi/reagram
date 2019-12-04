@@ -1,15 +1,18 @@
 import React, { ReactNode } from 'react'
 import { CardHeader, Avatar } from '@material-ui/core'
-import { useTelegram, USE_TELEGRAM, toImage } from '@/helpers'
+import { useTelegram, USE_TELEGRAM, toImage, handleLastMessage } from '@/helpers'
 import { TYPES } from '@/constants'
-import { Wrapper, ChatWrapper, ChatHoverable } from './styles'
-
-type ChatsProps = {
-  children: ReactNode;
-}
+import {
+  ChatWrapper,
+  ChatHoverable,
+  UnreadMessages,
+  MessageTime,
+  ActionWrapper,
+  OnlineBadge,
+} from './styles'
 
 type ChatProps = {
-  children: ReactNode;
+  children: ReactNode
 }
 
 const getAvatar = (id, blobs, refetch): string => {
@@ -30,6 +33,23 @@ const getAvatar = (id, blobs, refetch): string => {
   return toImage(source.blob)
 }
 
+const getTime = time => {
+  const date = new Date(time)
+
+  return `${date.getHours()}:${date.getMinutes()}`
+}
+
+const Actions = ({ unreadCount, time }): ReactNode => {
+  return (
+    <>
+      <ActionWrapper>
+        <MessageTime>{getTime(time)}</MessageTime>
+      </ActionWrapper>
+      {unreadCount !== 0 && <UnreadMessages>{unreadCount}</UnreadMessages>}
+    </>
+  )
+}
+
 const Chat = (props: ChatProps): ReactNode => {
   const query = {
     id: props.photoId,
@@ -37,47 +57,52 @@ const Chat = (props: ChatProps): ReactNode => {
   }
   const { data, loading, refetch, storage } = useTelegram(USE_TELEGRAM.GET_AVATARS_CHATS, query)
 
-  const avatar = !loading && data ? getAvatar(props.photoId, data.files, refetch) : ''
+  let avatar = !loading && data ? getAvatar(props.photoId, data.files, refetch) : ''
+  let { title, id } = props
   const openChat = async (): void => {
-    console.log(query)
+    console.log(props)
     console.log(storage.getState())
   }
+  let isSaved = false
+  if (props.me && props.me.firstName && props.title === props.me.firstName) {
+    title = 'Saved Messages'
+    avatar = '/icons/savedmessages_svg.svg'
+    isSaved = true
+  }
+
+  let showOnline = false
+  if (props.type === 'chatTypePrivate' && !isSaved && id !== 777000) {
+    showOnline = true
+  }
+
   return (
     <ChatWrapper>
-      <ChatHoverable onClick={openChat}>
+      <ChatHoverable onClick={openChat} isSaved={isSaved}>
         <CardHeader
           avatar={
             loading ? (
-              <Avatar aria-label="recipe">{props.title.charAt(0).toUpperCase()}</Avatar>
+              <Avatar aria-label="recipe">{title.charAt(0).toUpperCase()}</Avatar>
             ) : (
-              <Avatar aria-label="recipe" src={avatar} />
+              <OnlineBadge
+                overlap="circle"
+                variant="dot"
+                color="primary"
+                anchorOrigin={{
+                  horizontal: 'right',
+                  vertical: 'bottom',
+                }}
+                showOnline={showOnline}>
+                <Avatar aria-label="recipe" src={avatar} />
+              </OnlineBadge>
             )
           }
-          title={props.title}
-          subheader={props.lastMessage._}/>
+          title={title}
+          subheader={handleLastMessage(props.lastMessage)}
+          action={<Actions unreadCount={props.unreadCount} time={props.lastMessage.date} />}
+        />
       </ChatHoverable>
     </ChatWrapper>
   )
 }
 
-const Chats = (): ReactNode => {
-  const { data, loading } = useTelegram(USE_TELEGRAM.GET_LIST_OF_CHATS)
-
-  if (loading) {
-    return <Wrapper>Loading chats...</Wrapper>
-  }
-
-  return (
-    <Wrapper>
-      {data.map(chat => (
-        <Chat key={chat.id} {...chat} />
-      ))}
-    </Wrapper>
-  )
-}
-
-Chat.defaultProps = {
-  // bla: 'test',
-}
-
-export default Chats
+export default Chat

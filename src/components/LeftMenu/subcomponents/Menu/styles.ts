@@ -1,6 +1,7 @@
 import styled from '@emotion/styled'
 import Item from '@material-ui/core/MenuItem'
 import OutlinedInput from '@material-ui/core/OutlinedInput'
+import { Typography } from '@material-ui/core'
 import { styleHelpers } from '@/helpers'
 
 const { getColors } = styleHelpers
@@ -42,9 +43,11 @@ export const LeftNav = styled.div`
 `
 export const RightNav = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-content: center;
+  align-items: center;
   height: 40px;
+  max-height: 40px;
   width: 100%;
   padding: 0 10px 0 10px;
   .MuiSvgIcon-root {
@@ -56,6 +59,7 @@ export const Input = styled(OutlinedInput)`
   width: 100%;
   background: #f4f4f5 !important;
   border-radius: 30px !important;
+  max-height: 40px !important;
   border: 0 !important;
   fieldset {
     border-radius: 30px !important;
@@ -84,4 +88,11 @@ export const Input = styled(OutlinedInput)`
   .Mui-focused fieldset {
     border-color: ${props => getColors(props).primary};
   }
+`
+
+export const Title = styled(Typography)`
+  display: flex;
+  font-weight: bold !important;
+  /* justify-content: center;
+  align-items: center; */
 `

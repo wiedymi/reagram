@@ -3,3 +3,11 @@ export const FILES = {
   AUDIO: 'audio',
   VIDIO: 'vidio',
 }
+
+export const MESSAGES = {
+  TEXT: 'messageText',
+  PHOTO: 'messagePhoto',
+  AUDIO: 'messageAudio',
+  VIDIO: 'messageVideo',
+  STICKER: 'messageSticker',
+}

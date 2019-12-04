@@ -45,7 +45,7 @@ export const Wrapper = styled.div`
   transition: all 0.8s ease-out;
   justify-content: center;
   align-items: center;
-  min-height: ${({ nextStageButton }) => (nextStageButton ? '90vh' : '80vh')};
+  min-height: ${({ nextStageButton }): string => (nextStageButton ? '90vh' : '80vh')};
   flex-wrap: nowrap;
   flex-flow: column;
 `

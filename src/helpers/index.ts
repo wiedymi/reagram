@@ -7,3 +7,4 @@ export * from './countries'
 export { styleHelpers }
 export * from './useTelegram'
 export * from './fileConverters'
+export * from './message.tsx'

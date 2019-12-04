@@ -58,7 +58,8 @@ export const createAuthForm = (NAME, EVENT, Component) => {
         value={value}
         handleChange={handleChange}
         handleClick={handleClick}
-        state={state}/>
+        state={state}
+      />
     )
   }
 }
@@ -90,48 +91,58 @@ export const setupAuth = function(stages: object, defaultLoading: Any): void {
     renderRoot(stages[stage])
   }
 
-  telegram.on(updateAuthorizationState, async ({ update }, next): any => {
-    const { authorizationState } = update
-    const user = update
+  const isLogged = localStorage.getItem('isLogged')
+  if (isLogged) {
+    return nextStage(AUTH.SUCCESS)
+  }
 
-    switch (authorizationState._) {
-      case authorizationStateWaitPhoneNumber: {
-        await telegram.api.setAuthenticationPhoneNumber({
-          phoneNumber: user.phone || '',
-        })
-        nextStage(AUTH.PHONE)
-        return next()
-      }
-      case authorizationStateWaitCode: {
-        await telegram.api.checkAuthenticationCode({
-          code: user.code || '',
-        })
-        nextStage(AUTH.CODE)
-        break
-      }
+  telegram.on(
+    updateAuthorizationState,
+    async ({ update }, next): Any => {
+      const { authorizationState } = update
+      const user = update
 
-      case authorizationStateWaitPassword: {
-        await telegram.api.checkAuthenticationPassword({
-          password: user.password || '',
-        })
-        nextStage(AUTH.PASSWORD)
-        break
+      switch (authorizationState._) {
+        case authorizationStateWaitPhoneNumber: {
+          await telegram.api.setAuthenticationPhoneNumber({
+            phoneNumber: user.phone || '',
+          })
+          nextStage(AUTH.PHONE)
+          return next()
+        }
+        case authorizationStateWaitCode: {
+          await telegram.api.checkAuthenticationCode({
+            code: user.code || '',
+          })
+          nextStage(AUTH.CODE)
+          break
+        }
+
+        case authorizationStateWaitPassword: {
+          await telegram.api.checkAuthenticationPassword({
+            password: user.password || '',
+          })
+          nextStage(AUTH.PASSWORD)
+          break
+        }
+        case authorizationStateReady: {
+          state = {}
+          localStorage.setItem('isLogged', 'true')
+          nextStage(AUTH.SUCCESS)
+          break
+        }
+        case authorizationStateClosed: {
+          localStorage.removeItem('isLogged')
+          await telegram.api.logOut()
+          state = {}
+          nextStage(AUTH.PHONE)
+          break
+        }
+        default: {
+          nextStage(AUTH.PHONE)
+          return next()
+        }
       }
-      case authorizationStateReady: {
-        state = {}
-        nextStage(AUTH.SUCCESS)
-        break
-      }
-      case authorizationStateClosed: {
-        await telegram.api.logOut()
-        state = {}
-        nextStage(AUTH.PHONE)
-        break
-      }
-      default: {
-        nextStage(AUTH.PHONE)
-        return next()
-      }
-    }
-  })
+    },
+  )
 }

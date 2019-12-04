@@ -1,11 +1,7 @@
 import React, { ReactNode } from 'react'
 import { Wrapper, Input } from './styles'
 
-type Props = {
-  children: ReactNode;
-}
-
-const SelectInput = (props: Props): ReactNode => (
+const SelectInput = (): ReactNode => (
   <Wrapper>
     <Input
       label={`Country`}
