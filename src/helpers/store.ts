@@ -1,13 +1,13 @@
 import { telegram } from './telegram'
 
-const connection = () => {
+const connection = (): Promise<Any> => {
   const open = indexedDB.open('tdlib', 1)
   return new Promise((resolve, reject) => {
-    open.onerror = () => {
+    open.onerror = (): void => {
       reject()
     }
 
-    open.onsuccess = function() {
+    open.onsuccess = function(): void {
       const db = this.result
       const transaction = db.transaction('keyvaluepairs', 'readwrite')
       const objectStore = transaction.objectStore('keyvaluepairs')
@@ -18,54 +18,54 @@ const connection = () => {
 }
 
 const getter = db => {
-  return key =>
+  return (key): Promise<Any> =>
     new Promise((resolve, reject) => {
       const file = db.get(key)
-      file.onerror = () => {
+      file.onerror = (): void => {
         reject()
       }
-      file.onsuccess = () => {
+      file.onsuccess = (): void => {
         resolve(file.result)
       }
     })
 }
 
-export const storage = (() => {
+export const storage = ((): object => {
   const state = {
-    blobs: [],
+    files: [],
   }
 
   return {
-    set: file => {
-      const isExist = state.blobs.filter(val => {
+    set: (file): object => {
+      const isExist = state.files.filter(val => {
         return val.id === file.id
       })
 
       if (isExist.length === 0) {
-        state.blobs.push(file)
+        state.files.push(file)
 
         return state
       }
     },
-    getState: () => state,
+    getState: (): object => state,
   }
 })()
 
-const download = async file => {
-  if (!file.type) {
+const download = async (query): Promise<Any> => {
+  if (!query.type) {
     throw new Error('You have to provide file type')
   }
   const state = storage.getState()
-  const isExist = state.blobs.filter(val => {
-    return val.id === file.id
+  const isExist = state.files.filter(val => {
+    return val.id === query.id
   })
 
   if (isExist.length !== 0) {
     return new Promise(resolve => resolve(state))
   }
 
-  const files = await telegram.api.downloadFile({
-    fileId: file.id,
+  await telegram.api.downloadFile({
+    fileId: query.id,
     priority: 1,
   })
 
@@ -78,7 +78,7 @@ const download = async file => {
         const db = await connection()
         const get = getter(db)
         const blob = await get(remote.id)
-        storage.set({ id: file.id, id_string: remote.id, blob, type: file.type })
+        storage.set({ id: file.id, idString: remote.id, blob, type: query.type })
         resolve(storage.getState())
       }
       next()
@@ -86,7 +86,7 @@ const download = async file => {
   })
 }
 
-const init = async () => {
+const init = async (): Promise<object> => {
   const db = await connection()
 
   return {
@@ -96,7 +96,7 @@ const init = async () => {
   }
 }
 
-const getAvatar = async function({ id, type }) {
+const getAvatar = async function({ id, type }): Promise<object> {
   const file = await download({ id, type })
 
   return file

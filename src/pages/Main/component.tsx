@@ -3,11 +3,7 @@ import { Layout } from '@/components/base'
 import LeftMenu from '@/components/LeftMenu'
 import { Wrapper } from './styles'
 
-type Props = {
-  children: ReactNode
-}
-
-const Main = (props: Props) => {
+const Main = (): ReactNode => {
   return (
     <Layout>
       <Wrapper>

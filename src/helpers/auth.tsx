@@ -5,7 +5,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { ThemeProvider } from 'emotion-theming'
 import * as themeDefault from '@/theme'
 import { AUTH } from '@/constants'
-import { telegram, store } from '@/helpers'
+import { telegram } from '@/helpers'
 import { UPDATE, AUTHORIZATION_STATE } from '@airgram/constants'
 
 const theme = createMuiTheme(themeDefault)
@@ -23,14 +23,14 @@ const { updateAuthorizationState } = UPDATE
 let state = {}
 
 export const createAuthForm = (NAME, EVENT, Component) => {
-  return () => {
+  return function AuthComponent(): ReactNode {
     const [value, setValue] = useState('')
 
-    const handleChange = ({ target }) => {
+    const handleChange = ({ target }): void => {
       setValue(target.value)
     }
 
-    const handleClick = () => {
+    const handleClick = (): void => {
       state = {
         ...state,
         [NAME]: value,
@@ -58,24 +58,23 @@ export const createAuthForm = (NAME, EVENT, Component) => {
         value={value}
         handleChange={handleChange}
         handleClick={handleClick}
-        state={state}
-      />
+        state={state}/>
     )
   }
 }
 
-export const setupAuth = function(stages: object, defaultLoading: any) {
+export const setupAuth = function(stages: object, defaultLoading: Any): void {
   if (!stages) {
     throw new Error('Stages are required')
   }
 
-  const renderRoot = nextStage => {
-    const Root = () => {
+  const renderRoot = (nextStage): void => {
+    const Root = (): ReactNode => {
       const [stage, setStage] = useState(defaultLoading)
 
       useEffect(() => {
         setStage(nextStage)
-      }, [nextStage])
+      }, [])
 
       return (
         <ThemeProvider theme={theme}>
@@ -84,14 +83,14 @@ export const setupAuth = function(stages: object, defaultLoading: any) {
       )
     }
 
-    render(<Root />, document.getElementById('root')!)
+    render(<Root />, document.getElementById('root'))
   }
 
-  const nextStage = stage => {
+  const nextStage = (stage): void => {
     renderRoot(stages[stage])
   }
 
-  telegram.on(updateAuthorizationState, async ({ update, setState, getState }, next) => {
+  telegram.on(updateAuthorizationState, async ({ update }, next): any => {
     const { authorizationState } = update
     const user = update
 

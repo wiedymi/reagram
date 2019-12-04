@@ -1,5 +1,4 @@
-import React, { useState } from 'react'
-import deepmerge from 'deepmerge'
+import { useState } from 'react'
 import { USE_TELEGRAM } from '@/constants'
 import { telegram } from './telegram'
 import store, { storage } from './store'
@@ -7,7 +6,7 @@ import store, { storage } from './store'
 const { GET_LIST_OF_CHATS, GET_AVATARS_CHATS } = USE_TELEGRAM
 
 function createHook(fn) {
-  return function(opts = {}) {
+  return function(opts = {}): object {
     const [state, setState] = useState({
       loading: true,
       data: {},
@@ -15,7 +14,7 @@ function createHook(fn) {
     })
     const { loading, data } = state
 
-    const refetch = () => {
+    const refetch = (): void => {
       setState({
         loading: true,
         data: {},
@@ -61,10 +60,10 @@ const getListOfChats = createHook(telegram.getListOfChats)
 
 const getAvatar = createHook(store.getAvatar)
 
-export function useTelegram(CONSTANT_QUERY, opts = false) {
+export function useTelegram(CONSTANT_QUERY, opts = false): object {
   const queries = {
-    GET_LIST_OF_CHATS: getListOfChats,
-    GET_AVATARS_CHATS: getAvatar,
+    [GET_LIST_OF_CHATS]: getListOfChats,
+    [GET_AVATARS_CHATS]: getAvatar,
   }
 
   return queries[CONSTANT_QUERY](opts)

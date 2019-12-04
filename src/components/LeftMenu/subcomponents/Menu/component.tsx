@@ -1,6 +1,5 @@
 import React, { ReactNode, useState } from 'react'
 import { Menu, InputAdornment, IconButton } from '@material-ui/core'
-
 import {
   HelpOutline,
   Menu as MenuIcon,
@@ -14,7 +13,7 @@ import {
 import { Wrapper, IconWrapper, MenuItem, LeftNav, RightNav, Input } from './styles'
 
 type Props = {
-  children: ReactNode
+  children: ReactNode;
 }
 
 const options = [
@@ -46,15 +45,15 @@ const options = [
 
 const ITEM_HEIGHT = 48
 
-const MenuNav = (props: Props) => {
+const MenuNav = (): ReactNode => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
 
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+  const handleClick = (event: React.MouseEvent<HTMLElement>): void => {
     setAnchorEl(event.currentTarget)
   }
 
-  const handleClose = () => {
+  const handleClose = (): void => {
     setAnchorEl(null)
   }
 
@@ -65,7 +64,8 @@ const MenuNav = (props: Props) => {
           aria-label="more"
           aria-controls="long-menu"
           aria-haspopup="true"
-          onClick={handleClick}>
+          onClick={handleClick}
+        >
           <MenuIcon />
         </IconButton>
 
@@ -80,7 +80,8 @@ const MenuNav = (props: Props) => {
               maxHeight: ITEM_HEIGHT * 4.5,
               width: 200,
             },
-          }}>
+          }}
+        >
           {options.map(Option => (
             <MenuItem key={Option.title} onClick={handleClose}>
               <IconWrapper>
@@ -101,8 +102,7 @@ const MenuNav = (props: Props) => {
             <InputAdornment position="start">
               <Search color="#ccc" />
             </InputAdornment>
-          }
-        />
+          }/>
       </RightNav>
     </Wrapper>
   )

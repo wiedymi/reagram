@@ -1,20 +1,11 @@
 import { Airgram, toObject } from '@airgram/web'
 import { UPDATE, AUTHORIZATION_STATE } from '@airgram/constants'
-import storage from './store'
-
-const {
-  authorizationStateWaitPhoneNumber,
-  authorizationStateWaitCode,
-  authorizationStateWaitPassword,
-  authorizationStateReady,
-  authorizationStateClosed,
-} = AUTHORIZATION_STATE
+import { config } from '@/constants'
+const { authorizationStateWaitPhoneNumber } = AUTHORIZATION_STATE
 
 const { updateAuthorizationState } = UPDATE
 
-import { config } from '@/constants'
-
-async function asyncMap(array, callback) {
+async function asyncMap(array, callback): array {
   const values = []
   for (let index = 0; index < array.length; index++) {
     values.push(await callback(array[index], index, array))
@@ -32,7 +23,7 @@ const airgram = new Airgram({
   // jsLogVerbosityLevel: 'debug',
 })
 
-airgram.getListOfChats = async function(limit) {
+airgram.getListOfChats = async function(limit): array {
   const result = await airgram.api.getChats({
     limit: limit || 10,
     offsetChatId: 0,
@@ -41,7 +32,7 @@ airgram.getListOfChats = async function(limit) {
 
   const ids = toObject(result).chatIds
 
-  const callback = async chatId => {
+  const callback = async (chatId): object => {
     const result = await airgram.api.getChat({ chatId })
 
     const { lastMessage, title } = toObject(result)
@@ -63,11 +54,11 @@ airgram.getListOfChats = async function(limit) {
   return chats
 }
 
-airgram.logout = async function() {
+airgram.logout = async function(): void {
   await airgram.api.logOut()
 }
 
-airgram.editPhone = async function() {
+airgram.editPhone = async function(): void {
   this.emit({
     _: updateAuthorizationState,
     authorizationState: {

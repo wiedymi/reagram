@@ -2,11 +2,7 @@ import React, { ReactNode } from 'react'
 import { Wrapper } from './styles'
 import { Menu, Chat } from './subcomponents'
 
-type Props = {
-  children: ReactNode
-}
-
-const LeftMenu = (props: Props) => (
+const LeftMenu = (): ReactNode => (
   <Wrapper>
     <Menu />
     <Chat />

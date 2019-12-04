@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { initLogger, setupAuth } from '@/helpers'
 import { AUTH } from '@/constants'
 import { Loading } from '@/components/base'

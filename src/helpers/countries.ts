@@ -1110,7 +1110,7 @@ export function getFlags(code) {
   return '🏳'
 }
 
-export const getListOfCountries = () => {
+export const getListOfCountries = (): string => {
   const list = JSON.parse(countries)
 
   const addedFlag = list.map(country => {

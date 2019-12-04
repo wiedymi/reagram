@@ -35,13 +35,16 @@ const Chat = (props: ChatProps): ReactNode => {
     id: props.photoId,
     type: TYPES.FILES.PHOTO,
   }
-  const { data, loading, refetch } = useTelegram(USE_TELEGRAM.GET_AVATARS_CHATS, query)
+  const { data, loading, refetch, storage } = useTelegram(USE_TELEGRAM.GET_AVATARS_CHATS, query)
 
-  const avatar = !loading && data ? getAvatar(props.photoId, data.blobs, refetch) : ''
-
+  const avatar = !loading && data ? getAvatar(props.photoId, data.files, refetch) : ''
+  const openChat = async (): void => {
+    console.log(query)
+    console.log(storage.getState())
+  }
   return (
     <ChatWrapper>
-      <ChatHoverable>
+      <ChatHoverable onClick={openChat}>
         <CardHeader
           avatar={
             loading ? (

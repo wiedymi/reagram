@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { CircularProgress, Typography, TextField, Button } from '@material-ui/core'
+import { Typography, TextField, Button } from '@material-ui/core'
 import { styleHelpers } from '@/helpers'
 
 const { getColors } = styleHelpers
@@ -9,7 +9,7 @@ export const Wrapper = styled.div`
   transition: all 0.8s ease-out;
   justify-content: center;
   align-items: center;
-  min-height: ${({ nextStageButton }) => (nextStageButton ? '90vh' : '80vh')};
+  min-height: ${({ nextStageButton }): string => (nextStageButton ? '90vh' : '80vh')};
   flex-wrap: nowrap;
   flex-flow: column;
 `
@@ -32,29 +32,29 @@ export const Content = styled.div`
 export const Input = styled(TextField)`
   margin-top: 20px !important;
   & label.Mui-focused {
-    color: ${props => getColors(props).primary};
+    color: ${(props): string => getColors(props).primary};
   }
   .MuiSelect-select:focus {
     background-color: #fff !important;
   }
 
   & .MuiInput-underlineafter {
-    border-bottom-color: ${props => getColors(props).primary};
+    border-bottom-color: ${(props): string => getColors(props).primary};
   }
 
   & .MuiOutlinedInput-root {
     width: 360px !important;
     border-radius: 10px;
     & fieldset {
-      border-color: ${props => getColors(props).offset};
+      border-color: ${(props): string => getColors(props).offset};
     }
 
     &:hover fieldset {
-      border-color: ${props => getColors(props).black};
+      border-color: ${(props): string => getColors(props).black};
     }
 
     &.Mui-focused fieldset {
-      border-color: ${props => getColors(props).primary};
+      border-color: ${(props): string => getColors(props).primary};
     }
   }
 `
@@ -83,5 +83,5 @@ export const NextStageButton = styled(Button)`
   border-radius: 10px !important;
   padding: 15px !important;
   margin-top: 20px !important;
-  background-color: ${props => getColors(props).primary} !important;
+  background-color: ${(props): string => getColors(props).primary} !important;
 `

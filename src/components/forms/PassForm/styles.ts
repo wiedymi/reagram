@@ -12,31 +12,31 @@ export const InputWrapper = styled(FormControl)`
   }
 
   .MuiInputLabel-root.Mui-focused {
-    color: ${props => getColors(props).primary}!important;
+    color: ${(props): string => getColors(props).primary}!important;
   }
 
   .MuiInputBase-root .Mui-focused {
-    color: ${props => getColors(props).primary}!important;
+    color: ${(props): string => getColors(props).primary}!important;
   }
   .MuiSelect-select:focus {
     background-color: #fff !important;
   }
 
   .MuiInput-underlineafter {
-    border-bottom-color: ${props => getColors(props).primary}!important;
+    border-bottom-color: ${(props): string => getColors(props).primary}!important;
   }
 
   .MuiOutlinedInput-root {
     & fieldset {
-      border-color: ${props => getColors(props).offset}!important;
+      border-color: ${(props): string => getColors(props).offset}!important;
     }
 
     &:hover fieldset {
-      border-color: ${props => getColors(props).black}!important;
+      border-color: ${(props): string => getColors(props).black}!important;
     }
 
     &.Mui-focused fieldset {
-      border-color: ${props => getColors(props).primary}!important;
+      border-color: ${(props): string => getColors(props).primary}!important;
     }
   }
 `
@@ -91,5 +91,5 @@ export const NextStageButton = styled(Button)`
   border-radius: 10px !important;
   padding: 15px !important;
   margin-top: 20px !important;
-  background-color: ${props => getColors(props).primary} !important;
+  background-color: ${(props): string => getColors(props).primary} !important;
 `
