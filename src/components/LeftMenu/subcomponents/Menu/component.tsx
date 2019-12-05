@@ -10,12 +10,15 @@ import {
   SettingsOutlined,
   PeopleOutline,
   Search,
+  ExitToApp,
+  MoreVert,
 } from '@material-ui/icons'
 import { Wrapper, IconWrapper, MenuItem, LeftNav, RightNav, Input, Title } from './styles'
 import { LEFT_MENU } from '@/constants'
+import { createIsInView, telegram } from '@/helpers'
 
 type Props = {
-  children: ReactNode
+  children: ReactNode;
 }
 
 const options = [
@@ -42,7 +45,7 @@ const options = [
   {
     title: 'Setting',
     icon: SettingsOutlined,
-    view: LEFT_MENU.SETTING,
+    view: LEFT_MENU.SETTINGS,
   },
   {
     title: 'Help',
@@ -53,12 +56,24 @@ const options = [
 
 const ITEM_HEIGHT = 48
 
+const isInGroup = createIsInView([LEFT_MENU.NEW_GROUP])
+const isInSettings = createIsInView([LEFT_MENU.SETTINGS])
+const isInChats = createIsInView([LEFT_MENU.CHATS])
+const isInChannel = createIsInView([LEFT_MENU.NEW_CHANNEL])
+const isInContacts = createIsInView([LEFT_MENU.CONTACTS])
+
 const MenuNav = ({ changeView, view }): ReactNode => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
-  console.log(view)
+  const [settingEl, setSettingEl] = useState<null | HTMLElement>(null)
+  const openSetting = Boolean(settingEl)
+
   const handleClick = (event: React.MouseEvent<HTMLElement>): void => {
     setAnchorEl(event.currentTarget)
+  }
+
+  const handleClickSetting = (event: React.MouseEvent<HTMLElement>): void => {
+    setSettingEl(event.currentTarget)
   }
 
   const handleClose = (value): void => {
@@ -69,6 +84,18 @@ const MenuNav = ({ changeView, view }): ReactNode => {
     setAnchorEl(null)
   }
 
+  const handleCloseSetting = (value): void => {
+    if (typeof value === 'string') {
+      changeView(value)
+    }
+
+    setSettingEl(null)
+  }
+
+  const logout = async (): void => {
+    await telegram.logout()
+  }
+
   return (
     <Wrapper>
       <LeftNav>
@@ -76,10 +103,9 @@ const MenuNav = ({ changeView, view }): ReactNode => {
           aria-label="more"
           aria-controls="long-menu"
           aria-haspopup="true"
-          onClick={
-            view !== LEFT_MENU.CHATS ? (): void => changeView(LEFT_MENU.CHATS) : handleClick
-          }>
-          {view !== LEFT_MENU.CHATS ? <ArrowBack /> : <MenuIcon />}
+          onClick={!isInChats(view) ? (): void => changeView(LEFT_MENU.CHATS) : handleClick}
+        >
+          {!isInChats(view) ? <ArrowBack /> : <MenuIcon />}
         </IconButton>
 
         <Menu
@@ -93,7 +119,8 @@ const MenuNav = ({ changeView, view }): ReactNode => {
               maxHeight: ITEM_HEIGHT * 4.5,
               width: 200,
             },
-          }}>
+          }}
+        >
           {options.map(Option => (
             <MenuItem key={Option.title} onClick={() => handleClose(Option.view)}>
               <IconWrapper>
@@ -104,9 +131,10 @@ const MenuNav = ({ changeView, view }): ReactNode => {
           ))}
         </Menu>
       </LeftNav>
-      <RightNav>
-        {view === LEFT_MENU.NEW_GROUP && <Title variant="h5">New Group</Title>}
-        {view === LEFT_MENU.CHATS && (
+      <RightNav view={view}>
+        {isInGroup(view) && <Title variant="h6">New Group</Title>}
+        {isInChannel(view) && <Title variant="h6">New Channel</Title>}
+        {isInContacts(view) && (
           <Input
             id="outlined-basic"
             placeholder="Search"
@@ -116,16 +144,50 @@ const MenuNav = ({ changeView, view }): ReactNode => {
               <InputAdornment position="start">
                 <Search color="#ccc" />
               </InputAdornment>
-            }
-          />
+            }/>
+        )}
+        {isInSettings(view) && (
+          <>
+            <Title variant="h6">Settings</Title>{' '}
+            <IconButton
+              aria-label="more"
+              aria-controls="setting-menu"
+              aria-haspopup="true"
+              onClick={handleClickSetting}
+            >
+              <MoreVert onClick={handleClickSetting} />
+              <Menu
+                id="setting-menu"
+                anchorEl={settingEl}
+                keepMounted
+                open={openSetting}
+                onClose={handleCloseSetting}
+              >
+                <MenuItem onClick={logout}>
+                  <IconWrapper>
+                    <ExitToApp />
+                  </IconWrapper>
+                  Log out
+                </MenuItem>
+              </Menu>
+            </IconButton>
+          </>
+        )}
+        {isInChats(view) && (
+          <Input
+            id="outlined-basic"
+            placeholder="Search"
+            variant="outlined"
+            size="tiny"
+            startAdornment={
+              <InputAdornment position="start">
+                <Search color="#ccc" />
+              </InputAdornment>
+            }/>
         )}
       </RightNav>
     </Wrapper>
   )
-}
-
-MenuNav.defaultProps = {
-  // bla: 'test',
 }
 
 export default MenuNav

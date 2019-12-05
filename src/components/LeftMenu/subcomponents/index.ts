@@ -1,3 +1,6 @@
 export { default as Menu } from './Menu'
 export { default as Chats } from './Chats'
 export { default as NewGroup } from './NewGroup'
+export { default as NewChannel } from './NewChannel'
+export { default as Settings } from './Settings'
+export { default as Contacts } from './Contacts'

@@ -36,6 +36,7 @@ export const ChatHoverable = styled.div`
     white-space: nowrap !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
+    margin-right: 10px !important;
   }
   .MuiCardHeader-content {
     overflow: hidden !important;

@@ -1,3 +1,5 @@
 export { default as PhoneForm } from './PhoneForm'
 export { default as CodeForm } from './CodeForm'
 export { default as PassForm } from './PassForm'
+export { default as CreateGroup } from './CreateGroup'
+export { default as NewChannel } from './NewChannel'

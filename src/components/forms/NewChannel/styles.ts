@@ -4,5 +4,8 @@ export const Wrapper = styled.div`
   overflow: hidden;
   justify-content: center;
   flex-flow: column;
-  padding: 20px;
+  .MuiOutlinedInput-root {
+    width: 100%!important;
+  }
+}
 `
