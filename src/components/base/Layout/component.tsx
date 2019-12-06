@@ -1,17 +1,17 @@
 import React, { ReactNode } from 'react'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import Container from '@material-ui/core/Container'
-import { Wrapper } from './styles'
+import * as S from './styles'
 interface Props {
-  children: ReactNode;
+  children: ReactNode
 }
 
 const Component = ({ children }: Props): ReactNode => {
   return (
-    <Wrapper>
+    <S.Wrapper>
       <CssBaseline />
       <Container>{children}</Container>
-    </Wrapper>
+    </S.Wrapper>
   )
 }
 

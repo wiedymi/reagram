@@ -1,51 +1,32 @@
 import React, { ReactNode } from 'react'
 import { CardHeader, Avatar } from '@material-ui/core'
-import { useTelegram, USE_TELEGRAM, toImage, handleLastMessage } from '@/helpers'
+import { useTelegram, USE_TELEGRAM, handleLastMessage, getImageFile } from '@/helpers'
 import { TYPES } from '@/constants'
-import {
-  ChatWrapper,
-  ChatHoverable,
-  UnreadMessages,
-  MessageTime,
-  ActionWrapper,
-  OnlineBadge,
-} from './styles'
+import * as S from './styles'
 
 type ChatProps = {
-  children: ReactNode
+  children: ReactNode;
 }
 
-const getAvatar = (id, blobs, refetch): string => {
-  if (!id) {
-    return ''
-  }
-
-  const photo = blobs.filter(blob => {
-    return blob.id === id
-  })
-
-  if (photo.length === 0) {
-    return refetch()
-  }
-
-  const [source] = photo
-
-  return toImage(source.blob)
-}
-
-const getTime = time => {
+const getTime = (time): string => {
   const date = new Date(time)
 
   return `${date.getHours()}:${date.getMinutes()}`
 }
 
-const Actions = ({ unreadCount, time }): ReactNode => {
+const isPinned = (unread: Any, pinned: boolean): boolean => {
+  console.log(!unread && pinned, unread, pinned)
+  return !unread && pinned
+}
+
+const Actions = ({ unreadCount, time, pinned }: ActionsType): ReactNode => {
   return (
     <>
-      <ActionWrapper>
-        <MessageTime>{getTime(time)}</MessageTime>
-      </ActionWrapper>
-      {unreadCount !== 0 && <UnreadMessages>{unreadCount}</UnreadMessages>}
+      <S.ActionWrapper>
+        <S.MessageTime>{getTime(time)}</S.MessageTime>
+      </S.ActionWrapper>
+      {unreadCount !== 0 && <S.UnreadMessages>{unreadCount}</S.UnreadMessages>}
+      {isPinned(unreadCount, pinned) && <S.PinnedMessage />}
     </>
   )
 }
@@ -57,33 +38,30 @@ const Chat = (props: ChatProps): ReactNode => {
   }
   const { data, loading, refetch, storage } = useTelegram(USE_TELEGRAM.GET_AVATARS_CHATS, query)
 
-  let avatar = !loading && data ? getAvatar(props.photoId, data.files, refetch) : ''
-  let { title, id } = props
+  let avatar = !loading && data ? getImageFile(props.photoId, data.files, refetch) : ''
+  let { title } = props
   const openChat = async (): void => {
     console.log(props)
     console.log(storage.getState())
   }
   let isSaved = false
-  if (props.me && props.me.firstName && props.title === props.me.firstName) {
+  if (props.me && props.id === props.me.id) {
     title = 'Saved Messages'
     avatar = '/icons/savedmessages_svg.svg'
     isSaved = true
   }
 
-  let showOnline = false
-  if (props.type === 'chatTypePrivate' && !isSaved && id !== 777000) {
-    showOnline = true
-  }
+  const showOnline = props.type === 'chatTypePrivate' && !isSaved && props.id !== 777000
 
   return (
-    <ChatWrapper>
-      <ChatHoverable onClick={openChat} isSaved={isSaved}>
+    <S.ChatWrapper>
+      <S.ChatHoverable onClick={openChat} isSaved={isSaved}>
         <CardHeader
           avatar={
             loading ? (
               <Avatar aria-label="recipe">{title.charAt(0).toUpperCase()}</Avatar>
             ) : (
-              <OnlineBadge
+              <S.OnlineBadge
                 overlap="circle"
                 variant="dot"
                 color="primary"
@@ -91,17 +69,22 @@ const Chat = (props: ChatProps): ReactNode => {
                   horizontal: 'right',
                   vertical: 'bottom',
                 }}
-                showOnline={showOnline}>
+                showOnline={showOnline}
+              >
                 <Avatar aria-label="recipe" src={avatar} />
-              </OnlineBadge>
+              </S.OnlineBadge>
             )
           }
           title={title}
           subheader={handleLastMessage(props.lastMessage)}
-          action={<Actions unreadCount={props.unreadCount} time={props.lastMessage.date} />}
-        />
-      </ChatHoverable>
-    </ChatWrapper>
+          action={
+            <Actions
+              unreadCount={props.unreadCount}
+              time={props.lastMessage.date}
+              pinned={props.pinned}/>
+          }/>
+      </S.ChatHoverable>
+    </S.ChatWrapper>
   )
 }
 

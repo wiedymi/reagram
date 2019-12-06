@@ -10,9 +10,12 @@ import {
   SettingsOutlined,
   PeopleOutline,
   Search,
+  ExitToApp,
+  MoreVert,
 } from '@material-ui/icons'
-import { Wrapper, IconWrapper, MenuItem, LeftNav, RightNav, Input, Title } from './styles'
 import { LEFT_MENU } from '@/constants'
+import { createIsInView, telegram } from '@/helpers'
+import * as S from './styles'
 
 type Props = {
   children: ReactNode
@@ -40,7 +43,7 @@ const options = [
     view: LEFT_MENU.SAVED,
   },
   {
-    title: 'Setting',
+    title: 'Settings',
     icon: SettingsOutlined,
     view: LEFT_MENU.SETTING,
   },
@@ -53,12 +56,51 @@ const options = [
 
 const ITEM_HEIGHT = 48
 
-const MenuNav = ({ changeView, view }): ReactNode => {
+const objToArrayOfString = (object): Array<string> => {
+  return Object.entries(object).reduce((acc, val) => [...acc, val[1]], [])
+}
+
+const isInGroup = createIsInView([LEFT_MENU.NEW_GROUP])
+const isInSettings = createIsInView([LEFT_MENU.SETTING])
+const isInSettingsOpts = createIsInView(objToArrayOfString(LEFT_MENU.SETTINGS))
+const isInChats = createIsInView([LEFT_MENU.CHATS])
+const isInChannel = createIsInView([LEFT_MENU.NEW_CHANNEL])
+const isInContacts = createIsInView([LEFT_MENU.CONTACTS])
+
+const createTitle = (text: string): ReactNode => {
+  return <S.Title variant="h6">{text}</S.Title>
+}
+const showSettingsOpts = (view): ReactNode => {
+  const shows = {
+    [LEFT_MENU.SETTINGS.EDIT]: createTitle('Edit Profile'),
+    [LEFT_MENU.SETTINGS.GENERAL]: createTitle('General'),
+    [LEFT_MENU.SETTINGS.NOTIFICATIONS]: createTitle('Notifications'),
+    [LEFT_MENU.SETTINGS.PRIVACY]: createTitle('Privacy and Security'),
+    [LEFT_MENU.SETTINGS.LANGUAGE]: createTitle('Language'),
+  }
+
+  return shows[view]
+}
+
+const MenuNav = ({ changeView, view }: MenuNavType): ReactNode => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const [settingEl, setSettingEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
-  console.log(view)
+  const openSetting = Boolean(settingEl)
+
   const handleClick = (event: React.MouseEvent<HTMLElement>): void => {
+    if (isInSettingsOpts(view)) {
+      return changeView(LEFT_MENU.SETTING)
+    }
+    if (!isInChats(view)) {
+      return changeView(LEFT_MENU.CHATS)
+    }
+
     setAnchorEl(event.currentTarget)
+  }
+
+  const handleClickSetting = (event: React.MouseEvent<HTMLElement>): void => {
+    setSettingEl(event.currentTarget)
   }
 
   const handleClose = (value): void => {
@@ -69,17 +111,23 @@ const MenuNav = ({ changeView, view }): ReactNode => {
     setAnchorEl(null)
   }
 
+  const handleCloseSetting = (): void => {
+    setSettingEl(null)
+  }
+
+  const logout = async (): void => {
+    await telegram.logout()
+  }
+
   return (
-    <Wrapper>
-      <LeftNav>
+    <S.Wrapper>
+      <S.LeftNav>
         <IconButton
           aria-label="more"
           aria-controls="long-menu"
           aria-haspopup="true"
-          onClick={
-            view !== LEFT_MENU.CHATS ? (): void => changeView(LEFT_MENU.CHATS) : handleClick
-          }>
-          {view !== LEFT_MENU.CHATS ? <ArrowBack /> : <MenuIcon />}
+          onClick={handleClick}>
+          {!isInChats(view) ? <ArrowBack /> : <MenuIcon />}
         </IconButton>
 
         <Menu
@@ -95,19 +143,20 @@ const MenuNav = ({ changeView, view }): ReactNode => {
             },
           }}>
           {options.map(Option => (
-            <MenuItem key={Option.title} onClick={() => handleClose(Option.view)}>
-              <IconWrapper>
+            <S.MenuItem key={Option.title} onClick={() => handleClose(Option.view)}>
+              <S.IconWrapper>
                 <Option.icon />
-              </IconWrapper>
+              </S.IconWrapper>
               {Option.title}
-            </MenuItem>
+            </S.MenuItem>
           ))}
         </Menu>
-      </LeftNav>
-      <RightNav>
-        {view === LEFT_MENU.NEW_GROUP && <Title variant="h5">New Group</Title>}
-        {view === LEFT_MENU.CHATS && (
-          <Input
+      </S.LeftNav>
+      <S.RightNav view={view}>
+        {isInGroup(view) && createTitle('New Group')}
+        {isInChannel(view) && createTitle('New Channel')}
+        {isInContacts(view) && (
+          <S.Input
             id="outlined-basic"
             placeholder="Search"
             variant="outlined"
@@ -119,13 +168,48 @@ const MenuNav = ({ changeView, view }): ReactNode => {
             }
           />
         )}
-      </RightNav>
-    </Wrapper>
+        {isInSettingsOpts(view) && showSettingsOpts(view)}
+        {isInSettings(view) && (
+          <>
+            {createTitle('Settings')}
+            <IconButton
+              aria-label="setting-more"
+              aria-controls="setting-menu"
+              aria-haspopup="true"
+              onClick={handleClickSetting}>
+              <MoreVert onClick={handleClickSetting} />
+            </IconButton>
+            <Menu
+              id="setting-menu"
+              anchorEl={settingEl}
+              keepMounted
+              open={openSetting}
+              onClose={handleCloseSetting}>
+              <S.MenuItem onClick={logout}>
+                <S.IconWrapper>
+                  <ExitToApp />
+                </S.IconWrapper>
+                Log out
+              </S.MenuItem>
+            </Menu>
+          </>
+        )}
+        {isInChats(view) && (
+          <S.Input
+            id="outlined-basic"
+            placeholder="Search"
+            variant="outlined"
+            size="tiny"
+            startAdornment={
+              <InputAdornment position="start">
+                <Search color="#ccc" />
+              </InputAdornment>
+            }
+          />
+        )}
+      </S.RightNav>
+    </S.Wrapper>
   )
-}
-
-MenuNav.defaultProps = {
-  // bla: 'test',
 }
 
 export default MenuNav

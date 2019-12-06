@@ -46,6 +46,7 @@ airgram.getListOfChats = async function(limit): array {
     return {
       id: raw.id,
       title,
+      isPinned: raw.isPinned,
       lastMessage: {
         ...lastMessage.content,
         id: lastMessage.id,
@@ -69,7 +70,10 @@ airgram.getListOfChats = async function(limit): array {
 }
 
 airgram.logout = async function(): void {
+  localStorage.removeItem('isLogged')
   await airgram.api.logOut()
+
+  this.editPhone()
 }
 
 airgram.getMe = async function(): void {
@@ -81,6 +85,28 @@ airgram.getMe = async function(): void {
   const me = await airgram.api.getMe()
 
   return storage.setMe(toObject(me))
+}
+
+airgram.getUserInfo = async function(id): Promise {
+  const info = await airgram.api.getUser({ userId: id })
+  const fullInfo = await airgram.api.getUserFullInfo({ userId: id })
+
+  return {
+    ...toObject(info),
+    ...toObject(fullInfo),
+  }
+}
+
+airgram.getContacts = async function(): Promise {
+  const contacts = await airgram.api.getContacts()
+  const result = toObject(contacts)
+
+  const users = result.userIds.length > 0 ? await asyncMap(result.userIds, airgram.getUserInfo) : []
+
+  return {
+    totalCount: result.totalCount,
+    users,
+  }
 }
 
 airgram.editPhone = async function(): void {

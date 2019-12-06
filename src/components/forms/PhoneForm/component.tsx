@@ -1,11 +1,13 @@
 import React, { ReactNode, useState } from 'react'
+import { Input } from '@/components/base'
+import { authStyles } from '@/components/common'
 import { AUTH_FORM } from '@/constants'
 import { createAuthForm, authorizationStateWaitPhoneNumber, getListOfCountries } from '@/helpers'
-import {
+
+const {
   Wrapper,
   Img,
   Content,
-  Input,
   Title,
   Subtitle,
   SelectItem,
@@ -15,21 +17,21 @@ import {
   Flag,
   CountryWrapper,
   NextStageButton,
-} from './styles'
+} = authStyles
 
 type Props = {
-  children: ReactNode
-  name: string
-  state: any
-  type: string
-  value: string
-  handleChange(): void
-  handleClick(): void
+  children: ReactNode;
+  name: string;
+  state: Any;
+  type: string;
+  value: string;
+  handleChange(): void;
+  handleClick(): void;
 }
 
-const getCountries = () => {
+const getCountries = (): ReactNode => {
   const countries = getListOfCountries()
-  const getCountryName = name => {
+  const getCountryName = (name): string => {
     if (name.indexOf('United') !== -1) {
       return name.split(' ')[0] + ' ' + name.split(' ')[1]
     }
@@ -52,12 +54,12 @@ const getCountries = () => {
   })
 }
 
-const PhoneForm = (props: Props) => {
-  const { name, type, value, handleChange, handleClick } = props
+const PhoneForm = (props: Props): ReactNode => {
+  const { name, value, handleChange, handleClick } = props
   const [countryCode, setCountryCode] = useState('')
   const [nextStageButton, setNextStageButton] = useState(false)
   const placeholderValue = countryCode.length > 0 && value.indexOf('+') === -1 ? '+' + value : value
-  const handleSelect = ({ target }) => {
+  const handleSelect = ({ target }): void => {
     if (countryCode.length === 0) {
       setCountryCode(`+${target.value}`)
     }
@@ -69,7 +71,7 @@ const PhoneForm = (props: Props) => {
     })
   }
 
-  const validate = ({ target }) => {
+  const validate = ({ target }): void => {
     const phone = target.value.replace('+', '')
 
     const isValid = /(7|8|9)\d{9}/.test(phone)
@@ -102,7 +104,8 @@ const PhoneForm = (props: Props) => {
           variant="outlined"
           select
           placeholder="Country"
-          onChange={handleSelect}>
+          onChange={handleSelect}
+        >
           {getCountries()}
         </Input>
         <Input
@@ -111,14 +114,14 @@ const PhoneForm = (props: Props) => {
           value={placeholderValue}
           onChange={validate}
           label={`Phone Number`}
-          variant="outlined"
-        />
+          variant="outlined"/>
 
         <NextStageButton
           variant="contained"
           color="primary"
           onClick={handleClick}
-          nextStageButton={nextStageButton}>
+          nextStageButton={nextStageButton}
+        >
           next
         </NextStageButton>
       </Content>

@@ -45,21 +45,13 @@ export const createAuthForm = (NAME, EVENT, Component) => {
       })
     }
 
-    const TYPES = {
-      phone: 'number',
-      code: 'password',
-      password: 'password',
-    }
-
     return (
       <Component
         name={NAME}
-        type={TYPES[NAME]}
         value={value}
         handleChange={handleChange}
         handleClick={handleClick}
-        state={state}
-      />
+        state={state}/>
     )
   }
 }

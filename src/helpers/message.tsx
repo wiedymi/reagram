@@ -11,7 +11,7 @@ export const handleLastMessage = (message: object): Any => {
           message && message.sentBy && message.sentBy.username ? message.sentBy.username : 'Bot'
         return (
           <>
-            <strong>{username}:</strong>
+            <strong>{username}: </strong>
             {message.text.text}
           </>
         )
