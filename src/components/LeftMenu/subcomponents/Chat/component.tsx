@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
 import { CardHeader, Avatar } from '@material-ui/core'
-import { useTelegram, USE_TELEGRAM, toImage, handleLastMessage } from '@/helpers'
+import { useTelegram, USE_TELEGRAM, handleLastMessage, getImageFile } from '@/helpers'
 import { TYPES } from '@/constants'
 import {
   ChatWrapper,
@@ -9,43 +9,32 @@ import {
   MessageTime,
   ActionWrapper,
   OnlineBadge,
+  PinnedMessage,
 } from './styles'
 
 type ChatProps = {
   children: ReactNode
 }
 
-const getAvatar = (id, blobs, refetch): string => {
-  if (!id) {
-    return ''
-  }
-
-  const photo = blobs.filter(blob => {
-    return blob.id === id
-  })
-
-  if (photo.length === 0) {
-    return refetch()
-  }
-
-  const [source] = photo
-
-  return toImage(source.blob)
-}
-
-const getTime = time => {
+const getTime = (time): string => {
   const date = new Date(time)
 
   return `${date.getHours()}:${date.getMinutes()}`
 }
 
-const Actions = ({ unreadCount, time }): ReactNode => {
+const isPinned = (unread: Any, pinned: boolean): boolean => {
+  console.log(!unread && pinned, unread, pinned)
+  return !unread && pinned
+}
+
+const Actions = ({ unreadCount, time, pinned }: ActionsType): ReactNode => {
   return (
     <>
       <ActionWrapper>
         <MessageTime>{getTime(time)}</MessageTime>
       </ActionWrapper>
       {unreadCount !== 0 && <UnreadMessages>{unreadCount}</UnreadMessages>}
+      {isPinned(unreadCount, pinned) && <PinnedMessage />}
     </>
   )
 }
@@ -57,8 +46,8 @@ const Chat = (props: ChatProps): ReactNode => {
   }
   const { data, loading, refetch, storage } = useTelegram(USE_TELEGRAM.GET_AVATARS_CHATS, query)
 
-  let avatar = !loading && data ? getAvatar(props.photoId, data.files, refetch) : ''
-  let { title, id } = props
+  let avatar = !loading && data ? getImageFile(props.photoId, data.files, refetch) : ''
+  let { title } = props
   const openChat = async (): void => {
     console.log(props)
     console.log(storage.getState())
@@ -70,10 +59,7 @@ const Chat = (props: ChatProps): ReactNode => {
     isSaved = true
   }
 
-  let showOnline = false
-  if (props.type === 'chatTypePrivate' && !isSaved && id !== 777000) {
-    showOnline = true
-  }
+  const showOnline = props.type === 'chatTypePrivate' && !isSaved && props.id !== 777000
 
   return (
     <ChatWrapper>
@@ -98,7 +84,13 @@ const Chat = (props: ChatProps): ReactNode => {
           }
           title={title}
           subheader={handleLastMessage(props.lastMessage)}
-          action={<Actions unreadCount={props.unreadCount} time={props.lastMessage.date} />}
+          action={
+            <Actions
+              unreadCount={props.unreadCount}
+              time={props.lastMessage.date}
+              pinned={props.pinned}
+            />
+          }
         />
       </ChatHoverable>
     </ChatWrapper>

@@ -1,4 +1,5 @@
 import styled from '@emotion/styled'
+import { css } from '@emotion/core'
 import Badge from '@material-ui/core/Badge'
 import { styleHelpers } from '@/helpers'
 
@@ -52,30 +53,39 @@ export const ChatHoverable = styled.div`
     justify-content: flex-end !important;
     align-content: flex-end !important;
     display: flex !important;
-
+    margin-top: -16px!important;
     margin-right: 0 !important;
   }
 `
-
-export const UnreadMessages = styled.span`
+const circle = css`
   color: #fff;
   background-color: ${(props): string => getColors(props).green} !important;
-  height: 20px;
+  height: 25px;
+  min-width: 25px;
   display: flex;
   padding: 0 6px;
   z-index: 1;
   position: absolute;
   flex-wrap: wrap;
   margin-top: 5px;
-  min-width: 20px;
   box-sizing: border-box;
-
   font-weight: 500;
-
   align-content: center;
-  border-radius: 10px;
+  border-radius: 15px;
   flex-direction: row;
   justify-content: center;
+  font-weight: 600;
+`
+export const UnreadMessages = styled.span`
+  ${circle}
+  background-color: ${(props): string => getColors(props).green} !important;
+`
+
+
+export const PinnedMessage = styled.span`
+ ${circle}
+  background-image: url(/icons/pinnedchat_svg.svg);
+  background-color: ${(props): string => getColors(props).offset} !important;
 `
 
 export const MessageTime = styled.p`

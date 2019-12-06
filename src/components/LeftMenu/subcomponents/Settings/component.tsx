@@ -1,31 +1,14 @@
 import React, { ReactNode } from 'react'
 import { SelectImage } from '@/components/base'
-import { useTelegram, USE_TELEGRAM, toImage } from '@/helpers'
+import { Loading } from '@/components/common'
+import { useTelegram, USE_TELEGRAM, getImageFile } from '@/helpers'
 import { TYPES } from '@/constants'
 import { Wrapper, Title, Subtitle } from './styles'
 
 const { GET_AVATARS_CHATS } = USE_TELEGRAM
 
 type Props = {
-  children: ReactNode
-}
-
-const getAvatar = (id, blobs, refetch): string => {
-  if (!id) {
-    return ''
-  }
-
-  const photo = blobs.filter(blob => {
-    return blob.id === id
-  })
-
-  if (photo.length === 0) {
-    return refetch()
-  }
-
-  const [source] = photo
-
-  return toImage(source.blob)
+  children: ReactNode;
 }
 
 const Settings = (props: Props): ReactNode => {
@@ -37,7 +20,11 @@ const Settings = (props: Props): ReactNode => {
   }
   const { loading, data, refetch } = useTelegram(GET_AVATARS_CHATS, query)
 
-  const image = !loading && data ? getAvatar(id, data.files, refetch) : ''
+  const image = !loading && data ? getImageFile(id, data.files, refetch) : ''
+
+  if (loading) {
+    return <Loading message="Loading settings..." />
+  }
 
   return (
     <Wrapper>
@@ -46,10 +33,6 @@ const Settings = (props: Props): ReactNode => {
       <Subtitle>+{phoneNumber}</Subtitle>
     </Wrapper>
   )
-}
-
-Settings.defaultProps = {
-  // bla: 'test',
 }
 
 export default Settings

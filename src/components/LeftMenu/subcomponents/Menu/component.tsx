@@ -64,8 +64,8 @@ const isInContacts = createIsInView([LEFT_MENU.CONTACTS])
 
 const MenuNav = ({ changeView, view }): ReactNode => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const open = Boolean(anchorEl)
   const [settingEl, setSettingEl] = useState<null | HTMLElement>(null)
+  const open = Boolean(anchorEl)
   const openSetting = Boolean(settingEl)
 
   const handleClick = (event: React.MouseEvent<HTMLElement>): void => {
@@ -84,11 +84,7 @@ const MenuNav = ({ changeView, view }): ReactNode => {
     setAnchorEl(null)
   }
 
-  const handleCloseSetting = (value): void => {
-    if (typeof value === 'string') {
-      changeView(value)
-    }
-
+  const handleCloseSetting = (): void => {
     setSettingEl(null)
   }
 
@@ -148,29 +144,29 @@ const MenuNav = ({ changeView, view }): ReactNode => {
         )}
         {isInSettings(view) && (
           <>
-            <Title variant="h6">Settings</Title>{' '}
+            <Title variant="h6">Settings</Title>
             <IconButton
-              aria-label="more"
+              aria-label="setting-more"
               aria-controls="setting-menu"
               aria-haspopup="true"
               onClick={handleClickSetting}
             >
               <MoreVert onClick={handleClickSetting} />
-              <Menu
-                id="setting-menu"
-                anchorEl={settingEl}
-                keepMounted
-                open={openSetting}
-                onClose={handleCloseSetting}
-              >
-                <MenuItem onClick={logout}>
-                  <IconWrapper>
-                    <ExitToApp />
-                  </IconWrapper>
-                  Log out
-                </MenuItem>
-              </Menu>
             </IconButton>
+            <Menu
+              id="setting-menu"
+              anchorEl={settingEl}
+              keepMounted
+              open={openSetting}
+              onClose={handleCloseSetting}
+            >
+              <MenuItem onClick={logout}>
+                <IconWrapper>
+                  <ExitToApp />
+                </IconWrapper>
+                Log out
+              </MenuItem>
+            </Menu>
           </>
         )}
         {isInChats(view) && (

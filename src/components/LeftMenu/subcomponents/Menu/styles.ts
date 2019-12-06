@@ -22,10 +22,11 @@ export const AddIcon = styled(Add)``
 export const Wrapper = styled.div`
   display: flex;
   width: 100%;
-  padding: 15px;
+  padding: 10px;
   justify-content: center;
   align-content: center;
   position: relative;
+  font-size: 1.1rem;
 `
 
 export const IconWrapper = styled.div`
@@ -63,7 +64,7 @@ export const RightNav = styled.div`
   height: 40px;
   max-height: 40px;
   width: 100%;
-  padding: 0px ${({ view }): string => (view === LEFT_MENU.SETTINGS ? '0px' : '10px')} 0px 10px;
+  padding: 0px ${({ view }): string => (view === LEFT_MENU.SETTINGS ? '0px' : '5px')} 0px 5px;
   .MuiSvgIcon-root {
     color: #adb3b7 !important;
   }
