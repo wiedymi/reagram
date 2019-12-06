@@ -72,7 +72,7 @@ const Chat = (props: ChatProps): ReactNode => {
                 showOnline={showOnline}
               >
                 <Avatar aria-label="recipe" src={avatar} />
-              </OnlineBadge>
+              </S.OnlineBadge>
             )
           }
           title={title}

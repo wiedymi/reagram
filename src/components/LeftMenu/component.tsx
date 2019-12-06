@@ -56,6 +56,7 @@ const isFabView = createIsInView([
   LEFT_MENU.NEW_CHANNEL,
   LEFT_MENU.NEW_GROUP,
   LEFT_MENU.NEW_PRIVATE_CHAT,
+  LEFT_MENU.SETTINGS.EDIT,
 ])
 
 const LeftMenu = (): ReactNode => {
