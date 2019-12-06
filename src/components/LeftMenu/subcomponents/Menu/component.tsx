@@ -43,9 +43,9 @@ const options = [
     view: LEFT_MENU.SAVED,
   },
   {
-    title: 'Setting',
+    title: 'Settings',
     icon: SettingsOutlined,
-    view: LEFT_MENU.SETTINGS,
+    view: LEFT_MENU.SETTING,
   },
   {
     title: 'Help',
@@ -56,19 +56,43 @@ const options = [
 
 const ITEM_HEIGHT = 48
 
+const objToArrayOfString = (object): Array<string> => {
+  return Object.entries(object).reduce((acc, val) => [...acc, val[1]], [])
+}
+
 const isInGroup = createIsInView([LEFT_MENU.NEW_GROUP])
-const isInSettings = createIsInView([LEFT_MENU.SETTINGS])
+const isInSettings = createIsInView([LEFT_MENU.SETTING])
+const isInSettingsOpts = createIsInView(objToArrayOfString(LEFT_MENU.SETTINGS))
 const isInChats = createIsInView([LEFT_MENU.CHATS])
 const isInChannel = createIsInView([LEFT_MENU.NEW_CHANNEL])
 const isInContacts = createIsInView([LEFT_MENU.CONTACTS])
 
-const MenuNav = ({ changeView, view }): ReactNode => {
+const showSettingsOpts = (view): ReactNode => {
+  const shows = {
+    [LEFT_MENU.SETTINGS.EDIT]: <Title variant="h6">Edit Profile</Title>,
+    [LEFT_MENU.SETTINGS.GENERAL]: <Title variant="h6">General</Title>,
+    [LEFT_MENU.SETTINGS.NOTIFICATIONS]: <Title variant="h6">Notifications</Title>,
+    [LEFT_MENU.SETTINGS.PRIVACY]: <Title variant="h6">Privacy and Security</Title>,
+    [LEFT_MENU.SETTINGS.LANGUAGE]: <Title variant="h6">Language</Title>,
+  }
+
+  return shows[view]
+}
+
+const MenuNav = ({ changeView, view }: MenuNavType): ReactNode => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [settingEl, setSettingEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
   const openSetting = Boolean(settingEl)
 
   const handleClick = (event: React.MouseEvent<HTMLElement>): void => {
+    if (isInSettingsOpts(view)) {
+      return changeView(LEFT_MENU.SETTING)
+    }
+    if (!isInChats(view)) {
+      return changeView(LEFT_MENU.CHATS)
+    }
+
     setAnchorEl(event.currentTarget)
   }
 
@@ -99,7 +123,7 @@ const MenuNav = ({ changeView, view }): ReactNode => {
           aria-label="more"
           aria-controls="long-menu"
           aria-haspopup="true"
-          onClick={!isInChats(view) ? (): void => changeView(LEFT_MENU.CHATS) : handleClick}
+          onClick={handleClick}
         >
           {!isInChats(view) ? <ArrowBack /> : <MenuIcon />}
         </IconButton>
@@ -142,6 +166,7 @@ const MenuNav = ({ changeView, view }): ReactNode => {
               </InputAdornment>
             }/>
         )}
+        {isInSettingsOpts(view) && showSettingsOpts(view)}
         {isInSettings(view) && (
           <>
             <Title variant="h6">Settings</Title>

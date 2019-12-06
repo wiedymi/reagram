@@ -1,10 +1,11 @@
 import React, { ReactNode, useState } from 'react'
 import { Menu as FabMenu } from '@material-ui/core'
 import { PersonOutlined, PeopleOutline, ArrowForward } from '@material-ui/icons'
-import { Wrapper, Fab, AddIcon, MenuItem, CloseIcon, ChannelIcon, IconWrapper } from './styles'
-import { Menu, Chats, NewGroup, NewChannel, Settings, Contacts } from './subcomponents'
 import { useTelegram, USE_TELEGRAM, createIsInView } from '@/helpers'
 import { LEFT_MENU } from '@/constants'
+
+import * as S from './styles'
+import * as Sub from './subcomponents'
 
 const { GET_ME } = USE_TELEGRAM
 
@@ -15,11 +16,16 @@ type ViewType = {
 
 const Views = (props: ViewType): ReactNode => {
   const views = {
-    [LEFT_MENU.CHATS]: Chats,
-    [LEFT_MENU.NEW_GROUP]: NewGroup,
-    [LEFT_MENU.NEW_CHANNEL]: NewChannel,
-    [LEFT_MENU.SETTINGS]: Settings,
-    [LEFT_MENU.CONTACTS]: Contacts,
+    [LEFT_MENU.CHATS]: Sub.Chats,
+    [LEFT_MENU.NEW_GROUP]: Sub.NewGroup,
+    [LEFT_MENU.NEW_CHANNEL]: Sub.NewChannel,
+    [LEFT_MENU.SETTING]: Sub.Settings,
+    [LEFT_MENU.CONTACTS]: Sub.Contacts,
+    [LEFT_MENU.SETTINGS.EDIT]: Sub.EditProfile,
+    [LEFT_MENU.SETTINGS.GENERAL]: Sub.GeneralSettings,
+    [LEFT_MENU.SETTINGS.NOTIFICATIONS]: Sub.Notifications,
+    [LEFT_MENU.SETTINGS.PRIVACY]: Sub.Privacy,
+    [LEFT_MENU.SETTINGS.LANGUAGE]: Sub.Language,
   }
 
   const View = views[props.view]
@@ -30,7 +36,7 @@ const Views = (props: ViewType): ReactNode => {
 const options = [
   {
     title: 'New Channel',
-    icon: ChannelIcon,
+    icon: S.ChannelIcon,
     view: LEFT_MENU.NEW_CHANNEL,
   },
   {
@@ -51,6 +57,7 @@ const isFabView = createIsInView([
   LEFT_MENU.NEW_GROUP,
   LEFT_MENU.NEW_PRIVATE_CHAT,
 ])
+
 const LeftMenu = (): ReactNode => {
   const { data } = useTelegram(GET_ME)
   const [view, changeView] = useState(LEFT_MENU.CHATS)
@@ -74,15 +81,15 @@ const LeftMenu = (): ReactNode => {
   }
 
   return (
-    <Wrapper>
-      <Menu changeView={changeView} view={view} />
-      <Views view={view} me={data} />
+    <S.Wrapper>
+      <Sub.Menu changeView={changeView} view={view} />
+      <Views view={view} me={data} changeView={changeView} />
       {isFabView(view) && (
         <>
-          <Fab color="primary" aria-label="add" aria-haspopup="true" onClick={openFab}>
-            {fabEl ? <CloseIcon /> : view === LEFT_MENU.CHATS && <AddIcon />}
+          <S.Fab color="primary" aria-label="add" aria-haspopup="true" onClick={openFab}>
+            {fabEl ? <S.CloseIcon /> : view === LEFT_MENU.CHATS && <S.AddIcon />}
             {view !== LEFT_MENU.CHATS && <ArrowForward />}
-          </Fab>
+          </S.Fab>
           <FabMenu
             id="fab-menu"
             anchorEl={fabEl}
@@ -91,17 +98,17 @@ const LeftMenu = (): ReactNode => {
             onClose={closeFab}
           >
             {options.map(Option => (
-              <MenuItem key={Option.title} onClick={(): void => handleClose(Option.view)}>
-                <IconWrapper>
+              <S.MenuItem key={Option.title} onClick={(): void => handleClose(Option.view)}>
+                <S.IconWrapper>
                   <Option.icon />
-                </IconWrapper>
+                </S.IconWrapper>
                 {Option.title}
-              </MenuItem>
+              </S.MenuItem>
             ))}
           </FabMenu>
         </>
       )}
-    </Wrapper>
+    </S.Wrapper>
   )
 }
 

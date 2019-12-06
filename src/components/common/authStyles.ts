@@ -1,8 +1,6 @@
 import styled from '@emotion/styled'
 import { Typography, TextField, Button, MenuItem } from '@material-ui/core'
-import { styleHelpers } from '@/helpers'
-
-const { getColors } = styleHelpers
+import { styleHelpers as get } from '@/helpers'
 
 export const SelectItem = styled(MenuItem)``
 
@@ -35,7 +33,7 @@ export const Content = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding: ${(props): string => get.padding(props).normal};
   flex-wrap: nowrap;
   flex-flow: column;
 `
@@ -43,29 +41,29 @@ export const Content = styled.div`
 export const Input = styled(TextField)`
   margin-top: 20px !important;
   & label.Mui-focused {
-    color: ${(props): string => getColors(props).primary};
+    color: ${(props): string => get.colors(props).primary};
   }
   .MuiSelect-select:focus {
     background-color: #fff !important;
   }
 
   & .MuiInput-underlineafter {
-    border-bottom-color: ${(props): string => getColors(props).primary};
+    border-bottom-color: ${(props): string => get.colors(props).primary};
   }
 
   & .MuiOutlinedInput-root {
     width: 360px !important;
-    border-radius: 10px;
+    border-radius: ${(props): string => get.radius(props).tiny};
     & fieldset {
-      border-color: ${(props): string => getColors(props).offset};
+      border-color: ${(props): string => get.colors(props).offset};
     }
 
     &:hover fieldset {
-      border-color: ${(props): string => getColors(props).black};
+      border-color: ${(props): string => get.colors(props).black};
     }
 
     &.Mui-focused fieldset {
-      border-color: ${(props): string => getColors(props).primary};
+      border-color: ${(props): string => get.colors(props).primary};
     }
   }
 `
@@ -74,7 +72,7 @@ export const Title = styled(Typography)`
   justify-content: center;
   align-items: center;
   margin-top: 30px !important;
-  margin-bottom: 10px !important;
+  margin-bottom: ${(props): string => get.margin(props).tiny} !important;
 `
 
 export const Subtitle = styled(Typography)`
@@ -89,14 +87,14 @@ export const Subtitle = styled(Typography)`
 `
 
 export const Flag = styled.span`
-  margin-right: 10px;
+  margin-right: ${(props): string => get.margin(props).tiny};
 `
 
 export const CountryName = styled(Typography)``
 
 export const CountryCode = styled(Typography)`
   color: #7d7d7d;
-  margin-right: 10px !important;
+  margin-right: ${(props): string => get.margin(props).tiny} !important;
 `
 
 export const SelectWrapper = styled.div`
@@ -124,8 +122,8 @@ export const NextStageButton = styled(Button)`
   }};
   text-transform: uppercase;
   width: 100%;
-  border-radius: 10px !important;
-  padding: 15px !important;
+  border-radius: ${(props): string => get.margin(props).tiny} !important;
+  padding: ${(props): string => get.padding(props).small} !important;
   margin-top: 20px !important;
-  background-color: ${(props): string => getColors(props).primary} !important;
+  background-color: ${(props): string => get.colors(props).primary} !important;
 `

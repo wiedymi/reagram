@@ -1,8 +1,6 @@
 import styled from '@emotion/styled'
 import { CircularProgress, Typography } from '@material-ui/core'
-import { styleHelpers } from '@/helpers'
-
-const { getColors } = styleHelpers
+import { styleHelpers as get } from '@/helpers'
 
 export const Wrapper = styled.div`
   display: flex;
@@ -23,7 +21,7 @@ export const Content = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding: ${(props): string => get.padding(props).normal};
   flex-wrap: nowrap;
 `
 
@@ -33,7 +31,7 @@ export const Progress = styled(CircularProgress)`
   align-items: center;
   width: 30px;
   .MuiCircularProgress-svg {
-    color: ${(props): string => getColors(props).primary};
+    color: ${(props): string => get.colors(props).primary};
   }
 `
 

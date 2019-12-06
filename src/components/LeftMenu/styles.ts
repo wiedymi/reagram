@@ -3,9 +3,7 @@ import Item from '@material-ui/core/MenuItem'
 import FabUi from '@material-ui/core/Fab'
 import Add from '@material-ui/icons/Add'
 import Close from '@material-ui/icons/Close'
-import { styleHelpers } from '@/helpers'
-
-const { getColors } = styleHelpers
+import { styleHelpers as get } from '@/helpers'
 
 export const Wrapper = styled.div`
   display: flex;
@@ -25,7 +23,7 @@ export const Fab = styled(FabUi)`
   max-height: 50px !important;
   box-shadow: none !important;
 
-  background-color: ${(props): string => getColors(props).primary}!important;
+  background-color: ${(props): string => get.colors(props).primary}!important;
 `
 export const ChannelIcon = styled.span`
   width: 24px;
@@ -43,7 +41,4 @@ export const MenuItem = styled(Item)`
 export const IconWrapper = styled.div`
   display: flex;
   margin-right: 20px !important;
-  /* .MuiSvgIcon-root {
-    color: ${(props): string => getColors(props).offset}!important;
-  } */
 `

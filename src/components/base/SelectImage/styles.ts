@@ -1,7 +1,5 @@
 import styled from '@emotion/styled'
-import { styleHelpers } from '@/helpers'
-
-const { getColors } = styleHelpers
+import { styleHelpers as get } from '@/helpers'
 
 export const Wrapper = styled.div`
   display: flex;
@@ -11,14 +9,14 @@ export const Image = styled.img`
   width: 80px;
 `
 export const Circle = styled.div`
-  background-color: ${(props): string => getColors(props).primary} !important;
+  background-color: ${(props): string => get.colors(props).primary} !important;
   background-image: url(${({ image }): string => image});
   border-radius: 50%;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
   padding: 40px;
-  margin: 10px;
+  margin: ${(props): string => get.margin(props).tiny};
   width: 130px;
   height: 130px;
   display: flex;

@@ -4,10 +4,8 @@ import OutlinedInput from '@material-ui/core/OutlinedInput'
 import FabUi from '@material-ui/core/Fab'
 import Add from '@material-ui/icons/Add'
 import { Typography } from '@material-ui/core'
-import { styleHelpers } from '@/helpers'
+import { styleHelpers as get } from '@/helpers'
 import { LEFT_MENU } from '@/constants'
-
-const { getColors } = styleHelpers
 
 export const Fab = styled(FabUi)`
   position: absolute;
@@ -15,14 +13,14 @@ export const Fab = styled(FabUi)`
   right: 10px;
   min-width: 50px !important;
   max-height: 50px !important;
-  background-color: ${(props): string => getColors(props).primary}!important;
+  background-color: ${(props): string => get.colors(props).primary}!important;
 `
 export const AddIcon = styled(Add)``
 
 export const Wrapper = styled.div`
   display: flex;
   width: 100%;
-  padding: 10px;
+  padding: ${(props): string => get.padding(props).tiny};
   justify-content: center;
   align-content: center;
   position: relative;
@@ -88,33 +86,31 @@ export const Input = styled(OutlinedInput)`
   }
 
   label.Mui-focused {
-    color: ${(props): string => getColors(props).primary};
+    color: ${(props): string => get.colors(props).primary};
   }
   .MuiSelect-select:focus {
     background-color: #fff !important;
   }
 
   .MuiInput-underlineafter {
-    border-bottom-color: ${(props): string => getColors(props).primary};
+    border-bottom-color: ${(props): string => get.colors(props).primary};
   }
 
   fieldset {
-    border-color: ${(props): string => getColors(props).offset};
+    border-color: ${(props): string => get.colors(props).offset};
     border: 0;
   }
 
   &:hover fieldset {
-    border: 1px solid ${(props): string => getColors(props).black};
+    border: 1px solid ${(props): string => get.colors(props).black};
   }
 
   .Mui-focused fieldset {
-    border-color: ${(props): string => getColors(props).primary};
+    border-color: ${(props): string => get.colors(props).primary};
   }
 `
 
 export const Title = styled(Typography)`
   display: flex;
   font-weight: bold !important;
-  /* justify-content: center;
-  align-items: center; */
 `

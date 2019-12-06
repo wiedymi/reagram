@@ -1,8 +1,6 @@
 import styled from '@emotion/styled'
 import { CircularProgress } from '@material-ui/core'
-import { styleHelpers } from '@/helpers'
-
-const { getColors } = styleHelpers
+import { styleHelpers as get } from '@/helpers'
 
 export const Loading = styled(CircularProgress)`
   display: flex;
@@ -11,7 +9,7 @@ export const Loading = styled(CircularProgress)`
   width: 30px;
   margin-bottom: 20px;
   .MuiCircularProgress-svg {
-    color: ${(props): string => getColors(props).primary};
+    color: ${(props): string => get.colors(props).primary};
   }
 `
 

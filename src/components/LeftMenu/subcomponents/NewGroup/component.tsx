@@ -1,12 +1,12 @@
 import React, { ReactNode } from 'react'
 import { CreateGroup } from '@/components/forms'
-import { Wrapper } from './styles'
+import * as S from './styles'
 
 const NewGroup = (): ReactNode => {
   return (
-    <Wrapper>
+    <S.Wrapper>
       <CreateGroup />
-    </Wrapper>
+    </S.Wrapper>
   )
 }
 

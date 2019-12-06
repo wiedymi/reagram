@@ -1,42 +1,40 @@
 import styled from '@emotion/styled'
 import { FormControl } from '@material-ui/core'
-import { styleHelpers } from '@/helpers'
-
-const { getColors } = styleHelpers
+import { styleHelpers as get } from '@/helpers'
 
 export const InputWrapper = styled(FormControl)`
   width: 360px;
 
   fieldset {
-    border-radius: 10px;
+    border-radius: ${(props): string => get.radius(props).tiny};
   }
 
   .MuiInputLabel-root.Mui-focused {
-    color: ${(props): string => getColors(props).primary}!important;
+    color: ${(props): string => get.colors(props).primary}!important;
   }
 
   .MuiInputBase-root .Mui-focused {
-    color: ${(props): string => getColors(props).primary}!important;
+    color: ${(props): string => get.colors(props).primary}!important;
   }
   .MuiSelect-select:focus {
     background-color: #fff !important;
   }
 
   .MuiInput-underlineafter {
-    border-bottom-color: ${(props): string => getColors(props).primary}!important;
+    border-bottom-color: ${(props): string => get.colors(props).primary}!important;
   }
 
   .MuiOutlinedInput-root {
     & fieldset {
-      border-color: ${(props): string => getColors(props).offset}!important;
+      border-color: ${(props): string => get.colors(props).offset}!important;
     }
 
     &:hover fieldset {
-      border-color: ${(props): string => getColors(props).black}!important;
+      border-color: ${(props): string => get.colors(props).black}!important;
     }
 
     &.Mui-focused fieldset {
-      border-color: ${(props): string => getColors(props).primary}!important;
+      border-color: ${(props): string => get.colors(props).primary}!important;
     }
   }
 `
