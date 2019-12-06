@@ -1,14 +1,14 @@
 import React, { ReactNode } from 'react'
-import { Wrapper, Input, OutlinedInput } from './styles'
+import * as S from './styles'
 
 type Props = {
   children: ReactNode;
 }
 
 const Component = (props: Props): ReactNode => (
-  <Wrapper>
-    {props.inputType === 'outlined' ? <OutlinedInput {...props} /> : <Input {...props} />}
-  </Wrapper>
+  <S.Wrapper>
+    {props.inputType === 'outlined' ? <S.OutlinedInput {...props} /> : <S.Input {...props} />}
+  </S.Wrapper>
 )
 
 export default Component

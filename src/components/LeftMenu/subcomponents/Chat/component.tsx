@@ -2,18 +2,10 @@ import React, { ReactNode } from 'react'
 import { CardHeader, Avatar } from '@material-ui/core'
 import { useTelegram, USE_TELEGRAM, handleLastMessage, getImageFile } from '@/helpers'
 import { TYPES } from '@/constants'
-import {
-  ChatWrapper,
-  ChatHoverable,
-  UnreadMessages,
-  MessageTime,
-  ActionWrapper,
-  OnlineBadge,
-  PinnedMessage,
-} from './styles'
+import * as S from './styles'
 
 type ChatProps = {
-  children: ReactNode
+  children: ReactNode;
 }
 
 const getTime = (time): string => {
@@ -30,11 +22,11 @@ const isPinned = (unread: Any, pinned: boolean): boolean => {
 const Actions = ({ unreadCount, time, pinned }: ActionsType): ReactNode => {
   return (
     <>
-      <ActionWrapper>
-        <MessageTime>{getTime(time)}</MessageTime>
-      </ActionWrapper>
-      {unreadCount !== 0 && <UnreadMessages>{unreadCount}</UnreadMessages>}
-      {isPinned(unreadCount, pinned) && <PinnedMessage />}
+      <S.ActionWrapper>
+        <S.MessageTime>{getTime(time)}</S.MessageTime>
+      </S.ActionWrapper>
+      {unreadCount !== 0 && <S.UnreadMessages>{unreadCount}</S.UnreadMessages>}
+      {isPinned(unreadCount, pinned) && <S.PinnedMessage />}
     </>
   )
 }
@@ -53,7 +45,7 @@ const Chat = (props: ChatProps): ReactNode => {
     console.log(storage.getState())
   }
   let isSaved = false
-  if (props.me && props.me.firstName && props.title === props.me.firstName) {
+  if (props.me && props.id === props.me.id) {
     title = 'Saved Messages'
     avatar = '/icons/savedmessages_svg.svg'
     isSaved = true
@@ -62,14 +54,14 @@ const Chat = (props: ChatProps): ReactNode => {
   const showOnline = props.type === 'chatTypePrivate' && !isSaved && props.id !== 777000
 
   return (
-    <ChatWrapper>
-      <ChatHoverable onClick={openChat} isSaved={isSaved}>
+    <S.ChatWrapper>
+      <S.ChatHoverable onClick={openChat} isSaved={isSaved}>
         <CardHeader
           avatar={
             loading ? (
               <Avatar aria-label="recipe">{title.charAt(0).toUpperCase()}</Avatar>
             ) : (
-              <OnlineBadge
+              <S.OnlineBadge
                 overlap="circle"
                 variant="dot"
                 color="primary"
@@ -77,7 +69,8 @@ const Chat = (props: ChatProps): ReactNode => {
                   horizontal: 'right',
                   vertical: 'bottom',
                 }}
-                showOnline={showOnline}>
+                showOnline={showOnline}
+              >
                 <Avatar aria-label="recipe" src={avatar} />
               </OnlineBadge>
             )
@@ -88,12 +81,10 @@ const Chat = (props: ChatProps): ReactNode => {
             <Actions
               unreadCount={props.unreadCount}
               time={props.lastMessage.date}
-              pinned={props.pinned}
-            />
-          }
-        />
-      </ChatHoverable>
-    </ChatWrapper>
+              pinned={props.pinned}/>
+          }/>
+      </S.ChatHoverable>
+    </S.ChatWrapper>
   )
 }
 

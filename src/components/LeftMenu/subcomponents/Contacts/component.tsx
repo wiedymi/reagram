@@ -2,8 +2,8 @@ import React, { ReactNode } from 'react'
 import { CardHeader, Avatar } from '@material-ui/core'
 import { useTelegram, USE_TELEGRAM, getImageFile } from '@/helpers'
 import { TYPES } from '@/constants'
-import { Loading } from '@/components/common'
-import { Wrapper, ChatWrapper, ChatHoverable, OnlineBadge } from './styles'
+import * as C from '@/components/common'
+import * as S from './styles'
 
 const { GET_CONTACTS, GET_AVATARS_CHATS } = USE_TELEGRAM
 
@@ -24,14 +24,14 @@ const Contact = (props: ContactType): ReactNode => {
   const { firstName } = props
 
   return (
-    <ChatWrapper>
-      <ChatHoverable>
+    <S.ChatWrapper>
+      <S.ChatHoverable>
         <CardHeader
           avatar={
             loading ? (
               <Avatar aria-label="recipe">{firstName.charAt(0).toUpperCase()}</Avatar>
             ) : (
-              <OnlineBadge
+              <S.OnlineBadge
                 overlap="circle"
                 variant="dot"
                 color="primary"
@@ -41,13 +41,13 @@ const Contact = (props: ContactType): ReactNode => {
                 }}
               >
                 <Avatar aria-label="recipe" src={avatar} />
-              </OnlineBadge>
+              </S.OnlineBadge>
             )
           }
           title={firstName}
           subheader={'Last seen'}/>
-      </ChatHoverable>
-    </ChatWrapper>
+      </S.ChatHoverable>
+    </S.ChatWrapper>
   )
 }
 
@@ -55,20 +55,20 @@ const Contacts = (): ReactNode => {
   const { loading, data } = useTelegram(GET_CONTACTS)
 
   if (loading) {
-    return <Loading message="Loading contacts..." />
+    return <C.Loading message="Loading contacts..." />
   }
   const { totalCount, users } = data
 
   return (
-    <Wrapper>
+    <S.Wrapper>
       {totalCount === 0 ? (
-        <Loading message="No contacts" error />
+        <C.Loading message="No contacts" error />
       ) : (
         users.map(user => {
           return <Contact key={user.id} {...user} />
         })
       )}
-    </Wrapper>
+    </S.Wrapper>
   )
 }
 

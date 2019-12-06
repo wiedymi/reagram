@@ -13,12 +13,12 @@ import {
   ExitToApp,
   MoreVert,
 } from '@material-ui/icons'
-import { Wrapper, IconWrapper, MenuItem, LeftNav, RightNav, Input, Title } from './styles'
 import { LEFT_MENU } from '@/constants'
 import { createIsInView, telegram } from '@/helpers'
+import * as S from './styles'
 
 type Props = {
-  children: ReactNode;
+  children: ReactNode
 }
 
 const options = [
@@ -67,13 +67,16 @@ const isInChats = createIsInView([LEFT_MENU.CHATS])
 const isInChannel = createIsInView([LEFT_MENU.NEW_CHANNEL])
 const isInContacts = createIsInView([LEFT_MENU.CONTACTS])
 
+const createTitle = (text: string): ReactNode => {
+  return <S.Title variant="h6">{text}</S.Title>
+}
 const showSettingsOpts = (view): ReactNode => {
   const shows = {
-    [LEFT_MENU.SETTINGS.EDIT]: <Title variant="h6">Edit Profile</Title>,
-    [LEFT_MENU.SETTINGS.GENERAL]: <Title variant="h6">General</Title>,
-    [LEFT_MENU.SETTINGS.NOTIFICATIONS]: <Title variant="h6">Notifications</Title>,
-    [LEFT_MENU.SETTINGS.PRIVACY]: <Title variant="h6">Privacy and Security</Title>,
-    [LEFT_MENU.SETTINGS.LANGUAGE]: <Title variant="h6">Language</Title>,
+    [LEFT_MENU.SETTINGS.EDIT]: createTitle('Edit Profile'),
+    [LEFT_MENU.SETTINGS.GENERAL]: createTitle('General'),
+    [LEFT_MENU.SETTINGS.NOTIFICATIONS]: createTitle('Notifications'),
+    [LEFT_MENU.SETTINGS.PRIVACY]: createTitle('Privacy and Security'),
+    [LEFT_MENU.SETTINGS.LANGUAGE]: createTitle('Language'),
   }
 
   return shows[view]
@@ -117,14 +120,13 @@ const MenuNav = ({ changeView, view }: MenuNavType): ReactNode => {
   }
 
   return (
-    <Wrapper>
-      <LeftNav>
+    <S.Wrapper>
+      <S.LeftNav>
         <IconButton
           aria-label="more"
           aria-controls="long-menu"
           aria-haspopup="true"
-          onClick={handleClick}
-        >
+          onClick={handleClick}>
           {!isInChats(view) ? <ArrowBack /> : <MenuIcon />}
         </IconButton>
 
@@ -139,23 +141,22 @@ const MenuNav = ({ changeView, view }: MenuNavType): ReactNode => {
               maxHeight: ITEM_HEIGHT * 4.5,
               width: 200,
             },
-          }}
-        >
+          }}>
           {options.map(Option => (
-            <MenuItem key={Option.title} onClick={() => handleClose(Option.view)}>
-              <IconWrapper>
+            <S.MenuItem key={Option.title} onClick={() => handleClose(Option.view)}>
+              <S.IconWrapper>
                 <Option.icon />
-              </IconWrapper>
+              </S.IconWrapper>
               {Option.title}
-            </MenuItem>
+            </S.MenuItem>
           ))}
         </Menu>
-      </LeftNav>
-      <RightNav view={view}>
-        {isInGroup(view) && <Title variant="h6">New Group</Title>}
-        {isInChannel(view) && <Title variant="h6">New Channel</Title>}
+      </S.LeftNav>
+      <S.RightNav view={view}>
+        {isInGroup(view) && createTitle('New Group')}
+        {isInChannel(view) && createTitle('New Channel')}
         {isInContacts(view) && (
-          <Input
+          <S.Input
             id="outlined-basic"
             placeholder="Search"
             variant="outlined"
@@ -164,18 +165,18 @@ const MenuNav = ({ changeView, view }: MenuNavType): ReactNode => {
               <InputAdornment position="start">
                 <Search color="#ccc" />
               </InputAdornment>
-            }/>
+            }
+          />
         )}
         {isInSettingsOpts(view) && showSettingsOpts(view)}
         {isInSettings(view) && (
           <>
-            <Title variant="h6">Settings</Title>
+            {createTitle('Settings')}
             <IconButton
               aria-label="setting-more"
               aria-controls="setting-menu"
               aria-haspopup="true"
-              onClick={handleClickSetting}
-            >
+              onClick={handleClickSetting}>
               <MoreVert onClick={handleClickSetting} />
             </IconButton>
             <Menu
@@ -183,19 +184,18 @@ const MenuNav = ({ changeView, view }: MenuNavType): ReactNode => {
               anchorEl={settingEl}
               keepMounted
               open={openSetting}
-              onClose={handleCloseSetting}
-            >
-              <MenuItem onClick={logout}>
-                <IconWrapper>
+              onClose={handleCloseSetting}>
+              <S.MenuItem onClick={logout}>
+                <S.IconWrapper>
                   <ExitToApp />
-                </IconWrapper>
+                </S.IconWrapper>
                 Log out
-              </MenuItem>
+              </S.MenuItem>
             </Menu>
           </>
         )}
         {isInChats(view) && (
-          <Input
+          <S.Input
             id="outlined-basic"
             placeholder="Search"
             variant="outlined"
@@ -204,10 +204,11 @@ const MenuNav = ({ changeView, view }: MenuNavType): ReactNode => {
               <InputAdornment position="start">
                 <Search color="#ccc" />
               </InputAdornment>
-            }/>
+            }
+          />
         )}
-      </RightNav>
-    </Wrapper>
+      </S.RightNav>
+    </S.Wrapper>
   )
 }
 

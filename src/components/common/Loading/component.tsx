@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { Wrapper, Loading, Message } from './styles'
+import * as S from './styles'
 
 type Props = {
   children: ReactNode;
@@ -8,10 +8,10 @@ type Props = {
 }
 
 const Component = (props: Props): ReactNode => (
-  <Wrapper>
-    {!props.error && <Loading />}
-    <Message>{props.message}</Message>
-  </Wrapper>
+  <S.Wrapper>
+    {!props.error && <S.Loading />}
+    <S.Message>{props.message}</S.Message>
+  </S.Wrapper>
 )
 
 export default Component

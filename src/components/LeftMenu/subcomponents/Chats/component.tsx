@@ -1,15 +1,15 @@
 import React, { ReactNode } from 'react'
-import { Loading } from '@/components/common'
+import * as C from '@/components/common'
 import { useTelegram, USE_TELEGRAM } from '@/helpers'
 import Chat from '../Chat'
 
-import { Wrapper, PinnedLine } from './styles'
+import * as S from './styles'
 
 const { GET_LIST_OF_CHATS } = USE_TELEGRAM
 
 type ChatsProps = {
-  me: object
-  children: ReactNode
+  me: object;
+  children: ReactNode;
 }
 
 const separateChats = (chats): object => {
@@ -31,17 +31,17 @@ const Chats = ({ me }: ChatsProps): ReactNode => {
   const { data, loading } = useTelegram(GET_LIST_OF_CHATS, 999)
 
   if (loading) {
-    return <Loading message="Loading chats..." />
+    return <C.Loading message="Loading chats..." />
   }
 
   const { pinned, chats } = separateChats(data)
 
   return (
-    <Wrapper>
+    <S.Wrapper>
       {hasValues(pinned) && pinned.map(chat => <Chat key={chat.id} {...chat} me={me} pinned />)}
-      {hasValues(pinned) && <PinnedLine />}
+      {hasValues(pinned) && <S.PinnedLine />}
       {hasValues(chats) && chats.map(chat => <Chat key={chat.id} {...chat} me={me} />)}
-    </Wrapper>
+    </S.Wrapper>
   )
 }
 

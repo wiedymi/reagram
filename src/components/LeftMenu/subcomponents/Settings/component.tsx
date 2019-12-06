@@ -41,7 +41,7 @@ const options = [
 
 const Settings = (props: Props): ReactNode => {
   const { id } = props.me.profilePhoto.big
-  const { firstName, phoneNumber } = props.me
+  const { firstName, phoneNumber, lastName } = props.me
   const query = {
     id,
     type: TYPES.FILES.PHOTO,
@@ -61,7 +61,7 @@ const Settings = (props: Props): ReactNode => {
   return (
     <S.Wrapper>
       <SelectImage hidden image={image} />
-      <S.Title variant="h5">{firstName}</S.Title>
+      <S.Title variant="h5">{!lastName ? firstName : firstName + ' ' + lastName}</S.Title>
       <S.Subtitle>+{phoneNumber}</S.Subtitle>
       <S.Menu>
         {options.map(opt => (

@@ -1,9 +1,9 @@
 import React, { ReactNode } from 'react'
-import { Wrapper, Input } from './styles'
+import * as S from './styles'
 
 const SelectInput = (): ReactNode => (
-  <Wrapper>
-    <Input
+  <S.Wrapper>
+    <S.Input
       label={`Country`}
       variant="outlined"
       select
@@ -11,8 +11,8 @@ const SelectInput = (): ReactNode => (
       IconComponent="/assert/down.svg"
     >
       {children}
-    </Input>
-  </Wrapper>
+    </S.Input>
+  </S.Wrapper>
 )
 
 SelectInput.defaultProps = {

@@ -1,14 +1,14 @@
 import React, { ReactNode } from 'react'
-import { Wrapper, Img, Progress, Text, Content } from './styles'
+import * as S from './styles'
 
 const Loading = (): ReactNode => (
-  <Wrapper>
-    <Img src="/assert/logo.png" />
-    <Content>
-      <Progress />
-      <Text variant="h5">Loading...</Text>
-    </Content>
-  </Wrapper>
+  <S.Wrapper>
+    <S.Img src="/assert/logo.png" />
+    <S.Content>
+      <S.Progress />
+      <S.Text variant="h5">Loading...</S.Text>
+    </S.Content>
+  </S.Wrapper>
 )
 
 export default Loading

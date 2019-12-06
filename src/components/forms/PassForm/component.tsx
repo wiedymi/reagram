@@ -1,13 +1,11 @@
 import React, { ReactNode, useState } from 'react'
 import { IconButton, InputLabel, InputAdornment } from '@material-ui/core'
 import { Visibility, VisibilityOff } from '@material-ui/icons'
-import { Input } from '@/components/base'
-import { authStyles } from '@/components/common'
+import * as B from '@/components/base'
+import { authStyles as C } from '@/components/common'
 import { AUTH_FORM } from '@/constants'
 import { createAuthForm, authorizationStateWaitPassword } from '@/helpers'
-import { InputWrapper } from './styles'
-
-const { Wrapper, Img, Title, Subtitle, NextStageButton, Content } = authStyles
+import * as S from './styles'
 
 type Props = {
   children: ReactNode;
@@ -34,14 +32,14 @@ const PassForm = (props: Props): ReactNode => {
   }
 
   return (
-    <Wrapper>
-      <Img src={values.showPassword ? '/assert/monkey3.png' : '/assert/monkey4.png'} />
-      <Content>
-        <Title variant="h4">Enter Your Password</Title>
-        <Subtitle>Your account is protected with an additional password.</Subtitle>
-        <InputWrapper variant="outlined">
+    <C.Wrapper>
+      <C.Img src={values.showPassword ? '/assert/monkey3.png' : '/assert/monkey4.png'} />
+      <C.Content>
+        <C.Title variant="h4">Enter Your Password</C.Title>
+        <C.Subtitle>Your account is protected with an additional password.</C.Subtitle>
+        <S.InputWrapper variant="outlined">
           <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-          <Input
+          <B.Input
             id="outlined-adornment-password"
             inputType="outlined"
             type={values.showPassword ? 'text' : 'password'}
@@ -63,13 +61,18 @@ const PassForm = (props: Props): ReactNode => {
               </InputAdornment>
             }
             labelWidth={70}/>
-        </InputWrapper>
+        </S.InputWrapper>
 
-        <NextStageButton variant="contained" color="primary" onClick={handleClick} nextStageButton>
+        <C.NextStageButton
+          variant="contained"
+          color="primary"
+          onClick={handleClick}
+          nextStageButton
+        >
           next
-        </NextStageButton>
-      </Content>
-    </Wrapper>
+        </C.NextStageButton>
+      </C.Content>
+    </C.Wrapper>
   )
 }
 
