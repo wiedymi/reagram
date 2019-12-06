@@ -3,8 +3,9 @@ const fs = require('fs')
 const webpack = require('webpack')
 const dotenv = require('dotenv')
 const webpackMerge = require('webpack-merge')
-const nodeExternals = require('webpack-node-externals')
 const CopyPlugin = require('copy-webpack-plugin')
+const WorkerPlugin = require('worker-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
 const getEnv = env => {
   const currentPath = path.join(__dirname)
@@ -17,13 +18,17 @@ const getEnv = env => {
     return prev
   }, {})
 
-  return envKeys
+  return {
+    'process.env': envKeys,
+    ...envKeys,
+  }
 }
 
 const sharedConfig = env => {
   const config = {
-    entry: `./src/index.tsx`,
+    entry: ['@babel/polyfill', './src/index.tsx'],
     mode: env.ENVIRONMENT ? 'production' : 'development',
+    devtool: 'source-map',
     output: {
       filename: `reagram.js`,
       path: path.resolve(__dirname, 'build'),
@@ -31,42 +36,44 @@ const sharedConfig = env => {
     resolve: {
       modules: [path.resolve(__dirname, 'src'), 'node_modules'],
       extensions: ['.tsx', '.ts', '.js'],
+      alias: {
+        '@': path.resolve(__dirname, 'src'),
+      },
+    },
+    externals: {
+      tdweb: 'tdweb',
     },
     plugins: [
-      new CopyPlugin([{ from: path.resolve(__dirname, 'views'), to: 'views' }]),
+      new CleanWebpackPlugin(),
+      new webpack.LoaderOptionsPlugin({
+        options: {
+          tslfint: {
+            emitErrors: true,
+            failOnHint: true,
+          },
+        },
+      }),
       new webpack.DefinePlugin(getEnv(env)),
+      new WorkerPlugin(),
+      new CopyPlugin([{ from: path.resolve(__dirname, 'views'), to: '.' }]),
+      new CopyPlugin([
+        {
+          from: path.resolve(__dirname, 'node_modules/tdweb/dist/**/*'),
+          to: '.',
+          flatten: true,
+          copyUnmodified: true,
+          ignore: ['tdweb.js'],
+        },
+      ]),
     ],
   }
 
   if (!env.prod) {
     config.devServer = {
-      writeToDisk: true,
-    }
-  }
-
-  return config
-}
-
-const sharedConfigServer = env => {
-  const config = {
-    entry: `./server.ts`,
-    mode: env.ENVIRONMENT ? 'production' : 'development',
-    output: {
-      filename: `server.js`,
-      path: path.resolve(__dirname, 'build'),
-    },
-    resolve: {
-      modules: [path.resolve(__dirname, 'src'), 'node_modules'],
-      extensions: ['.tsx', '.ts', '.js'],
-    },
-    plugins: [
-      new CopyPlugin([{ from: path.resolve(__dirname, 'views'), to: 'views' }]),
-      new webpack.DefinePlugin(getEnv(env)),
-    ],
-  }
-
-  if (!env.prod) {
-    config.devServer = {
+      contentBase: path.join(__dirname, 'public/'),
+      compress: true,
+      port: 8000,
+      hot: true,
       writeToDisk: true,
     }
   }
@@ -91,26 +98,4 @@ const sharedClientConfig = {
 
 const reagram = (env = {}) => webpackMerge(sharedConfig(env), sharedClientConfig)
 
-const serverConfig = env =>
-  webpackMerge(sharedConfigServer(env), {
-    target: 'node',
-    node: {
-      __dirname: false,
-    },
-    devtool: false,
-    module: {
-      rules: [
-        {
-          test: /\.tsx?$/,
-          exclude: /node_modules/,
-          loader: 'babel-loader',
-          options: {
-            envName: 'server',
-          },
-        },
-      ],
-    },
-    externals: [nodeExternals({ importType: 'commonjs' })],
-  })
-
-module.exports = [reagram, serverConfig]
+module.exports = [reagram]

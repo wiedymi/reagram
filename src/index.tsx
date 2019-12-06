@@ -1,16 +1,18 @@
 import React from 'react'
-import { render } from 'react-dom'
-import { BrowserRouter } from 'react-router-dom'
-import { ThemeProvider } from 'emotion-theming'
+import { initLogger, setupAuth } from '@/helpers'
+import { AUTH } from '@/constants'
+import { Loading } from '@/components/base'
+import { PhoneForm, CodeForm, PassForm } from '@/components/forms'
 import App from './App'
 
-console.log(process.env)
+initLogger()
 
-render(
-  <ThemeProvider theme={{ ...theme }}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </ThemeProvider>,
-  document.getElementById('root')!,
-)
+const stages = {
+  [AUTH.PHONE]: <PhoneForm />,
+  [AUTH.CODE]: <CodeForm />,
+  [AUTH.PASSWORD]: <PassForm />,
+  [AUTH.LOADING]: <Loading />,
+  [AUTH.SUCCESS]: <App />,
+}
+
+setupAuth(stages, <Loading />)

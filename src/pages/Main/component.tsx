@@ -1,20 +1,20 @@
-import React, { useState, useCallback } from 'react'
-import gql from 'graphql-tag'
-import Layout from 'components/Layout'
-import Header from 'components/Header'
-import * as S from './styles'
+import React, { ReactNode } from 'react'
+import { Layout } from '@/components/base'
+import LeftMenu from '@/components/LeftMenu'
+import { Wrapper } from './styles'
 
-type Props = {
-  children: ReactNode
-}
-
-function Main(props: Props) {
+const Main = (): ReactNode => {
   return (
     <Layout>
-      <Header />
-      <S.Main>Desktop</S.Main>
+      <Wrapper>
+        <LeftMenu />
+      </Wrapper>
     </Layout>
   )
+}
+
+Main.defaultProps = {
+  // bla: 'test',
 }
 
 export default Main
