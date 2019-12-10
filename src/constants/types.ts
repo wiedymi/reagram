@@ -10,4 +10,5 @@ export const MESSAGES = {
   AUDIO: 'messageAudio',
   VIDIO: 'messageVideo',
   STICKER: 'messageSticker',
+  UNSUPPORTED: 'UNSUPPORTED',
 }

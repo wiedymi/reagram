@@ -18,17 +18,22 @@ export const OnlineBadge = styled(Badge)`
 export const ChatWrapper = styled.div`
   padding-right: ${(props): string => get.padding(props).tiny};
   padding-left: ${(props): string => get.padding(props).tiny};
+
   flex-flow: column;
   .MuiCardHeader-root {
     padding: ${(props): string => get.padding(props).tiny}!important;
   }
 `
+const hoverable = (props): Any => css`
+  border-radius: ${get.radius(props).tiny};
+  background-color: #f4f4f5;
+  cursor: pointer;
+`
 
 export const ChatHoverable = styled.div`
+  ${({ isSelected, ...props }): string => isSelected && hoverable(props)}
   &:hover {
-    border-radius: ${(props): string => get.radius(props).tiny};
-    background-color: #f4f4f5;
-    cursor: pointer;
+    ${(props): string => hoverable(props)}
   }
   .MuiCardHeader-title {
     font-weight: bolder !important;

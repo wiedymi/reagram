@@ -118,4 +118,27 @@ airgram.editPhone = async function(): void {
   })
 }
 
+airgram.getChatMessages = async function({ chatId, offset, limit }): Promise {
+  const lastMessage = await airgram.api.getChat({ chatId })
+  const fromMessageId = toObject(lastMessage).lastMessage.id
+  const messages = await airgram.api.getChatHistory({ chatId, offset, limit, fromMessageId })
+  messages.response.messages.unshift(toObject(lastMessage).lastMessage)
+  return { ...toObject(messages), chatInfo: toObject(lastMessage) }
+}
+
+airgram.sendTextMessage = async function(query): Promise {
+  const sent = await airgram.api.sendMessage({
+    ...query,
+    inputMessageContent: {
+      _: 'inputMessageText',
+      text: {
+        _: 'formattedText',
+        text: query.message,
+      },
+    },
+  })
+
+  return sent
+}
+
 export const telegram = airgram

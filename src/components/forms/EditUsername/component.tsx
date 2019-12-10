@@ -1,13 +1,22 @@
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useState, useCallback } from 'react'
 import * as B from '@/components/base'
 import * as S from './styles'
 
-const Component = ({ username }: EditProfileType): ReactNode => {
+const Component = (props: EditProfileType): ReactNode => {
+  const [username, setUsername] = useState(props.username)
+
+  const handleChnage = useCallback(
+    ({ target }) => {
+      setUsername(target.value)
+    },
+    [setUsername],
+  )
   return (
     <S.Wrapper>
       <S.Title>Username</S.Title>
       <B.Input
         type="text"
+        onChange={handleChnage}
         value={username}
         label={`Username`}
         variant="outlined"

@@ -5,14 +5,6 @@ type Props = {
   children: ReactNode
 }
 
-const Notifications = (props: Props) => (
-  <Wrapper>
-    Notifications context
-  </Wrapper>
-)
-
-Notifications.defaultProps = {
-  // bla: 'test',
-}
+const Notifications = (props: Props) => <Wrapper>Notifications context</Wrapper>
 
 export default Notifications

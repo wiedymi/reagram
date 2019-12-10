@@ -15,7 +15,6 @@ const getTime = (time): string => {
 }
 
 const isPinned = (unread: Any, pinned: boolean): boolean => {
-  console.log(!unread && pinned, unread, pinned)
   return !unread && pinned
 }
 
@@ -36,13 +35,12 @@ const Chat = (props: ChatProps): ReactNode => {
     id: props.photoId,
     type: TYPES.FILES.PHOTO,
   }
-  const { data, loading, refetch, storage } = useTelegram(USE_TELEGRAM.GET_AVATARS_CHATS, query)
+  const { data, loading, refetch } = useTelegram(USE_TELEGRAM.GET_AVATARS_CHATS, query)
 
   let avatar = !loading && data ? getImageFile(props.photoId, data.files, refetch) : ''
   let { title } = props
   const openChat = async (): void => {
-    console.log(props)
-    console.log(storage.getState())
+    props.openChat(props.id)
   }
   let isSaved = false
   if (props.me && props.id === props.me.id) {
@@ -52,10 +50,11 @@ const Chat = (props: ChatProps): ReactNode => {
   }
 
   const showOnline = props.type === 'chatTypePrivate' && !isSaved && props.id !== 777000
+  const isSelected = props.id === props.openedChat
 
   return (
     <S.ChatWrapper>
-      <S.ChatHoverable onClick={openChat} isSaved={isSaved}>
+      <S.ChatHoverable onClick={openChat} isSaved={isSaved} isSelected={isSelected}>
         <CardHeader
           avatar={
             loading ? (

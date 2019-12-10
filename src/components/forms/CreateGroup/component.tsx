@@ -15,8 +15,5 @@ fluid />
     </S.Wrapper>
   )
 }
-CreateGroup.defaultProps = {
-  // bla: 'test',
-}
 
 export default CreateGroup

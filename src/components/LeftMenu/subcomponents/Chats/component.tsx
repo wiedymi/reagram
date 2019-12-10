@@ -27,7 +27,7 @@ const hasValues = (array): boolean => {
   return Array.isArray(array) && array.length > 0
 }
 
-const Chats = ({ me }: ChatsProps): ReactNode => {
+const Chats = ({ me, ...props }: ChatsProps): ReactNode => {
   const { data, loading } = useTelegram(GET_LIST_OF_CHATS, 999)
 
   if (loading) {
@@ -38,15 +38,28 @@ const Chats = ({ me }: ChatsProps): ReactNode => {
 
   return (
     <S.Wrapper>
-      {hasValues(pinned) && pinned.map(chat => <Chat key={chat.id} {...chat} me={me} pinned />)}
+      {hasValues(pinned) &&
+        pinned.map(chat => (
+          <Chat
+            key={chat.id}
+            {...chat}
+            me={me}
+            pinned
+            openChat={props.openChat}
+            openedChat={props.openedChat}/>
+        ))}
       {hasValues(pinned) && <S.PinnedLine />}
-      {hasValues(chats) && chats.map(chat => <Chat key={chat.id} {...chat} me={me} />)}
+      {hasValues(chats) &&
+        chats.map(chat => (
+          <Chat
+            key={chat.id}
+            {...chat}
+            me={me}
+            openChat={props.openChat}
+            openedChat={props.openedChat}/>
+        ))}
     </S.Wrapper>
   )
-}
-
-Chats.defaultProps = {
-  // bla: 'test',
 }
 
 export default Chats

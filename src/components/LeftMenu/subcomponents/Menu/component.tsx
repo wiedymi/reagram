@@ -18,7 +18,7 @@ import { createIsInView, telegram } from '@/helpers'
 import * as S from './styles'
 
 type Props = {
-  children: ReactNode
+  children: ReactNode;
 }
 
 const options = [
@@ -126,7 +126,8 @@ const MenuNav = ({ changeView, view }: MenuNavType): ReactNode => {
           aria-label="more"
           aria-controls="long-menu"
           aria-haspopup="true"
-          onClick={handleClick}>
+          onClick={handleClick}
+        >
           {!isInChats(view) ? <ArrowBack /> : <MenuIcon />}
         </IconButton>
 
@@ -141,7 +142,8 @@ const MenuNav = ({ changeView, view }: MenuNavType): ReactNode => {
               maxHeight: ITEM_HEIGHT * 4.5,
               width: 200,
             },
-          }}>
+          }}
+        >
           {options.map(Option => (
             <S.MenuItem key={Option.title} onClick={() => handleClose(Option.view)}>
               <S.IconWrapper>
@@ -165,8 +167,7 @@ const MenuNav = ({ changeView, view }: MenuNavType): ReactNode => {
               <InputAdornment position="start">
                 <Search color="#ccc" />
               </InputAdornment>
-            }
-          />
+            }/>
         )}
         {isInSettingsOpts(view) && showSettingsOpts(view)}
         {isInSettings(view) && (
@@ -176,7 +177,8 @@ const MenuNav = ({ changeView, view }: MenuNavType): ReactNode => {
               aria-label="setting-more"
               aria-controls="setting-menu"
               aria-haspopup="true"
-              onClick={handleClickSetting}>
+              onClick={handleClickSetting}
+            >
               <MoreVert onClick={handleClickSetting} />
             </IconButton>
             <Menu
@@ -184,7 +186,8 @@ const MenuNav = ({ changeView, view }: MenuNavType): ReactNode => {
               anchorEl={settingEl}
               keepMounted
               open={openSetting}
-              onClose={handleCloseSetting}>
+              onClose={handleCloseSetting}
+            >
               <S.MenuItem onClick={logout}>
                 <S.IconWrapper>
                   <ExitToApp />
@@ -204,8 +207,7 @@ const MenuNav = ({ changeView, view }: MenuNavType): ReactNode => {
               <InputAdornment position="start">
                 <Search color="#ccc" />
               </InputAdornment>
-            }
-          />
+            }/>
         )}
       </S.RightNav>
     </S.Wrapper>

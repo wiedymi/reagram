@@ -5,14 +5,6 @@ type Props = {
   children: ReactNode
 }
 
-const GeneralSettings = (props: Props) => (
-  <Wrapper>
-    GeneralSettings context
-  </Wrapper>
-)
-
-GeneralSettings.defaultProps = {
-  // bla: 'test',
-}
+const GeneralSettings = (props: Props) => <Wrapper>GeneralSettings context</Wrapper>
 
 export default GeneralSettings

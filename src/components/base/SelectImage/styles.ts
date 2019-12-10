@@ -9,7 +9,11 @@ export const Image = styled.img`
   width: 80px;
 `
 export const Circle = styled.div`
-  background-color: ${(props): string => get.colors(props).primary} !important;
+  background-color: ${(props): string => {
+    if (!props.image) {
+      return get.colors(props).primary
+    }
+  }} !important;
   background-image: url(${({ image }): string => image});
   border-radius: 50%;
   background-size: cover;

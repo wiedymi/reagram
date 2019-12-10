@@ -15,8 +15,4 @@ const SelectInput = (): ReactNode => (
   </S.Wrapper>
 )
 
-SelectInput.defaultProps = {
-  // bla: 'test',
-}
-
 export default SelectInput

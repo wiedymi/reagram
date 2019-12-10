@@ -39,10 +39,9 @@ const SelectImage = (props: Props): ReactNode => {
         accept="image/*"
         capture="camera"
         onChange={handleFileChange}/>
-      <S.Circle image={image}>
+      <S.Circle image={image} onClick={openPicker}>
         <S.Image
-          src={!image ? '/icons/cameraadd_svg.svg' : props.select && '/icons/cameraadd_svg.svg'}
-          onClick={openPicker}/>
+          src={!image ? '/icons/cameraadd_svg.svg' : props.select && '/icons/cameraadd_svg.svg'}/>
       </S.Circle>
     </S.Wrapper>
   )
