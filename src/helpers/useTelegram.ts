@@ -3,7 +3,16 @@ import { USE_TELEGRAM } from '@/constants'
 import { telegram } from './telegram'
 import store, { storage } from './store'
 
-const { GET_LIST_OF_CHATS, GET_AVATARS_CHATS, GET_ME, GET_CONTACTS } = USE_TELEGRAM
+const {
+  GET_LIST_OF_CHATS,
+  GET_AVATARS_CHATS,
+  GET_ME,
+  GET_CONTACTS,
+  GET_CHAT_MESSAGES,
+  SEND_TEXT_MESSAGE,
+  PLAY_AUDIO,
+  CREATE_CHANNEL,
+} = USE_TELEGRAM
 
 function createHook(fn) {
   return function(opts = {}): object {
@@ -56,13 +65,41 @@ function createHook(fn) {
   }
 }
 
+function createActionHook(fn, EVENT): void {
+  let state = null
+  return function ActionHook(defaultQuery): array {
+    const [updating, setUpdating] = useState(state)
+    const [processing, setProcessing] = useState(null)
+    const action = async (query = defaultQuery): object => {
+      setProcessing(true)
+      const data = await fn(query)
+      setProcessing(false)
+      return data
+    }
+
+    if (!EVENT) {
+      return [action]
+    }
+
+    telegram.on(EVENT, async ({ update }, next) => {
+      setUpdating(update)
+      state = update
+
+      next()
+    })
+
+    return [action, { updating, processing, storage }]
+  }
+}
+
 const getListOfChats = createHook(telegram.getListOfChats)
-
 const getContacts = createHook(telegram.getContacts)
-
 const getAvatar = createHook(store.getAvatar)
-
 const getMe = createHook(telegram.getMe)
+const getChatMessages = createHook(telegram.getChatMessages)
+const sendTextMessage = createActionHook(telegram.sendTextMessage)
+const playAudio = createActionHook(store.getAudio, 'updateFile')
+const createChannel = createActionHook(telegram.createChannel)
 
 export function useTelegram(CONSTANT_QUERY, opts = false): object {
   const queries = {
@@ -70,6 +107,14 @@ export function useTelegram(CONSTANT_QUERY, opts = false): object {
     [GET_AVATARS_CHATS]: getAvatar,
     [GET_ME]: getMe,
     [GET_CONTACTS]: getContacts,
+    [GET_CHAT_MESSAGES]: getChatMessages,
+    [SEND_TEXT_MESSAGE]: sendTextMessage,
+    [PLAY_AUDIO]: playAudio,
+    [CREATE_CHANNEL]: createChannel,
+  }
+
+  if (!queries[CONSTANT_QUERY]) {
+    throw new Error('Invalid query')
   }
 
   return queries[CONSTANT_QUERY](opts)

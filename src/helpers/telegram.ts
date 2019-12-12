@@ -43,6 +43,8 @@ airgram.getListOfChats = async function(limit): array {
         ? await airgram.api.getUser({ userId: lastMessage.senderUserId })
         : await airgram.api.getChat({ chatId: lastMessage.chatId })
     const raw = toObject(result)
+
+    console.log(' raw', raw)
     return {
       id: raw.id,
       title,
@@ -59,7 +61,7 @@ airgram.getListOfChats = async function(limit): array {
         sentBy: toObject(sentBy),
       },
       unreadCount: raw.unreadCount,
-      photoId: raw.photo.big.id,
+      photoId: raw.photo && raw.photo.big.id,
       type: type._,
       raw,
     }
@@ -116,6 +118,67 @@ airgram.editPhone = async function(): void {
       _: authorizationStateWaitPhoneNumber,
     },
   })
+}
+
+airgram.getChatMessages = async function({ chatId, offset, limit }): Promise {
+  const lastMessage = await airgram.api.getChat({ chatId })
+  const fromMessageId = toObject(lastMessage).lastMessage.id
+  let messages = await airgram.api.getChatHistory({ chatId, offset, limit, fromMessageId })
+  messages.response.messages.unshift(toObject(lastMessage).lastMessage)
+
+  const { supergroupId } = toObject(lastMessage).type
+
+  if (!supergroupId) {
+    const callback = async (message): object => {
+      const user = await airgram.api.getUser({ userId: message.senderUserId })
+
+      return {
+        ...message,
+        user: toObject(user),
+      }
+    }
+
+    messages = await asyncMap(messages.response.messages, callback)
+  }
+
+  if (supergroupId && supergroupId !== undefined) {
+    const fullInfo = await airgram.api.getSupergroupFullInfo({ supergroupId })
+
+    return {
+      messages: messages.response.messages,
+      chatInfo: { ...toObject(lastMessage), ...toObject(fullInfo) },
+    }
+  }
+
+  return { messages, chatInfo: toObject(lastMessage) }
+}
+
+airgram.sendTextMessage = async function(query): Promise {
+  const sent = await airgram.api.sendMessage({
+    ...query,
+    inputMessageContent: {
+      _: 'inputMessageText',
+      text: {
+        _: 'formattedText',
+        text: query.message,
+      },
+    },
+  })
+
+  return sent
+}
+
+airgram.createChannel = async function(query): Promise {
+  const result = await airgram.api.createNewSupergroupChat({ ...query, isChannel: true })
+  const photo = await airgram.api.setChatPhoto({
+    chatId: toObject(result).id,
+    photo: {
+      _: 'inputFileLocal',
+      path: query.image,
+    },
+  })
+  console.log('photo', photo)
+  return toObject(result)
 }
 
 export const telegram = airgram

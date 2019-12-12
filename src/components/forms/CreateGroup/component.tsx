@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import * as B from '@/components/base'
+import * as C from '@/components/common'
 import * as S from './styles'
 
 type Props = {
@@ -9,14 +9,11 @@ type Props = {
 const CreateGroup = (props: Props): ReactNode => {
   return (
     <S.Wrapper>
-      <B.SelectImage />
-      <B.Input type="text" value={''} label={`Group Name`} variant="outlined"
+      <C.SelectImage />
+      <C.Input type="text" value={''} label={`Group Name`} variant="outlined"
 fluid />
     </S.Wrapper>
   )
-}
-CreateGroup.defaultProps = {
-  // bla: 'test',
 }
 
 export default CreateGroup

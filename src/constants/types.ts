@@ -1,13 +1,16 @@
 export const FILES = {
   PHOTO: 'photo',
   AUDIO: 'audio',
-  VIDIO: 'vidio',
+  VIDEO: 'video',
+  ANIMATION: 'animation',
 }
 
 export const MESSAGES = {
   TEXT: 'messageText',
   PHOTO: 'messagePhoto',
   AUDIO: 'messageAudio',
-  VIDIO: 'messageVideo',
+  VIDEO: 'messageVideo',
   STICKER: 'messageSticker',
+  ANIMATION: 'messageAnimation',
+  UNSUPPORTED: 'UNSUPPORTED',
 }

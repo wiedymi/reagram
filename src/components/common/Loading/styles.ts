@@ -21,6 +21,8 @@ export const Wrapper = styled.div`
   flex-flow: column;
   width: 100%;
   align-items: center;
+  min-height: ${({ height }): string => height + 'px'};
+  min-width: ${({ width }): string => width + 'px'};
 `
 
 export const Message = styled.h3``
