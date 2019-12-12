@@ -19,5 +19,7 @@ export const MessagesWrapper = styled.div`
   height: auto;
   position: inherit;
   bottom: 0;
-  padding: 0 60px;
+  padding: 0 80px;
+
+  padding-bottom: 20px;
 `

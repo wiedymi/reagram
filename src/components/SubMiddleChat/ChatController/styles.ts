@@ -4,6 +4,7 @@ export const Wrapper = styled.div`
   display: flex;
   padding: ${(props): string => get.padding(props).normal}
     ${(props): string => get.padding(props).tiny};
+  padding-top: 0;
   justify-content: center;
   min-height: 60px;
   align-items: center;

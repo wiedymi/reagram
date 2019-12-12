@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { useTelegram, USE_TELEGRAM, getImageFile } from '@/helpers'
+import { useTelegram, USE_TELEGRAM, getImageFile, nFormatter } from '@/helpers'
 import { TYPES } from '@/constants'
 import * as S from './styles'
 
@@ -8,7 +8,8 @@ type Props = {
 }
 
 const Menu = ({ chatInfo }: Props): ReactNode => {
-  const { id } = chatInfo.photo.big
+  const { id } = chatInfo.photo ? chatInfo.photo.big : { id: 0 }
+  const { isChannel, supergroupId } = chatInfo.type
   const query = {
     id,
     type: TYPES.FILES.PHOTO,
@@ -24,6 +25,8 @@ const Menu = ({ chatInfo }: Props): ReactNode => {
     isSaved = true
   }
 
+  const typeMembers = isChannel && supergroupId ? ' subsribers' : ' members'
+
   return (
     <S.Wrapper isSaved={isSaved}>
       <S.Header
@@ -35,7 +38,7 @@ const Menu = ({ chatInfo }: Props): ReactNode => {
           )
         }
         title={title}
-        subheader={'Online'}
+        subheader={supergroupId ? nFormatter(chatInfo.memberCount) + typeMembers : 'Online'}
       />
     </S.Wrapper>
   )

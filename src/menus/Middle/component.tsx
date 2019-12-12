@@ -1,7 +1,7 @@
 import React, { ReactNode, useState, useEffect } from 'react'
 import { MIDDLE_MENU } from '@/constants'
 import { createViewController } from '@/helpers'
-import * as Sub from '@/components/SubMeddleMenu'
+import * as Sub from '@/components/SubMiddleMenu'
 import * as S from './styles'
 
 type Props = {
@@ -12,24 +12,6 @@ const Views = createViewController({
   [MIDDLE_MENU.CHAT.OPENED]: Sub.Chat,
   [MIDDLE_MENU.NO_SELECTED_CHAT]: Sub.NoSelectedChat,
 })
-
-// const options = [
-//   {
-//     title: 'Channel',
-//     icon: S.ChannelIcon,
-//     view: 'LEFT_MENU.NEW_CHANNEL',
-//   },
-//   {
-//     title: 'Group',
-//     icon: PeopleOutline,
-//     view: 'LEFT_MENU.NEW_GROUP',
-//   },
-//   {
-//     title: '',
-//     icon: PersonOutlined,
-//     view: 'LEFT_MENU.NEW_PRIVATE_CHAT',
-//   },
-// ]
 
 const MiddleMenu = (props: Props): ReactNode => {
   const [view, changeView] = useState(MIDDLE_MENU.NO_SELECTED_CHAT)

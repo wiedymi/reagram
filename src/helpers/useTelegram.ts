@@ -11,6 +11,7 @@ const {
   GET_CHAT_MESSAGES,
   SEND_TEXT_MESSAGE,
   PLAY_AUDIO,
+  CREATE_CHANNEL,
 } = USE_TELEGRAM
 
 function createHook(fn) {
@@ -68,10 +69,8 @@ function createActionHook(fn, EVENT): void {
   let state = null
   return function ActionHook(defaultQuery): array {
     const [updating, setUpdating] = useState(state)
-    const [id, setId] = useState(null)
     const [processing, setProcessing] = useState(null)
     const action = async (query = defaultQuery): object => {
-      setId(query.id)
       setProcessing(true)
       const data = await fn(query)
       setProcessing(false)
@@ -100,6 +99,7 @@ const getMe = createHook(telegram.getMe)
 const getChatMessages = createHook(telegram.getChatMessages)
 const sendTextMessage = createActionHook(telegram.sendTextMessage)
 const playAudio = createActionHook(store.getAudio, 'updateFile')
+const createChannel = createActionHook(telegram.createChannel)
 
 export function useTelegram(CONSTANT_QUERY, opts = false): object {
   const queries = {
@@ -110,6 +110,11 @@ export function useTelegram(CONSTANT_QUERY, opts = false): object {
     [GET_CHAT_MESSAGES]: getChatMessages,
     [SEND_TEXT_MESSAGE]: sendTextMessage,
     [PLAY_AUDIO]: playAudio,
+    [CREATE_CHANNEL]: createChannel,
+  }
+
+  if (!queries[CONSTANT_QUERY]) {
+    throw new Error('Invalid query')
   }
 
   return queries[CONSTANT_QUERY](opts)

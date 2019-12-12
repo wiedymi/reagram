@@ -46,7 +46,7 @@ const chooseMessageView = (type, props): ReactNode => {
   return <Result key={props.message.id} {...props} />
 }
 
-const ChatView = ({ messages, me }: Props): ReactNode => {
+const ChatView = ({ messages, me, openChat, chatInfo }: Props): ReactNode => {
   const toBottom = (node): void => {
     if (node) {
       node.scrollTop = node.scrollHeight - node.clientHeight
@@ -59,7 +59,13 @@ const ChatView = ({ messages, me }: Props): ReactNode => {
         {messages.reverse().map((message, index) => {
           const type = handleMessage(message.content)
 
-          return chooseMessageView(type, { message, me, index: messages.length - index })
+          return chooseMessageView(type, {
+            message,
+            me,
+            index: messages.length - index,
+            openChat,
+            chatInfo,
+          })
         })}
       </S.MessagesWrapper>
     </S.Wrapper>

@@ -1,13 +1,13 @@
 import React, { ReactNode } from 'react'
 import * as C from '@/components/common'
+import * as Sub from '@/components/SubMiddleChat'
 import { useTelegram, USE_TELEGRAM } from '@/helpers'
 import * as S from './styles'
-import * as Sub from '@/components/SubMiddleChat'
 
 const { GET_CHAT_MESSAGES } = USE_TELEGRAM
 
 type Props = {
-  children: ReactNode;
+  children: ReactNode
 }
 
 const isCorrectChat = (id: number, data: array): boolean => {
@@ -26,7 +26,7 @@ const Chat = (props: Props): ReactNode => {
   const { data, loading, refetch, storage } = useTelegram(GET_CHAT_MESSAGES, {
     chatId: props.openedChat,
     offset: 0,
-    limit: 40,
+    limit: 10,
   })
 
   if (loading) {
@@ -39,11 +39,14 @@ const Chat = (props: Props): ReactNode => {
 
   const { chatInfo, messages } = data
   const { me } = storage.getState()
+
   return (
     <S.Wrapper>
-      <Sub.Menu chatInfo={chatInfo} />
-      <Sub.ChatView messages={messages} me={me} />
-      <Sub.ChatController chatId={props.openedChat} />
+      <Sub.Menu chatInfo={chatInfo} openChat={props.openChat} />
+      <S.ChatWrapper>
+        <Sub.ChatView messages={messages} chatInfo={chatInfo} me={me} openChat={props.openChat} />
+        {!chatInfo.type.isChannel && <Sub.ChatController chatId={props.openedChat} />}
+      </S.ChatWrapper>
     </S.Wrapper>
   )
 }

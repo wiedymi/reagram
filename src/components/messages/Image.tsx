@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { getImageFile, useTelegram, USE_TELEGRAM } from '@/helpers'
+import { getImageFile, convertTime, useTelegram, USE_TELEGRAM } from '@/helpers'
 import { TYPES } from '@/constants'
 import * as C from '@/components/common'
 import * as S from './styles'
@@ -9,12 +9,6 @@ type IImageMessage = {
   message: object;
   me: object;
   index: number;
-}
-
-const getTime = (time): string => {
-  const date = new Date(+`${time}000`)
-
-  return `${date.getHours()}:${date.getMinutes()}`
 }
 
 const chooseImage = (sizes): object => {
@@ -59,7 +53,7 @@ export const ImageMessage = ({ message, me, index }: IImageMessage): ReactNode =
           {messageText && <S.Message width={width}>{messageText}</S.Message>}
           <S.Status>
             <S.Date image withoutText={!messageText}>
-              {getTime(message.date)}
+              {convertTime(message.date)}
             </S.Date>
           </S.Status>
         </S.LoadingWrapper>
@@ -79,7 +73,7 @@ export const ImageMessage = ({ message, me, index }: IImageMessage): ReactNode =
       {messageText && <S.Message width={width}>{messageText}</S.Message>}
       <S.Status>
         <S.Date image withoutText={!messageText}>
-          {getTime(message.date)}
+          {convertTime(message.date)}
         </S.Date>
       </S.Status>
     </S.MessageBubble>

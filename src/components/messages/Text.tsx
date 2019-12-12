@@ -1,4 +1,6 @@
 import React, { ReactNode } from 'react'
+import { convertTime } from '@/helpers'
+import UserInfo from './UserInfo'
 import * as S from './styles'
 
 type ITextMessage = {
@@ -8,18 +10,17 @@ type ITextMessage = {
   index: number;
 }
 
-const getTime = (time): string => {
-  const date = new Date(+`${time}000`)
+export const TextMessage = ({ message, me, openChat, chatInfo }: ITextMessage): ReactNode => {
+  const isMe = message.senderUserId === me.id
 
-  return `${date.getHours()}:${date.getMinutes()}`
-}
+  // const isPrivate = chatInfo.type._ === 'chatTypePrivate'
 
-export const TextMessage = ({ message, me }: ITextMessage): ReactNode => {
   return (
-    <S.MessageBubble isMe={message.senderUserId === me.id}>
+    <S.MessageBubble isMe={isMe}>
+      {/* {!isMe && <UserInfo user={message.user} openChat={openChat} />} */}
       <S.Message>{message.content.text.text}</S.Message>
       <S.Status>
-        <S.Date>{getTime(message.date)}</S.Date>
+        <S.Date>{convertTime(message.date)}</S.Date>
       </S.Status>
     </S.MessageBubble>
   )

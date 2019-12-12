@@ -25,8 +25,11 @@ export const CircleWrapper = styled.div`
   :hover > p {
     color: ${(props): string => get.colors(props).primary};
   }
+  i {
+    filter: opacity(0.5);
+  }
   :hover i {
-    background-color: ${(props): string => get.colors(props).white};
+    /* background-color: ${(props): string => get.colors(props).white}; */
   }
 `
 

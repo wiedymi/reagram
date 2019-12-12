@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { getAnimationFile, useTelegram, USE_TELEGRAM } from '@/helpers'
+import { getAnimationFile, convertTime, useTelegram, USE_TELEGRAM } from '@/helpers'
 import { TYPES } from '@/constants'
 import * as C from '@/components/common'
 import * as S from './styles'
@@ -9,12 +9,6 @@ type IAnimationMessage = {
   message: object;
   me: object;
   index: number;
-}
-
-const getTime = (time): string => {
-  const date = new Date(+`${time}000`)
-
-  return `${date.getHours()}:${date.getMinutes()}`
 }
 
 const chooseAnimation = (animation): object => {
@@ -43,7 +37,7 @@ export const AnimationMessage = ({ message, me, index }: IAnimationMessage): Rea
           <C.Loading width={width} height={height} />
           <S.Status>
             <S.Date image withoutText>
-              {getTime(message.date)}
+              {convertTime(message.date)}
             </S.Date>
           </S.Status>
         </S.LoadingWrapper>
@@ -59,7 +53,7 @@ export const AnimationMessage = ({ message, me, index }: IAnimationMessage): Rea
 autoPlay muted loop />
       <S.Status>
         <S.Date image withoutText>
-          {getTime(message.date)}
+          {convertTime(message.date)}
         </S.Date>
       </S.Status>
     </S.MessageBubble>

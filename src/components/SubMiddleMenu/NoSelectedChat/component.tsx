@@ -3,7 +3,7 @@ import { Icon } from '@/components/common'
 import * as S from './styles'
 
 type INoSelectedChat = {
-  children: ReactNode
+  children: ReactNode;
 }
 
 const options = [
@@ -33,7 +33,7 @@ const NoSelectedChat = (props: INoSelectedChat): ReactNode => {
           return (
             <S.CircleWrapper key={text}>
               <S.Circle>
-                <Icon image={icon} sizeIcon="40px" />
+                <Icon image={icon} sizeIcon="30px" />
               </S.Circle>
               <S.Subtitle>{text}</S.Subtitle>
             </S.CircleWrapper>

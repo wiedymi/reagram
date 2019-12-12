@@ -27,7 +27,7 @@ export const Fab = styled(FabUi)`
   max-width: 50px !important;
   max-height: 50px !important;
   box-shadow: none !important;
-
+  z-index: 213;
   background-color: ${(props): string => get.colors(props).primary}!important;
 `
 export const ChannelIcon = styled.span`

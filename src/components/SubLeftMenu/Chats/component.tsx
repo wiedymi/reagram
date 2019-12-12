@@ -49,15 +49,18 @@ const Chats = ({ me, ...props }: ChatsProps): ReactNode => {
             openedChat={props.openedChat}/>
         ))}
       {hasValues(pinned) && <S.PinnedLine />}
-      {hasValues(chats) &&
-        chats.map(chat => (
-          <Chat
-            key={chat.id}
-            {...chat}
-            me={me}
-            openChat={props.openChat}
-            openedChat={props.openedChat}/>
-        ))}
+      {hasValues(chats) && (
+        <S.ChatsSroll>
+          {chats.map(chat => (
+            <Chat
+              key={chat.id}
+              {...chat}
+              me={me}
+              openChat={props.openChat}
+              openedChat={props.openedChat}/>
+          ))}
+        </S.ChatsSroll>
+      )}
     </S.Wrapper>
   )
 }

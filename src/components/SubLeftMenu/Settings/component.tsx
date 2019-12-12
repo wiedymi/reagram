@@ -7,7 +7,7 @@ import * as S from './styles'
 const { GET_AVATARS_CHATS } = USE_TELEGRAM
 
 type Props = {
-  children: ReactNode;
+  children: ReactNode
 }
 
 const options = [
@@ -69,10 +69,9 @@ const Settings = (props: Props): ReactNode => {
             onClick={(e): void => {
               // S.hoverableClick(e)
               handleClick(opt.view)
-            }}
-          >
+            }}>
             <S.Option>
-              <S.Icon src={opt.icon} />
+              <S.Icon src={opt.icon} sizeIcon="40px" />
               <S.Text>{opt.text}</S.Text>
             </S.Option>
           </S.Hoverable>

@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { getImageFile, useTelegram, USE_TELEGRAM } from '@/helpers'
+import { getImageFile, convertTime, useTelegram, USE_TELEGRAM } from '@/helpers'
 import { TYPES } from '@/constants'
 import * as S from './styles'
 
@@ -8,12 +8,6 @@ type IStickerMessage = {
   message: object;
   me: object;
   index: number;
-}
-
-const getTime = (time): string => {
-  const date = new Date(+`${time}000`)
-
-  return `${date.getHours()}:${date.getMinutes()}`
 }
 
 export const StickerMessage = ({ message, me }: IStickerMessage): ReactNode => {
@@ -34,7 +28,7 @@ export const StickerMessage = ({ message, me }: IStickerMessage): ReactNode => {
       <S.Image src={sticker} width={240} height={280} />
       <S.Status>
         <S.Date image withoutText={true}>
-          {getTime(message.date)}
+          {convertTime(message.date)}
         </S.Date>
       </S.Status>
     </S.MessageBubble>

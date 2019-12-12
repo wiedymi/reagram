@@ -29,15 +29,15 @@ const ChatController = (props: Props): ReactNode => {
   return (
     <S.Wrapper>
       <S.InputController>
-        <C.Icon image="smile_svg.svg" size="small" />
+        <C.Icon image="smile_svg.svg" sizeIcon="1rem" />
         <S.Input placeholder="Message" value={message} onChange={handleChange} />
-        <C.Icon image="attach_svg.svg" size="small" />
+        <C.Icon image="attach_svg.svg" sizeIcon="1rem" />
       </S.InputController>
       <S.SendButton onClick={handleClick}>
         {message ? (
-          <C.Icon image="send_svg.svg" size="small" />
+          <C.Icon image="send_svg.svg" sizeIcon="1rem" />
         ) : (
-          <C.Icon image="microphone_svg.svg" size="small" />
+          <C.Icon image="microphone_svg.svg" sizeIcon="1rem" />
         )}
       </S.SendButton>
     </S.Wrapper>

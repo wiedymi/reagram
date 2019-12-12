@@ -1,5 +1,12 @@
 import React, { ReactNode, useState, useRef } from 'react'
-import { getAudioFile, fancyTimeFormat, bytesToSize, useTelegram, USE_TELEGRAM } from '@/helpers'
+import {
+  getAudioFile,
+  fancyTimeFormat,
+  convertTime,
+  bytesToSize,
+  useTelegram,
+  USE_TELEGRAM,
+} from '@/helpers'
 import { TYPES } from '@/constants'
 import * as C from '@/components/common'
 import * as S from './styles'
@@ -9,12 +16,6 @@ type IAudioMessage = {
   message: object;
   me: object;
   index: number;
-}
-
-const getTime = (time): string => {
-  const date = new Date(+`${time}000`)
-
-  return `${date.getHours()}:${date.getMinutes()}`
 }
 
 const toPercents = (portion, total): string => {
@@ -141,7 +142,7 @@ export const AudioMessage = ({ message, me }: IAudioMessage): ReactNode => {
         </S.AudioInfo>
       </S.Message>
       <S.Status>
-        <S.Date>{getTime(message.date)}</S.Date>
+        <S.Date>{convertTime(message.date)}</S.Date>
       </S.Status>
     </S.MessageBubble>
   )

@@ -15,6 +15,9 @@ const SelectImage = (props: Props): ReactNode => {
     const link = toImage(file)
 
     setImage(link)
+    if (props.getImage) {
+      props.getImage({ target: { value: file.mozFullPath } })
+    }
   }
 
   const openPicker = (): void => {

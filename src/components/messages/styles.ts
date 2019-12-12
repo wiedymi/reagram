@@ -33,7 +33,7 @@ export const Message = styled.p`
   ${({ flex }): string => flex && messageFlex};
   padding: ${(props): string => get.padding(props).tiny};
   width: 100%;
-  padding-right: 40px;
+  padding-right: 60px;
   max-width: ${({ width }): string => width + 'px'};
 `
 export const Status = styled.div``
@@ -223,4 +223,20 @@ export const AudioInfo = styled.div`
 `
 export const Animation = styled.video`
   border-radius: ${(props): string => get.radius(props).tiny};
+`
+export const UserInfo = styled.div`
+  position: absolute;
+  left: -50px;
+  bottom: 0;
+  cursor: pointer;
+`
+
+export const UserAvatar = styled.div`
+  width: 40px;
+  height: 40px;
+  display: flex;
+  background-color: ${(props): string => get.colors(props).primary};
+  background-image: url(${({ image }): string => image});
+  border-radius: 50%;
+  background-size: contain;
 `

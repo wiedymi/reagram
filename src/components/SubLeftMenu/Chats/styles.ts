@@ -9,3 +9,4 @@ export const PinnedLine = styled.hr`
   background: white;
   width: 100%;
 `
+export const ChatsSroll = styled.div``
