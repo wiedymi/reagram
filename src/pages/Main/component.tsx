@@ -1,9 +1,7 @@
 import React, { ReactNode, useState } from 'react'
-import { Layout } from '@/components/base'
-import LeftMenu from '@/components/LeftMenu'
+import { Layout } from '@/components/common'
+import { MiddleMenu, RightMenu, LeftMenu } from '@/menus'
 import { Wrapper } from './styles'
-import MiddleMenu from 'components/MiddleMenu'
-import RightMenu from 'components/RightMenu'
 
 const Main = (): ReactNode => {
   const [openedChat, setOpenedChat] = useState(0)

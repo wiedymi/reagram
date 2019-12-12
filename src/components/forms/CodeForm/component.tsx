@@ -1,19 +1,18 @@
 import React, { ReactNode, useEffect } from 'react'
-import { Input } from '@/components/base'
-import { authStyles } from '@/components/common'
+import { authStyles, Input } from '@/components/common'
 import { AUTH_FORM } from '@/constants'
 import { telegram, createAuthForm, authorizationStateWaitCode } from '@/helpers'
 
 const { Wrapper, Img, Content, Title, Subtitle } = authStyles
 
 type Props = {
-  children: ReactNode;
-  state: Any;
-  name: string;
-  type: string;
-  value: string;
-  handleChange(): void;
-  handleClick(): void;
+  children: ReactNode
+  state: Any
+  name: string
+  type: string
+  value: string
+  handleChange(): void
+  handleClick(): void
 }
 
 const CodeForm = (props: Props): void => {
@@ -53,7 +52,8 @@ const CodeForm = (props: Props): void => {
           value={value}
           onChange={validate}
           label={`Code`}
-          variant="outlined"/>
+          variant="outlined"
+        />
       </Content>
     </Wrapper>
   )

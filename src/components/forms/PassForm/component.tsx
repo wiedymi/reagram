@@ -1,8 +1,7 @@
 import React, { ReactNode, useState } from 'react'
 import { IconButton, InputLabel, InputAdornment } from '@material-ui/core'
 import { Visibility, VisibilityOff } from '@material-ui/icons'
-import * as B from '@/components/base'
-import { authStyles as C } from '@/components/common'
+import * as C from '@/components/common'
 import { AUTH_FORM } from '@/constants'
 import { createAuthForm, authorizationStateWaitPassword } from '@/helpers'
 import * as S from './styles'
@@ -32,14 +31,16 @@ const PassForm = (props: Props): ReactNode => {
   }
 
   return (
-    <C.Wrapper>
-      <C.Img src={values.showPassword ? '/assert/monkey3.png' : '/assert/monkey4.png'} />
-      <C.Content>
-        <C.Title variant="h4">Enter Your Password</C.Title>
-        <C.Subtitle>Your account is protected with an additional password.</C.Subtitle>
+    <C.authStyles.Content>
+      <C.authStyles.Img src={values.showPassword ? '/assert/monkey3.png' : '/assert/monkey4.png'} />
+      <C.authStyles.Content>
+        <C.authStyles.Title variant="h4">Enter Your Password</C.authStyles.Title>
+        <C.authStyles.Subtitle>
+          Your account is protected with an additional password.
+        </C.authStyles.Subtitle>
         <S.InputWrapper variant="outlined">
           <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-          <B.Input
+          <C.Input
             id="outlined-adornment-password"
             inputType="outlined"
             type={values.showPassword ? 'text' : 'password'}
@@ -63,16 +64,16 @@ const PassForm = (props: Props): ReactNode => {
             labelWidth={70}/>
         </S.InputWrapper>
 
-        <C.NextStageButton
+        <C.authStyles.NextStageButton
           variant="contained"
           color="primary"
           onClick={handleClick}
           nextStageButton
         >
           next
-        </C.NextStageButton>
-      </C.Content>
-    </C.Wrapper>
+        </C.authStyles.NextStageButton>
+      </C.authStyles.Content>
+    </C.authStyles.Content>
   )
 }
 

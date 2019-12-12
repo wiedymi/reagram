@@ -1,6 +1,5 @@
 import React, { ReactNode } from 'react'
-import { SelectImage } from '@/components/base'
-import { Loading } from '@/components/common'
+import * as C from '@/components/common'
 import { EditProfile, EditUsername } from '@/components/forms'
 import { useTelegram, USE_TELEGRAM, getImageFile } from '@/helpers'
 import { TYPES } from '@/constants'
@@ -9,7 +8,7 @@ import * as S from './styles'
 const { GET_AVATARS_CHATS } = USE_TELEGRAM
 
 type Props = {
-  children: ReactNode
+  children: ReactNode;
 }
 
 const Component = (props: Props): ReactNode => {
@@ -23,12 +22,12 @@ const Component = (props: Props): ReactNode => {
   const image = !loading && data ? getImageFile(id, data.files, refetch) : ''
 
   if (loading) {
-    return <Loading message="Loading..." />
+    return <C.Loading message="Loading..." />
   }
 
   return (
     <S.Wrapper>
-      <SelectImage image={image} select />
+      <C.SelectImage image={image} select />
       <EditProfile {...props.me} />
       <hr />
       <EditUsername {...props.me} />

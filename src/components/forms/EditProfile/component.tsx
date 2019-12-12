@@ -1,5 +1,5 @@
 import React, { ReactNode, useState } from 'react'
-import * as B from '@/components/base'
+import * as C from '@/components/common'
 import * as S from './styles'
 
 const EditProfile = ({ firstName, lastName, bio }: EditProfileType): ReactNode => {
@@ -18,21 +18,21 @@ const EditProfile = ({ firstName, lastName, bio }: EditProfileType): ReactNode =
 
   return (
     <S.Wrapper>
-      <B.Input
+      <C.Input
         type="text"
         value={state.firstName}
         label={`First Name`}
         variant="outlined"
         fluid
         onChange={({ target }): void => handleChange('firstName', target.value)}/>
-      <B.Input
+      <C.Input
         type="text"
         value={state.lastName}
         label={`Last Name`}
         variant="outlined"
         fluid
         onChange={({ target }): void => handleChange('lastName', target.value)}/>
-      <B.Input
+      <C.Input
         type="text"
         value={state.bio}
         label={`Bio`}

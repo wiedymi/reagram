@@ -2,7 +2,7 @@ import React, { ReactNode, useState, useRef } from 'react'
 import { getAudioFile, fancyTimeFormat, bytesToSize, useTelegram, USE_TELEGRAM } from '@/helpers'
 import { TYPES } from '@/constants'
 import * as C from '@/components/common'
-import * as S from '../styles'
+import * as S from './styles'
 
 type IAudioMessage = {
   children: ReactNode;

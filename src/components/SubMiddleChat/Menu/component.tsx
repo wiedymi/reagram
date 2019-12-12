@@ -4,7 +4,7 @@ import { TYPES } from '@/constants'
 import * as S from './styles'
 
 type Props = {
-  children: ReactNode;
+  children: ReactNode
 }
 
 const Menu = ({ chatInfo }: Props): ReactNode => {
@@ -35,13 +35,10 @@ const Menu = ({ chatInfo }: Props): ReactNode => {
           )
         }
         title={title}
-        subheader={'Online'}/>
+        subheader={'Online'}
+      />
     </S.Wrapper>
   )
-}
-
-Menu.defaultProps = {
-  // bla: 'test',
 }
 
 export default Menu

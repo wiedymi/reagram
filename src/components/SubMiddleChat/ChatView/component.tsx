@@ -1,9 +1,8 @@
 import React, { ReactNode } from 'react'
 import { handleMessage } from '@/helpers'
 import { TYPES } from '@/constants'
-
+import * as M from '@/components/messages'
 import * as S from './styles'
-import * as M from './messages'
 
 const { PHOTO, TEXT, AUDIO, STICKER, VIDEO, ANIMATION, UNSUPPORTED } = TYPES.MESSAGES
 
@@ -57,7 +56,7 @@ const ChatView = ({ messages, me }: Props): ReactNode => {
   return (
     <S.Wrapper messages={messages.length} ref={toBottom}>
       <S.MessagesWrapper ref={toBottom}>
-        {messages.reverse().map((message, index, array) => {
+        {messages.reverse().map((message, index) => {
           const type = handleMessage(message.content)
 
           return chooseMessageView(type, { message, me, index: messages.length - index })

@@ -1,23 +1,7 @@
 import React, { ReactNode, useState } from 'react'
-import { Input } from '@/components/base'
-import { authStyles } from '@/components/common'
+import * as C from '@/components/common'
 import { AUTH_FORM } from '@/constants'
 import { createAuthForm, authorizationStateWaitPhoneNumber, getListOfCountries } from '@/helpers'
-
-const {
-  Wrapper,
-  Img,
-  Content,
-  Title,
-  Subtitle,
-  SelectItem,
-  SelectWrapper,
-  CountryCode,
-  CountryName,
-  Flag,
-  CountryWrapper,
-  NextStageButton,
-} = authStyles
 
 type Props = {
   children: ReactNode;
@@ -41,15 +25,15 @@ const getCountries = (): ReactNode => {
 
   return countries.map(country => {
     return (
-      <SelectItem key={country.iso2} value={country.dialCode}>
-        <SelectWrapper>
-          <CountryWrapper>
-            <Flag>{country.flag}</Flag>
-            <CountryName>{getCountryName(country.name)}</CountryName>
-          </CountryWrapper>
-          <CountryCode>+{country.dialCode}</CountryCode>
-        </SelectWrapper>
-      </SelectItem>
+      <C.authStyles.SelectItem key={country.iso2} value={country.dialCode}>
+        <C.authStyles.SelectWrapper>
+          <C.authStyles.CountryWrapper>
+            <C.authStyles.Flag>{country.flag}</C.authStyles.Flag>
+            <C.authStyles.CountryName>{getCountryName(country.name)}</C.authStyles.CountryName>
+          </C.authStyles.CountryWrapper>
+          <C.authStyles.CountryCode>+{country.dialCode}</C.authStyles.CountryCode>
+        </C.authStyles.SelectWrapper>
+      </C.authStyles.SelectItem>
     )
   })
 }
@@ -94,12 +78,14 @@ const PhoneForm = (props: Props): ReactNode => {
   }
 
   return (
-    <Wrapper>
-      <Img src="/assert/logo.png" />
-      <Content>
-        <Title variant="h4">Sign in to Telegram</Title>
-        <Subtitle>Please confirm your country and enter your phone number</Subtitle>
-        <Input
+    <C.authStyles.Wrapper>
+      <C.authStyles.Img src="/assert/logo.png" />
+      <C.authStyles.Content>
+        <C.authStyles.Title variant="h4">Sign in to Telegram</C.authStyles.Title>
+        <C.authStyles.Subtitle>
+          Please confirm your country and enter your phone number
+        </C.authStyles.Subtitle>
+        <C.Input
           label={`Country`}
           variant="outlined"
           select
@@ -107,8 +93,8 @@ const PhoneForm = (props: Props): ReactNode => {
           onChange={handleSelect}
         >
           {getCountries()}
-        </Input>
-        <Input
+        </C.Input>
+        <C.Input
           name={name}
           type="text"
           value={placeholderValue}
@@ -116,16 +102,16 @@ const PhoneForm = (props: Props): ReactNode => {
           label={`Phone Number`}
           variant="outlined"/>
 
-        <NextStageButton
+        <C.authStyles.NextStageButton
           variant="contained"
           color="primary"
           onClick={handleClick}
           nextStageButton={nextStageButton}
         >
           next
-        </NextStageButton>
-      </Content>
-    </Wrapper>
+        </C.authStyles.NextStageButton>
+      </C.authStyles.Content>
+    </C.authStyles.Wrapper>
   )
 }
 

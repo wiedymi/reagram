@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react'
 import { getImageFile, useTelegram, USE_TELEGRAM } from '@/helpers'
 import { TYPES } from '@/constants'
-import * as S from '../styles'
+import * as S from './styles'
 
 type IStickerMessage = {
   children: ReactNode;

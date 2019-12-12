@@ -1,6 +1,5 @@
 import React, { ReactNode } from 'react'
-import { SelectImage } from '@/components/base'
-import { Loading } from '@/components/common'
+import * as C from '@/components/common'
 import { useTelegram, USE_TELEGRAM, getImageFile } from '@/helpers'
 import { TYPES, LEFT_MENU } from '@/constants'
 import * as S from './styles'
@@ -51,7 +50,7 @@ const Settings = (props: Props): ReactNode => {
   const image = !loading && data ? getImageFile(id, data.files, refetch) : ''
 
   if (loading) {
-    return <Loading message="Loading settings..." />
+    return <C.Loading message="Loading settings..." />
   }
 
   const handleClick = (VIEW: string): void => {
@@ -60,7 +59,7 @@ const Settings = (props: Props): ReactNode => {
 
   return (
     <S.Wrapper>
-      <SelectImage hidden image={image} />
+      <C.SelectImage hidden image={image} />
       <S.Title variant="h5">{!lastName ? firstName : firstName + ' ' + lastName}</S.Title>
       <S.Subtitle>+{phoneNumber}</S.Subtitle>
       <S.Menu>

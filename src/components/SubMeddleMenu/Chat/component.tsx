@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react'
 import * as C from '@/components/common'
 import { useTelegram, USE_TELEGRAM } from '@/helpers'
 import * as S from './styles'
-import * as Sub from './subcomponents'
+import * as Sub from '@/components/SubMiddleChat'
 
 const { GET_CHAT_MESSAGES } = USE_TELEGRAM
 

@@ -1,11 +1,11 @@
 import React, { ReactNode, useState, useEffect } from 'react'
 import { MIDDLE_MENU } from '@/constants'
 import { createViewController } from '@/helpers'
-import * as Sub from './subcomponents'
+import * as Sub from '@/components/SubMeddleMenu'
 import * as S from './styles'
 
 type Props = {
-  children: ReactNode
+  children: ReactNode;
 }
 
 const Views = createViewController({

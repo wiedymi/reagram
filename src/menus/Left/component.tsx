@@ -5,7 +5,7 @@ import { useTelegram, USE_TELEGRAM, createIsInView, createViewController } from 
 import { LEFT_MENU } from '@/constants'
 
 import * as S from './styles'
-import * as Sub from './subcomponents'
+import * as Sub from '@/components/SubLeftMenu'
 
 const { GET_ME } = USE_TELEGRAM
 

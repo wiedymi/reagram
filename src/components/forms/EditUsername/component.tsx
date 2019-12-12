@@ -1,5 +1,5 @@
 import React, { ReactNode, useState, useCallback } from 'react'
-import * as B from '@/components/base'
+import * as C from '@/components/common'
 import * as S from './styles'
 
 const Component = (props: EditProfileType): ReactNode => {
@@ -14,7 +14,7 @@ const Component = (props: EditProfileType): ReactNode => {
   return (
     <S.Wrapper>
       <S.Title>Username</S.Title>
-      <B.Input
+      <C.Input
         type="text"
         onChange={handleChnage}
         value={username}
