@@ -1,111 +1,14 @@
-import React, { ReactNode, useRef } from 'react'
-import { handleMessage, getImageFile, useTelegram, USE_TELEGRAM } from '@/helpers'
+import React, { ReactNode } from 'react'
+import { handleMessage } from '@/helpers'
 import { TYPES } from '@/constants'
-import * as C from '@/components/common'
-import * as S from './styles'
 
-const { PHOTO, TEXT, AUDIO, STICKER, VIDIO, UNSUPPORTED } = TYPES.MESSAGES
+import * as S from './styles'
+import * as M from './messages'
+
+const { PHOTO, TEXT, AUDIO, STICKER, VIDEO, ANIMATION, UNSUPPORTED } = TYPES.MESSAGES
 
 type Props = {
   children: ReactNode;
-}
-
-const getTime = (time): string => {
-  const date = new Date(+`${time}000`)
-
-  return `${date.getHours()}:${date.getMinutes()}`
-}
-
-const TextMessage = ({ message, me }: ITextMessage): ReactNode => {
-  return (
-    <S.MessageBubble isMe={message.senderUserId === me.id}>
-      <S.Message>{message.content.text.text}</S.Message>
-      <S.Status>
-        <S.Date>{getTime(message.date)}</S.Date>
-      </S.Status>
-    </S.MessageBubble>
-  )
-}
-
-const ImageMessage = ({ message, me, index }: IImageMessage): ReactNode => {
-  const { id } = message.content.photo.sizes[0].photo
-  const [{ height, width }] = message.content.photo.sizes
-  const query = {
-    id,
-    type: TYPES.FILES.PHOTO,
-    priority: index + 1,
-  }
-  const { data, loading, refetch } = useTelegram(USE_TELEGRAM.GET_AVATARS_CHATS, query)
-  const caption = message.content.caption.text || ''
-  const messageText = caption.length > 0 ? caption : false
-
-  if (loading) {
-    return (
-      <S.MessageBubble isMe={message.senderUserId === me.id}>
-        <S.LoadingWrapper width={width} height={height}>
-          <C.Loading message="Dowloading photo..." />
-          {messageText && <S.Message width={width}>{messageText}</S.Message>}
-        </S.LoadingWrapper>
-      </S.MessageBubble>
-    )
-  }
-
-  const photo = !loading && data ? getImageFile(id, data.files, refetch) : ''
-
-  return (
-    <S.MessageBubble isMe={message.senderUserId === me.id}>
-      <S.Image src={photo} width={width} height={height} />
-      {messageText && <S.Message width={width}>{messageText}</S.Message>}
-      <S.Status>
-        <S.Date>{getTime(message.date)}</S.Date>
-      </S.Status>
-    </S.MessageBubble>
-  )
-}
-
-const AudioMessage = ({ message, me }: IAudioMessage): ReactNode => {
-  return (
-    <S.MessageBubble isMe={message.senderUserId === me.id}>
-      <S.Status>
-        <S.Date>{getTime(message.date)}</S.Date>
-      </S.Status>
-    </S.MessageBubble>
-  )
-}
-
-const VideoMessage = ({ message, time, isMe }: IVideoMessage): ReactNode => {
-  return (
-    <S.MessageBubble isMe={isMe}>
-      <S.Message>{message}</S.Message>
-      <S.Status>
-        <S.Date>{getTime(time)}</S.Date>
-      </S.Status>
-    </S.MessageBubble>
-  )
-}
-
-const StickerMessage = ({ message, me }: IStickerMessage): ReactNode => {
-  console.log(message)
-  const { id } = message.content.sticker.sticker
-  const query = {
-    id,
-    type: TYPES.FILES.PHOTO,
-    priority: 3,
-  }
-
-  const { data, loading, refetch } = useTelegram(USE_TELEGRAM.GET_AVATARS_CHATS, query)
-
-  const sticker =
-    !loading && data ? getImageFile(id, data.files, refetch) : message.content.sticker.emoji
-
-  return (
-    <S.MessageBubble isMe={message.senderUserId === me.id} sticker>
-      <S.Image src={sticker} width={240} height={280} />
-      <S.Status>
-        <S.Date>{getTime(message.date)}</S.Date>
-      </S.Status>
-    </S.MessageBubble>
-  )
 }
 
 const chooseMessageView = (type, props): ReactNode => {
@@ -125,35 +28,39 @@ const chooseMessageView = (type, props): ReactNode => {
   }
 
   const types = {
-    [PHOTO]: ImageMessage,
-    [TEXT]: TextMessage,
-    [AUDIO]: AudioMessage,
-    [STICKER]: StickerMessage,
-    // [VIDIO]: VideoMessage,
-    [UNSUPPORTED]: TextMessage,
+    [PHOTO]: M.ImageMessage,
+    [TEXT]: M.TextMessage,
+    [AUDIO]: M.AudioMessage,
+    [STICKER]: M.StickerMessage,
+    [VIDEO]: M.VideoMessage,
+    [ANIMATION]: M.AnimationMessage,
+    [UNSUPPORTED]: M.TextMessage,
   }
 
-  if (!types[type]) {
+  if (type === UNSUPPORTED) {
     console.log(UNSUPPORTED, props)
-    return <TextMessage {...unsupported} />
+    return <M.TextMessage {...unsupported} />
   }
 
   const Result = types[type]
 
-  return type !== UNSUPPORTED ? <Result {...props} /> : <TextMessage {...unsupported} />
+  return <Result key={props.message.id} {...props} />
 }
 
 const ChatView = ({ messages, me }: Props): ReactNode => {
-  const messageBody = useRef()
-  messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight
+  const toBottom = (node): void => {
+    if (node) {
+      node.scrollTop = node.scrollHeight - node.clientHeight
+    }
+  }
 
   return (
-    <S.Wrapper messages={messages.length} ref={messageBody}>
-      <S.MessagesWrapper>
-        {messages.reverse().map((message, index) => {
+    <S.Wrapper messages={messages.length} ref={toBottom}>
+      <S.MessagesWrapper ref={toBottom}>
+        {messages.reverse().map((message, index, array) => {
           const type = handleMessage(message.content)
-          messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight
-          return chooseMessageView(type, { message, me, index })
+
+          return chooseMessageView(type, { message, me, index: messages.length - index })
         })}
       </S.MessagesWrapper>
     </S.Wrapper>

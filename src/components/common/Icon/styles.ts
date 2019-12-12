@@ -1,26 +1,12 @@
 import styled from '@emotion/styled'
 import { css } from '@emotion/core'
+import { styleHelpers as get } from '@/helpers'
 
-const getSize = ({ size }): string => {
-  const sizes = {
-    tiny: css`
-      width: 1rem;
-      height: 1rem;
-    `,
-
-    small: css`
-      width: 20px;
-      height: 20px;
-    `,
-  }
-
-  return (
-    sizes[size] ||
-    css`
-      width: 1rem;
-      height: 1rem;
-    `
-  )
+const getSizeIcon = (size): object => {
+  return css`
+    width: ${size};
+    height: ${size};
+  `
 }
 
 export const Wrapper = styled.div`
@@ -30,6 +16,6 @@ export const Wrapper = styled.div`
 
 export const Icon = styled.i`
   background-image: url(/icons/${({ image }): string => image});
-  ${(props): string => getSize(props)}
+  ${({ sizeIcon }): string => getSizeIcon(sizeIcon)};
   background-size: cover;
 `

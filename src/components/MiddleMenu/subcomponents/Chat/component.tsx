@@ -7,7 +7,7 @@ import * as Sub from './subcomponents'
 const { GET_CHAT_MESSAGES } = USE_TELEGRAM
 
 type Props = {
-  children: ReactNode
+  children: ReactNode;
 }
 
 const isCorrectChat = (id: number, data: array): boolean => {
@@ -43,7 +43,7 @@ const Chat = (props: Props): ReactNode => {
     <S.Wrapper>
       <Sub.Menu chatInfo={chatInfo} />
       <Sub.ChatView messages={messages} me={me} />
-      <Sub.ChatController chatId={props.openedChat} refetch={refetch} />
+      <Sub.ChatController chatId={props.openedChat} />
     </S.Wrapper>
   )
 }

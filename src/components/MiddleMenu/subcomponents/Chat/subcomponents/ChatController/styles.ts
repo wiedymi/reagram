@@ -7,6 +7,7 @@ export const Wrapper = styled.div`
   justify-content: center;
   min-height: 60px;
   align-items: center;
+  margin-bottom: 15px;
 `
 
 export const InputController = styled.div`

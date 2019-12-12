@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 
 export const Wrapper = styled.div`
-  display: flex;
+  display: ${({ hidden }): string => (hidden ? 'none' : 'flex')};
   width: 340px;
   max-width: 340px;
   min-width: 340px;

@@ -1,7 +1,7 @@
 import React from 'react'
 import { TYPES } from '@/constants'
 
-const { PHOTO, TEXT, AUDIO, STICKER, VIDIO, UNSUPPORTED } = TYPES.MESSAGES
+const { PHOTO, TEXT, AUDIO, STICKER, VIDEO, ANIMATION, UNSUPPORTED } = TYPES.MESSAGES
 
 export const handleLastMessage = (message: object): Any => {
   switch (message._) {
@@ -30,8 +30,11 @@ export const handleLastMessage = (message: object): Any => {
     case STICKER: {
       return 'Sticker'
     }
-    case VIDIO: {
+    case VIDEO: {
       return 'Video'
+    }
+    case ANIMATION: {
+      return 'GIF'
     }
     default: {
       return UNSUPPORTED
@@ -53,8 +56,11 @@ export const handleMessage = (message: object): Any => {
     case STICKER: {
       return STICKER
     }
-    case VIDIO: {
-      return VIDIO
+    case VIDEO: {
+      return VIDEO
+    }
+    case ANIMATION: {
+      return ANIMATION
     }
     default: {
       return UNSUPPORTED

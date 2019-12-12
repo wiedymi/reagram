@@ -10,6 +10,7 @@ const {
   GET_CONTACTS,
   GET_CHAT_MESSAGES,
   SEND_TEXT_MESSAGE,
+  PLAY_AUDIO,
 } = USE_TELEGRAM
 
 function createHook(fn) {
@@ -63,27 +64,42 @@ function createHook(fn) {
   }
 }
 
-function createActionHook(fn): array {
-  const action = async query => {
-    const data = await fn(query)
+function createActionHook(fn, EVENT): void {
+  let state = null
+  return function ActionHook(defaultQuery): array {
+    const [updating, setUpdating] = useState(state)
+    const [id, setId] = useState(null)
+    const [processing, setProcessing] = useState(null)
+    const action = async (query = defaultQuery): object => {
+      setId(query.id)
+      setProcessing(true)
+      const data = await fn(query)
+      setProcessing(false)
+      return data
+    }
 
-    return data
+    if (!EVENT) {
+      return [action]
+    }
+
+    telegram.on(EVENT, async ({ update }, next) => {
+      setUpdating(update)
+      state = update
+
+      next()
+    })
+
+    return [action, { updating, processing, storage }]
   }
-
-  return () => [action]
 }
 
 const getListOfChats = createHook(telegram.getListOfChats)
-
 const getContacts = createHook(telegram.getContacts)
-
 const getAvatar = createHook(store.getAvatar)
-
 const getMe = createHook(telegram.getMe)
-
 const getChatMessages = createHook(telegram.getChatMessages)
-
 const sendTextMessage = createActionHook(telegram.sendTextMessage)
+const playAudio = createActionHook(store.getAudio, 'updateFile')
 
 export function useTelegram(CONSTANT_QUERY, opts = false): object {
   const queries = {
@@ -93,6 +109,7 @@ export function useTelegram(CONSTANT_QUERY, opts = false): object {
     [GET_CONTACTS]: getContacts,
     [GET_CHAT_MESSAGES]: getChatMessages,
     [SEND_TEXT_MESSAGE]: sendTextMessage,
+    [PLAY_AUDIO]: playAudio,
   }
 
   return queries[CONSTANT_QUERY](opts)
