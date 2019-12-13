@@ -12,6 +12,7 @@ const {
   SEND_TEXT_MESSAGE,
   PLAY_AUDIO,
   CREATE_CHANNEL,
+  CREATE_GROUP,
 } = USE_TELEGRAM
 
 function createHook(fn) {
@@ -78,7 +79,7 @@ function createActionHook(fn, EVENT): void {
     }
 
     if (!EVENT) {
-      return [action]
+      return [action, { storage }]
     }
 
     telegram.on(EVENT, async ({ update }, next) => {
@@ -100,6 +101,7 @@ const getChatMessages = createHook(telegram.getChatMessages)
 const sendTextMessage = createActionHook(telegram.sendTextMessage)
 const playAudio = createActionHook(store.getAudio, 'updateFile')
 const createChannel = createActionHook(telegram.createChannel)
+const createGroup = createActionHook(telegram.createGroup)
 
 export function useTelegram(CONSTANT_QUERY, opts = false): object {
   const queries = {
@@ -111,6 +113,7 @@ export function useTelegram(CONSTANT_QUERY, opts = false): object {
     [SEND_TEXT_MESSAGE]: sendTextMessage,
     [PLAY_AUDIO]: playAudio,
     [CREATE_CHANNEL]: createChannel,
+    [CREATE_GROUP]: createGroup,
   }
 
   if (!queries[CONSTANT_QUERY]) {

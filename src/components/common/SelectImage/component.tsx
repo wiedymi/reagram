@@ -16,7 +16,7 @@ const SelectImage = (props: Props): ReactNode => {
 
     setImage(link)
     if (props.getImage) {
-      props.getImage({ target: { value: file.mozFullPath } })
+      props.getImage({ target: { value: file } })
     }
   }
 

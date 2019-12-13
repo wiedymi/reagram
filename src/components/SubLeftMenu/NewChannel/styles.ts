@@ -6,6 +6,7 @@ export const Wrapper = styled.div`
   justify-content: center;
   flex-flow: column;
   padding: ${(props): string => get.padding(props).normal};
+  height: 100%;
   .MuiFormHelperText-root {
     margin-left: 0px !important;
     margin-top: 20px !important;
