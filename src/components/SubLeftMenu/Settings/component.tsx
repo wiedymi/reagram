@@ -1,13 +1,12 @@
 import React, { ReactNode } from 'react'
 import * as C from '@/components/common'
-import { useTelegram, USE_TELEGRAM, getImageFile } from '@/helpers'
+import { getImageFile } from '@/helpers'
+import { getAvatar } from '@/telegram/hooks'
 import { TYPES, LEFT_MENU } from '@/constants'
 import * as S from './styles'
 
-const { GET_AVATARS_CHATS } = USE_TELEGRAM
-
 type Props = {
-  children: ReactNode
+  children: ReactNode;
 }
 
 const options = [
@@ -45,7 +44,7 @@ const Settings = (props: Props): ReactNode => {
     id,
     type: TYPES.FILES.PHOTO,
   }
-  const { loading, data, refetch } = useTelegram(GET_AVATARS_CHATS, query)
+  const { loading, data, refetch } = getAvatar(query)
 
   const image = !loading && data ? getImageFile(id, data.files, refetch) : ''
 
@@ -69,7 +68,8 @@ const Settings = (props: Props): ReactNode => {
             onClick={(e): void => {
               // S.hoverableClick(e)
               handleClick(opt.view)
-            }}>
+            }}
+          >
             <S.Option>
               <S.Icon src={opt.icon} sizeIcon="40px" />
               <S.Text>{opt.text}</S.Text>

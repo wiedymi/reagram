@@ -1,12 +1,6 @@
 import React, { ReactNode, useState, useRef } from 'react'
-import {
-  getAudioFile,
-  fancyTimeFormat,
-  convertTime,
-  bytesToSize,
-  useTelegram,
-  USE_TELEGRAM,
-} from '@/helpers'
+import { getAudioFile, fancyTimeFormat, convertTime, bytesToSize } from '@/helpers'
+import { playAudio } from '@/telegram/hooks'
 import { TYPES } from '@/constants'
 import * as C from '@/components/common'
 import * as S from './styles'
@@ -60,7 +54,7 @@ export const AudioMessage = ({ message, me }: IAudioMessage): ReactNode => {
     priority: 3,
   }
 
-  const [play, { updating, processing, storage }] = useTelegram(USE_TELEGRAM.PLAY_AUDIO)
+  const [play, { updating, processing, storage }] = playAudio()
 
   const { files } = storage.getState()
 

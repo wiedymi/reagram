@@ -1,10 +1,8 @@
 import React, { ReactNode } from 'react'
 import * as C from '@/components/common'
 import * as Sub from '@/components/SubMiddleChat'
-import { useTelegram, USE_TELEGRAM } from '@/helpers'
+import { getChatMessages } from '@/telegram/hooks'
 import * as S from './styles'
-
-const { GET_CHAT_MESSAGES } = USE_TELEGRAM
 
 type IChat = {
   children: ReactNode;
@@ -25,7 +23,7 @@ const isCorrectChat = (id: number, data: array): boolean => {
 }
 
 const Chat = (props: IChat): ReactNode => {
-  const { data, loading, refetch, storage } = useTelegram(GET_CHAT_MESSAGES, {
+  const { data, loading, refetch, storage } = getChatMessages({
     chatId: props.openedChat,
     offset: 0,
     limit: 30,

@@ -1,11 +1,9 @@
 import React, { ReactNode } from 'react'
 import * as C from '@/components/common'
-import { useTelegram, USE_TELEGRAM } from '@/helpers'
+import { getListOfChats } from '@/telegram/hooks'
 import Chat from '../Chat'
 
 import * as S from './styles'
-
-const { GET_LIST_OF_CHATS } = USE_TELEGRAM
 
 type ChatsProps = {
   me: object;
@@ -28,7 +26,7 @@ const hasValues = (array): boolean => {
 }
 
 const Chats = ({ me, ...props }: ChatsProps): ReactNode => {
-  const { data, loading } = useTelegram(GET_LIST_OF_CHATS, 999)
+  const { data, loading } = getListOfChats(999)
 
   if (loading) {
     return <C.Loading message="Loading chats..." />

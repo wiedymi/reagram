@@ -1,6 +1,6 @@
 import React, { ReactNode, useState, useCallback } from 'react'
 import { ArrowForward } from '@material-ui/icons'
-import { useTelegram, USE_TELEGRAM } from '@/helpers'
+import { createGroup } from '@/telegram/hooks'
 import { LEFT_MENU } from '@/constants'
 import * as C from '@/components/common'
 import * as S from './styles'
@@ -9,10 +9,8 @@ type ICreateGroup = {
   children: ReactNode;
 }
 
-const { CREATE_GROUP } = USE_TELEGRAM
-
 const CreateGroup = (props: ICreateGroup): ReactNode => {
-  const [createNewGroup] = useTelegram(CREATE_GROUP)
+  const [createNewGroup] = createGroup()
   const [state, setState] = useState({
     title: '',
     userIds: [240915161],

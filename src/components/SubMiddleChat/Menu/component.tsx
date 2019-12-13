@@ -1,10 +1,11 @@
 import React, { ReactNode } from 'react'
-import { useTelegram, USE_TELEGRAM, getImageFile, nFormatter } from '@/helpers'
+import { getImageFile, nFormatter } from '@/helpers'
+import { getAvatar } from '@/telegram/hooks'
 import { TYPES } from '@/constants'
 import * as S from './styles'
 
 type Props = {
-  children: ReactNode
+  children: ReactNode;
 }
 
 const Menu = ({ chatInfo }: Props): ReactNode => {
@@ -14,7 +15,7 @@ const Menu = ({ chatInfo }: Props): ReactNode => {
     id,
     type: TYPES.FILES.PHOTO,
   }
-  const { data, loading, refetch, storage } = useTelegram(USE_TELEGRAM.GET_AVATARS_CHATS, query)
+  const { data, loading, refetch, storage } = getAvatar(query)
   const { me } = storage.getState()
   let avatar = !loading && data ? getImageFile(id, data.files, refetch) : ''
   let { title } = chatInfo
@@ -38,8 +39,7 @@ const Menu = ({ chatInfo }: Props): ReactNode => {
           )
         }
         title={title}
-        subheader={supergroupId ? nFormatter(chatInfo.memberCount) + typeMembers : 'Online'}
-      />
+        subheader={supergroupId ? nFormatter(chatInfo.memberCount) + typeMembers : 'Online'}/>
     </S.Wrapper>
   )
 }

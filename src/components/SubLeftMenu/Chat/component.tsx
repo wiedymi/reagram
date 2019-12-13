@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react'
 import { CardHeader, Avatar } from '@material-ui/core'
-import { useTelegram, USE_TELEGRAM, handleLastMessage, getImageFile } from '@/helpers'
+import { handleLastMessage, getImageFile } from '@/helpers'
+import { getAvatar } from '@/telegram/hooks'
 import { TYPES } from '@/constants'
 import * as S from './styles'
 
@@ -35,7 +36,7 @@ const Chat = (props: ChatProps): ReactNode => {
     id: props.photoId,
     type: TYPES.FILES.PHOTO,
   }
-  const { data, loading, refetch } = useTelegram(USE_TELEGRAM.GET_AVATARS_CHATS, query)
+  const { data, loading, refetch } = getAvatar(query)
 
   let avatar = !loading && data ? getImageFile(props.photoId, data.files, refetch) : ''
   let { title } = props

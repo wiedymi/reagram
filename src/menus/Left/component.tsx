@@ -1,13 +1,12 @@
 import React, { ReactNode, useState } from 'react'
 import { Menu as FabMenu } from '@material-ui/core'
 import { PersonOutlined, PeopleOutline, ArrowForward } from '@material-ui/icons'
-import { useTelegram, USE_TELEGRAM, createIsInView, createViewController } from '@/helpers'
+import { createIsInView, createViewController } from '@/helpers'
+import { getMe } from '@/telegram/hooks'
 import { LEFT_MENU } from '@/constants'
 
 import * as S from './styles'
 import * as Sub from '@/components/SubLeftMenu'
-
-const { GET_ME } = USE_TELEGRAM
 
 const Views = createViewController({
   [LEFT_MENU.CHATS]: Sub.Chats,
@@ -43,7 +42,7 @@ const options = [
 const isFabView = createIsInView([LEFT_MENU.CHATS])
 
 const LeftMenu = ({ openChat, openedChat }: LeftMenuType): ReactNode => {
-  const { data } = useTelegram(GET_ME)
+  const { data } = getMe()
   const [view, changeView] = useState(LEFT_MENU.CHATS)
 
   const [fabEl, setFabEl] = useState<null | HTMLElement>(null)

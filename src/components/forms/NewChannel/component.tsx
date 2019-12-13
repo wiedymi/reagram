@@ -1,16 +1,14 @@
 import React, { ReactNode, useState, useCallback } from 'react'
 import { ArrowForward } from '@material-ui/icons'
-import { useTelegram, USE_TELEGRAM } from '@/helpers'
+import { createChannel } from '@/telegram/hooks'
 import * as C from '@/components/common'
 import { LEFT_MENU } from '@/constants'
 import * as S from './styles'
 
-const { CREATE_CHANNEL } = USE_TELEGRAM
-
 type ICreateNewChannel = {}
 
 const CreateNewChannel = (props: ICreateNewChannel): ReactNode => {
-  const [createNewChannel] = useTelegram(CREATE_CHANNEL)
+  const [createNewChannel] = createChannel()
   const [state, setState] = useState({
     title: '',
     description: '',

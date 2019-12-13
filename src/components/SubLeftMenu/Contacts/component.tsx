@@ -1,11 +1,10 @@
 import React, { ReactNode } from 'react'
 import { CardHeader, Avatar } from '@material-ui/core'
-import { useTelegram, USE_TELEGRAM, getImageFile } from '@/helpers'
+import { getImageFile } from '@/helpers'
+import { getAvatar, getContacts } from '@/telegram/hooks'
 import { TYPES } from '@/constants'
 import * as C from '@/components/common'
 import * as S from './styles'
-
-const { GET_CONTACTS, GET_AVATARS_CHATS } = USE_TELEGRAM
 
 type ContactType = {
   profilePhoto: object;
@@ -17,7 +16,7 @@ const Contact = (props: ContactType): ReactNode => {
     id: props.profilePhoto.big.id,
     type: TYPES.FILES.PHOTO,
   }
-  const { data, loading, refetch } = useTelegram(GET_AVATARS_CHATS, query)
+  const { data, loading, refetch } = getAvatar(query)
 
   const avatar =
     !loading && data ? getImageFile(props.profilePhoto.big.id, data.files, refetch) : ''
@@ -52,7 +51,7 @@ const Contact = (props: ContactType): ReactNode => {
 }
 
 const Contacts = (): ReactNode => {
-  const { loading, data } = useTelegram(GET_CONTACTS)
+  const { loading, data } = getContacts()
 
   if (loading) {
     return <C.Loading message="Loading contacts..." />
