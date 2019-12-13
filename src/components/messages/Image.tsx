@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react'
-import { getImageFile, convertTime, useTelegram, USE_TELEGRAM } from '@/helpers'
+import { getImageFile, convertTime } from '@/helpers'
+import { getAvatar } from '@/telegram/hooks'
 import { TYPES } from '@/constants'
 import * as C from '@/components/common'
 import * as S from './styles'
@@ -37,7 +38,7 @@ export const ImageMessage = ({ message, me, index }: IImageMessage): ReactNode =
     type: TYPES.FILES.PHOTO,
     priority: index + 1,
   }
-  const { data, loading, refetch } = useTelegram(USE_TELEGRAM.GET_AVATARS_CHATS, query)
+  const { data, loading, refetch } = getAvatar(query)
   const caption = message.content.caption.text || ''
   const messageText = caption.length > 0 ? caption : false
 

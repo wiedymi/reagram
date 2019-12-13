@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react'
-import { getImageFile, convertTime, useTelegram, USE_TELEGRAM } from '@/helpers'
+import { getImageFile, convertTime } from '@/helpers'
+import { getAvatar } from '@/telegram/hooks'
 import { TYPES } from '@/constants'
 import * as S from './styles'
 
@@ -18,7 +19,7 @@ export const StickerMessage = ({ message, me }: IStickerMessage): ReactNode => {
     priority: 3,
   }
 
-  const { data, loading, refetch } = useTelegram(USE_TELEGRAM.GET_AVATARS_CHATS, query)
+  const { data, loading, refetch } = getAvatar(query)
 
   const sticker =
     !loading && data ? getImageFile(id, data.files, refetch) : message.content.sticker.emoji

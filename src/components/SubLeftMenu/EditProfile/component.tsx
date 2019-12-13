@@ -1,11 +1,10 @@
 import React, { ReactNode } from 'react'
 import * as C from '@/components/common'
 import { EditProfile, EditUsername } from '@/components/forms'
-import { useTelegram, USE_TELEGRAM, getImageFile } from '@/helpers'
+import { getImageFile } from '@/helpers'
+import { getAvatar } from '@/telegram/hooks'
 import { TYPES } from '@/constants'
 import * as S from './styles'
-
-const { GET_AVATARS_CHATS } = USE_TELEGRAM
 
 type Props = {
   children: ReactNode;
@@ -17,7 +16,7 @@ const Component = (props: Props): ReactNode => {
     id,
     type: TYPES.FILES.PHOTO,
   }
-  const { loading, data, refetch } = useTelegram(GET_AVATARS_CHATS, query)
+  const { loading, data, refetch } = getAvatar(query)
 
   const image = !loading && data ? getImageFile(id, data.files, refetch) : ''
 

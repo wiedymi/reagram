@@ -1,5 +1,5 @@
 import React, { ReactNode, useState, useCallback } from 'react'
-import { useTelegram, USE_TELEGRAM } from '@/helpers'
+import { sendTextMessage } from '@/telegram/hooks'
 import * as C from '@/components/common'
 import * as S from './styles'
 
@@ -9,7 +9,7 @@ type Props = {
 
 const ChatController = (props: Props): ReactNode => {
   const [message, setMessage] = useState()
-  const [sendTextMessage] = useTelegram(USE_TELEGRAM.SEND_TEXT_MESSAGE)
+  const [sendText] = sendTextMessage()
 
   const handleChange = ({ target }): void => {
     setMessage(target.value)
@@ -21,10 +21,10 @@ const ChatController = (props: Props): ReactNode => {
       message,
     }
 
-    const data = await sendTextMessage(query)
+    const data = await sendText(query)
 
     props.refetch()
-  }, [props, message, sendTextMessage])
+  }, [props, message, sendText])
 
   return (
     <S.Wrapper>

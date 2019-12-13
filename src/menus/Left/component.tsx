@@ -1,13 +1,12 @@
 import React, { ReactNode, useState } from 'react'
 import { Menu as FabMenu } from '@material-ui/core'
 import { PersonOutlined, PeopleOutline, ArrowForward } from '@material-ui/icons'
-import { useTelegram, USE_TELEGRAM, createIsInView, createViewController } from '@/helpers'
+import { createIsInView, createViewController } from '@/helpers'
+import { getMe } from '@/telegram/hooks'
 import { LEFT_MENU } from '@/constants'
 
 import * as S from './styles'
 import * as Sub from '@/components/SubLeftMenu'
-
-const { GET_ME } = USE_TELEGRAM
 
 const Views = createViewController({
   [LEFT_MENU.CHATS]: Sub.Chats,
@@ -40,20 +39,13 @@ const options = [
   },
 ]
 
-const isFabView = createIsInView([
-  LEFT_MENU.CHATS,
-  LEFT_MENU.NEW_CHANNEL,
-  LEFT_MENU.NEW_GROUP,
-  LEFT_MENU.NEW_PRIVATE_CHAT,
-  LEFT_MENU.SETTINGS.EDIT,
-])
+const isFabView = createIsInView([LEFT_MENU.CHATS])
 
 const LeftMenu = ({ openChat, openedChat }: LeftMenuType): ReactNode => {
-  const { data } = useTelegram(GET_ME)
+  const { data } = getMe()
   const [view, changeView] = useState(LEFT_MENU.CHATS)
 
   const [fabEl, setFabEl] = useState<null | HTMLElement>(null)
-
   const openFab = ({ currentTarget }): void => {
     setFabEl(currentTarget)
   }
@@ -78,10 +70,15 @@ const LeftMenu = ({ openChat, openedChat }: LeftMenuType): ReactNode => {
         me={data}
         changeView={changeView}
         openedChat={openedChat}
-        openChat={openChat}/>
+        openChat={openChat}
+      />
       {isFabView(view) && (
         <>
-          <S.Fab color="primary" aria-label="add" aria-haspopup="true" onClick={openFab}>
+          <S.Fab
+            color="primary"
+            aria-label="add"
+            aria-haspopup="true"
+            onClick={view === LEFT_MENU.CHATS && openFab}>
             {fabEl ? <S.CloseIcon /> : view === LEFT_MENU.CHATS && <S.AddIcon />}
             {view !== LEFT_MENU.CHATS && <ArrowForward />}
           </S.Fab>
@@ -90,8 +87,7 @@ const LeftMenu = ({ openChat, openedChat }: LeftMenuType): ReactNode => {
             anchorEl={fabEl}
             keepMounted
             open={Boolean(fabEl)}
-            onClose={closeFab}
-          >
+            onClose={closeFab}>
             {options.map(Option => (
               <S.MenuItem key={Option.title} onClick={(): void => handleClose(Option.view)}>
                 <S.IconWrapper>

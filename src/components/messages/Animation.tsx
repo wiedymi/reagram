@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react'
-import { getAnimationFile, convertTime, useTelegram, USE_TELEGRAM } from '@/helpers'
+import { getAnimationFile, convertTime } from '@/helpers'
+import { getAvatar } from '@/telegram/hooks'
 import { TYPES } from '@/constants'
 import * as C from '@/components/common'
 import * as S from './styles'
@@ -28,7 +29,7 @@ export const AnimationMessage = ({ message, me, index }: IAnimationMessage): Rea
     type: TYPES.FILES.ANIMATION,
     priority: index + 1,
   }
-  const { data, loading, refetch } = useTelegram(USE_TELEGRAM.GET_AVATARS_CHATS, query)
+  const { data, loading, refetch } = getAvatar(query)
 
   if (loading) {
     return (

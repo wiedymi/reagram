@@ -1,4 +1,5 @@
 import { telegram } from './telegram'
+import { storage } from '@/telegram/helpers'
 
 const connection = (): Promise<Any> => {
   const open = indexedDB.open('tdlib', 1)
@@ -30,38 +31,7 @@ const getter = db => {
     })
 }
 
-export const storage = ((): object => {
-  let state = {
-    files: [],
-    me: {},
-  }
-
-  return {
-    set: (file): object => {
-      const isExist = state.files.filter(val => {
-        return val.id === file.id
-      })
-
-      if (isExist.length === 0) {
-        state.files.push(file)
-
-        return state
-      }
-    },
-    getState: (): object => state,
-    setMe: (me): object => {
-      state = {
-        ...state,
-        me,
-      }
-
-      return state.me
-    },
-    getMe: (): object => state.me,
-  }
-})()
-
-const download = async (query): Promise<Any> => {
+export const download = async (query): Promise<Any> => {
   if (!query.type) {
     throw new Error('You have to provide file type')
   }
@@ -110,20 +80,6 @@ const init = async (): Promise<object> => {
   }
 }
 
-const getAvatar = async function({ id, type }): Promise<object> {
-  const file = await download({ id, type })
-
-  return file
-}
-
-const getAudio = async function({ id, type }): Promise<object> {
-  const file = await download({ id, type })
-
-  return file
-}
-
 export default {
   init,
-  getAvatar,
-  getAudio,
 }
