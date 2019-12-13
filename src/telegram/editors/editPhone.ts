@@ -1,4 +1,4 @@
-import { emit } from '../helpers'
+import { emit } from '../core'
 import { UPDATE, AUTHORIZATION_STATE } from '@airgram/constants'
 const { authorizationStateWaitPhoneNumber } = AUTHORIZATION_STATE
 

@@ -1,4 +1,4 @@
-import { toObject, api } from '../helpers'
+import { toObject, api } from '../core'
 
 export const setChatPhoto = async (path, chatId): object => {
   const result = await api.setChatPhoto({

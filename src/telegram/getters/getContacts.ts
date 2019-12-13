@@ -1,4 +1,4 @@
-import { api, toObject } from '../helpers'
+import { api, toObject } from '../core'
 import { getUserInfo } from './getUserInfo'
 
 export const getContacts = async function(): Promise {

@@ -1,4 +1,4 @@
-import { createHook, createActionHook } from '../helpers'
+import { createHook, createActionHook } from '../core'
 import * as getters from '../getters'
 import * as actions from '../actions'
 

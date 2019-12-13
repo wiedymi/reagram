@@ -1,4 +1,4 @@
-import { toLocalFile, toObject, createActionResponse, api } from '../helpers'
+import { toLocalFile, toObject, createActionResponse, api } from '../core'
 import { setChatPhoto } from '../setters'
 
 export const createChannel = async function({ title, description, image }): Promise {
