@@ -1,4 +1,4 @@
-import { api, asyncMap, toObject } from '../helpers'
+import { api, asyncMap, toObject } from '../core'
 
 export const getListOfChats = async function(limit): array {
   const result = await api.getChats({

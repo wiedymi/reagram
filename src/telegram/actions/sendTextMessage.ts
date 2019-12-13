@@ -1,4 +1,4 @@
-import { api, toObject } from '../helpers'
+import { api, toObject } from '../core'
 
 export const sendTextMessage = async function(query): Promise {
   const sent = await api.sendMessage({

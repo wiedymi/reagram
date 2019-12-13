@@ -1,4 +1,4 @@
-import { api, toObject } from '../helpers'
+import { api, toObject } from '../core'
 
 export const getChatMessages = async function({ chatId, offset, limit }): Promise {
   const lastMessage = await api.getChat({ chatId })

@@ -1,7 +1,8 @@
 import { toObject } from './toObject'
+import { api } from './api'
 
-export const toLocalFile = async (file): object => {
-  const toLocal = await airgram.api.uploadFile({
+export const toLocalFile = async (file, priority = 1): object => {
+  const toLocal = await api.uploadFile({
     file: {
       _: 'inputFileBlob',
       name: file.name,
@@ -10,7 +11,7 @@ export const toLocalFile = async (file): object => {
     fileType: {
       _: 'fileTypeProfilePhoto',
     },
-    priority: 1,
+    priority,
   })
 
   return toObject(toLocal)

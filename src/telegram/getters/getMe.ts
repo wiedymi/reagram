@@ -1,4 +1,4 @@
-import { storage, api, toObject } from '../helpers'
+import { storage, api, toObject } from '../core'
 
 export const getMe = async function(): void {
   const isMe = storage.getMe()
