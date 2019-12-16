@@ -70,15 +70,15 @@ const LeftMenu = ({ openChat, openedChat }: LeftMenuType): ReactNode => {
         me={data}
         changeView={changeView}
         openedChat={openedChat}
-        openChat={openChat}
-      />
+        openChat={openChat}/>
       {isFabView(view) && (
         <>
           <S.Fab
             color="primary"
             aria-label="add"
             aria-haspopup="true"
-            onClick={view === LEFT_MENU.CHATS && openFab}>
+            onClick={view === LEFT_MENU.CHATS && openFab}
+          >
             {fabEl ? <S.CloseIcon /> : view === LEFT_MENU.CHATS && <S.AddIcon />}
             {view !== LEFT_MENU.CHATS && <ArrowForward />}
           </S.Fab>
@@ -87,7 +87,8 @@ const LeftMenu = ({ openChat, openedChat }: LeftMenuType): ReactNode => {
             anchorEl={fabEl}
             keepMounted
             open={Boolean(fabEl)}
-            onClose={closeFab}>
+            onClose={closeFab}
+          >
             {options.map(Option => (
               <S.MenuItem key={Option.title} onClick={(): void => handleClose(Option.view)}>
                 <S.IconWrapper>

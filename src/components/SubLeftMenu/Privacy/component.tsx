@@ -1,10 +1,10 @@
 import React, { ReactNode } from 'react'
 import { Wrapper } from './styles'
 
-type Props = {
+type IPrivacy = {
   children: ReactNode;
 }
 
-const Privacy = (props: Props) => <Wrapper>Privacy context</Wrapper>
+const Privacy = (props: IPrivacy): ReactNode => <Wrapper>Privacy context</Wrapper>
 
 export default Privacy

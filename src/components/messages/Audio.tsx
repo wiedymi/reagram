@@ -6,10 +6,10 @@ import * as C from '@/components/common'
 import * as S from './styles'
 
 type IAudioMessage = {
-  children: ReactNode;
-  message: object;
-  me: object;
-  index: number;
+  children: ReactNode
+  message: object
+  me: object
+  index: number
 }
 
 const toPercents = (portion, total): string => {
@@ -50,7 +50,12 @@ export const AudioMessage = ({ message, me }: IAudioMessage): ReactNode => {
   })
 
   const { id } = message.content.audio.audio
-  const { title, performer } = message.content.audio
+  let { title, performer } = message.content.audio
+  if (!title && !performer) {
+    title = message.content.audio.fileName
+    performer = 'Unknown'
+  }
+
   const query = {
     id,
     type: TYPES.FILES.AUDIO,

@@ -1,10 +1,10 @@
 import React from 'react'
 
-type Props = {
-  children: ReactNode
+type INotFound = {
+  children: ReactNode;
 }
 
-function NotFound(props: Props) {
+function NotFound(props: INotFound): ReactNode {
   return <div>Not found, sorry</div>
 }
 

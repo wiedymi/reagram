@@ -12,5 +12,13 @@ export const MESSAGES = {
   VIDEO: 'messageVideo',
   STICKER: 'messageSticker',
   ANIMATION: 'messageAnimation',
+  CHAT_CHANGE_PHOTO: 'messageChatChangePhoto',
+  SUPERGROUP_CHAT_CREATE: 'messageSupergroupChatCreate',
   UNSUPPORTED: 'UNSUPPORTED',
+}
+
+export const CHATS = {
+  PRIVATE: 'chatTypePrivate',
+  SUPERGROUP: 'chatTypeSupergroup',
+  CHANNEL: 'CHANNEL',
 }

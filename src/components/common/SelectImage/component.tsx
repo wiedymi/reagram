@@ -3,7 +3,11 @@ import { toImage } from '@/helpers'
 import * as S from './styles'
 
 type Props = {
-  children: ReactNode;
+  children: ReactNode
+}
+
+const isChatInfo = (image, select): boolean => {
+  return image && !select
 }
 
 const SelectImage = (props: Props): ReactNode => {
@@ -24,6 +28,16 @@ const SelectImage = (props: Props): ReactNode => {
     inputEl.current.click()
   }
 
+  if (props.text) {
+    return (
+      <S.Wrapper>
+        <S.Circle>
+          <S.Title>{props.text}</S.Title>
+        </S.Circle>
+      </S.Wrapper>
+    )
+  }
+
   if (props.hidden && image) {
     return (
       <S.Wrapper>
@@ -41,10 +55,14 @@ const SelectImage = (props: Props): ReactNode => {
         ref={inputEl}
         accept="image/*"
         capture="camera"
-        onChange={handleFileChange}/>
+        onChange={handleFileChange}
+      />
       <S.Circle image={image} onClick={openPicker}>
-        <S.Image
-          src={!image ? '/icons/cameraadd_svg.svg' : props.select && '/icons/cameraadd_svg.svg'}/>
+        {isChatInfo(image, props.select) && (
+          <S.Image
+            src={!image ? '/icons/cameraadd_svg.svg' : props.select && '/icons/cameraadd_svg.svg'}
+          />
+        )}
       </S.Circle>
     </S.Wrapper>
   )

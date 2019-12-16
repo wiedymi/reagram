@@ -75,6 +75,7 @@ const sharedConfig = env => {
       port: 8000,
       hot: true,
       writeToDisk: true,
+      historyApiFallback: true,
     }
   }
 

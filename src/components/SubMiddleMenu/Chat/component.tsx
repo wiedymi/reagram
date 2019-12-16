@@ -5,9 +5,9 @@ import { getChatMessages } from '@/telegram/hooks'
 import * as S from './styles'
 
 type IChat = {
-  children: ReactNode;
-  openedChat: number;
-  openChat: VoidFunction;
+  children: ReactNode
+  openedChat: number
+  openChat: VoidFunction
 }
 
 const isCorrectChat = (id: number, data: array): boolean => {
@@ -42,7 +42,7 @@ const Chat = (props: IChat): ReactNode => {
 
   return (
     <S.Wrapper>
-      <Sub.Menu chatInfo={chatInfo} openChat={props.openChat} />
+      <Sub.Menu chatInfo={chatInfo} {...props} />
       <S.ChatWrapper>
         <Sub.ChatView messages={messages} chatInfo={chatInfo} me={me} openChat={props.openChat} />
         {!chatInfo.type.isChannel && <Sub.ChatController chatId={props.openedChat} />}

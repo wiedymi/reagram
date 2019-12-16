@@ -21,9 +21,15 @@ const ChatController = (props: Props): ReactNode => {
       message,
     }
 
-    const data = await sendText(query)
+    const { success, error } = await sendText(query)
 
-    props.refetch()
+    if (success) {
+      console.log(success)
+    }
+
+    if (error) {
+      alert(error)
+    }
   }, [props, message, sendText])
 
   return (

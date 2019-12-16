@@ -1,7 +1,17 @@
 import React from 'react'
 import { TYPES } from '@/constants'
 
-const { PHOTO, TEXT, AUDIO, STICKER, VIDEO, ANIMATION, UNSUPPORTED } = TYPES.MESSAGES
+const {
+  PHOTO,
+  TEXT,
+  AUDIO,
+  STICKER,
+  VIDEO,
+  ANIMATION,
+  SUPERGROUP_CHAT_CREATE,
+  CHAT_CHANGE_PHOTO,
+  UNSUPPORTED,
+} = TYPES.MESSAGES
 
 export const handleLastMessage = (message: object): Any => {
   switch (message._) {
@@ -36,6 +46,12 @@ export const handleLastMessage = (message: object): Any => {
     case ANIMATION: {
       return 'GIF'
     }
+    case SUPERGROUP_CHAT_CREATE: {
+      return 'Supergroup chat created'
+    }
+    case CHAT_CHANGE_PHOTO: {
+      return 'Avatar has been changed'
+    }
     default: {
       return UNSUPPORTED
     }
@@ -62,6 +78,12 @@ export const handleMessage = (message: object): Any => {
     case ANIMATION: {
       return ANIMATION
     }
+    // case SUPERGROUP_CHAT_CREATE: {
+    //   return SUPERGROUP_CHAT_CREATE
+    // }
+    // case CHAT_CHANGE_PHOTO: {
+    //   return CHAT_CHANGE_PHOTO
+    // }
     default: {
       return UNSUPPORTED
     }

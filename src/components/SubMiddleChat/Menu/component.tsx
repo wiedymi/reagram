@@ -8,7 +8,7 @@ type Props = {
   children: ReactNode;
 }
 
-const Menu = ({ chatInfo }: Props): ReactNode => {
+const Menu = ({ chatInfo, toggleRightMenu }: Props): ReactNode => {
   const { id } = chatInfo.photo ? chatInfo.photo.big : { id: 0 }
   const { isChannel, supergroupId } = chatInfo.type
   const query = {
@@ -39,7 +39,8 @@ const Menu = ({ chatInfo }: Props): ReactNode => {
           )
         }
         title={title}
-        subheader={supergroupId ? nFormatter(chatInfo.memberCount) + typeMembers : 'Online'}/>
+        subheader={supergroupId ? nFormatter(chatInfo.memberCount) + typeMembers : 'Online'}
+        action={<button onClick={toggleRightMenu}>Open</button>}/>
     </S.Wrapper>
   )
 }

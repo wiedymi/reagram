@@ -1,13 +1,29 @@
 import styled from '@emotion/styled'
+import { authStyles } from '@/components/common'
 import { styleHelpers as get } from '@/helpers'
 
 export const Wrapper = styled.div`
   display: flex;
+  width: 100%;
+  padding: ${(props): string => get.padding(props).small};
   justify-content: center;
+  align-items: center;
+  flex-direction: column;
 `
-export const Image = styled.img`
-  width: 80px;
+
+export const Title = styled(authStyles.Title)`
+  margin-bottom: 0px !important;
+  font-weight: 600 !important;
+  font-size: 1.4rem !important;
+  margin-top: ${(props): string => get.margin(props).normal} !important;
 `
+
+export const Subtitle = styled(authStyles.Subtitle)`
+  margin-bottom: 0px !important;
+  width: 100% !important;
+  color: ${(props): string => !props.type && get.colors(props).primary};
+`
+
 export const Circle = styled.div`
   background-color: ${(props): string => {
     if (!props.image) {
@@ -25,16 +41,4 @@ export const Circle = styled.div`
   height: 130px;
   display: flex;
   justify-content: center;
-  cursor: ${({ hidden }): string => (hidden ? 'default' : 'pointer')};
-`
-export const Input = styled.input`
-  display: none;
-`
-
-export const Title = styled.p`
-  font-size: 3rem;
-  color: #ffffff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `
