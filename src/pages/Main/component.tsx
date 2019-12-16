@@ -1,20 +1,24 @@
-import React, { ReactNode } from 'react'
-import { Layout } from '@/components/base'
-import LeftMenu from '@/components/LeftMenu'
+import React, { ReactNode, useState } from 'react'
+import { Layout } from '@/components/common'
+import { MiddleMenu, RightMenu, LeftMenu } from '@/menus'
 import { Wrapper } from './styles'
 
 const Main = (): ReactNode => {
+  const [openedChat, setOpenedChat] = useState(0)
+  const props = {
+    openedChat: openedChat,
+    openChat: setOpenedChat,
+  }
+
   return (
     <Layout>
       <Wrapper>
-        <LeftMenu />
+        <LeftMenu {...props} />
+        <MiddleMenu {...props} />
+        <RightMenu {...props} />
       </Wrapper>
     </Layout>
   )
-}
-
-Main.defaultProps = {
-  // bla: 'test',
 }
 
 export default Main

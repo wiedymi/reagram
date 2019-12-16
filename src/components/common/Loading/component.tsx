@@ -8,7 +8,7 @@ type Props = {
 }
 
 const Component = (props: Props): ReactNode => (
-  <S.Wrapper>
+  <S.Wrapper width={props.width} height={props.width}>
     {!props.error && <S.Loading />}
     <S.Message>{props.message}</S.Message>
   </S.Wrapper>
