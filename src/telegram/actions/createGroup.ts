@@ -1,5 +1,5 @@
 import { setChatPhoto } from '@/telegram/setters'
-import { toObject, toLocalFile, createActionResponse, api } from '@/telegram/helpers'
+import { toObject, toLocalFile, createActionResponse, api } from '@/telegram/core'
 
 export const createGroup = async function({ title, userIds, image }): Promise {
   try {

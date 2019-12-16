@@ -13,14 +13,14 @@ const CreateGroup = (props: ICreateGroup): ReactNode => {
   const [createNewGroup] = createGroup()
   const [state, setState] = useState({
     title: '',
-    userIds: [240915161],
+    userIds: [],
     image: null,
   })
 
   const handleClick = useCallback(async (): void => {
     const { success, error } = await createNewGroup(state)
     if (success) {
-      props.openChat(channel.id)
+      props.openChat(success.id)
       props.changeView(LEFT_MENU.CHATS)
     }
 
