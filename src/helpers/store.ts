@@ -1,5 +1,5 @@
 import { telegram } from './telegram'
-import { storage } from '@/telegram/helpers'
+import { storage } from '@/telegram/core'
 
 const connection = (): Promise<Any> => {
   const open = indexedDB.open('tdlib', 1)

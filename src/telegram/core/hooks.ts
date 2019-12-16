@@ -54,10 +54,9 @@ export function createHook(fn) {
 }
 
 export function createActionHook(fn, EVENT): void {
-  let state = null
   return function ActionHook(defaultQuery): array {
-    const [updating, setUpdating] = useState(state)
-    const [processing, setProcessing] = useState(null)
+    const [updating, setUpdating] = useState()
+    const [processing, setProcessing] = useState()
     const action = async (query = defaultQuery): object => {
       setProcessing(true)
       const data = await fn(query)
@@ -71,7 +70,6 @@ export function createActionHook(fn, EVENT): void {
 
     listen(EVENT, async ({ update }, next) => {
       setUpdating(update)
-      state = update
 
       next()
     })

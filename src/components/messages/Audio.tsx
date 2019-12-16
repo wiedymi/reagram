@@ -17,7 +17,10 @@ const toPercents = (portion, total): string => {
 }
 
 const handleDownloadProcessFile = (id, update): string => {
-  console.log('update', update)
+  if (!update) {
+    return null
+  }
+
   const { file } = update
 
   const total = file.expectedSize
