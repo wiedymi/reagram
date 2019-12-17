@@ -2,11 +2,75 @@ import React, { ReactNode } from 'react'
 import { getAvatar } from '@/telegram/hooks'
 import { getImageFile, handleChats, nFormatter } from '@/helpers'
 import { TYPES } from '@/constants'
+import Checkbox from '@material-ui/core/Checkbox'
+import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined'
+import AlternateEmailOutlinedIcon from '@material-ui/icons/AlternateEmailOutlined'
+import CallOutlinedIcon from '@material-ui/icons/CallOutlined'
 import * as C from '@/components/common'
 import * as S from './styles'
 
 type IChatInfo = {
   children: ReactNode
+}
+const details = (chatInfo: object): Array<object> => {
+  const data = []
+
+  if (chatInfo.bio) {
+    data.push({
+      title: chatInfo.bio,
+      subtitle: 'Bio',
+      Icon: InfoOutlinedIcon,
+    })
+  }
+
+  if (chatInfo.username) {
+    data.push({
+      title: chatInfo.username,
+      subtitle: 'Username',
+      Icon: AlternateEmailOutlinedIcon,
+    })
+  }
+
+  if (chatInfo.mobilePhone) {
+    data.push({
+      title: chatInfo.mobilePhone,
+      subtitle: 'Mobile phone',
+      Icon: CallOutlinedIcon,
+    })
+  }
+
+  if (chatInfo.description) {
+    data.push({
+      title: chatInfo.description,
+      subtitle: 'About',
+      Icon: InfoOutlinedIcon,
+    })
+  }
+
+  if (chatInfo.inviteLink) {
+    data.push({
+      title: chatInfo.inviteLink,
+      subtitle: 'Link',
+      Icon: AlternateEmailOutlinedIcon,
+    })
+  }
+
+  data.push({
+    title: 'Notifications',
+    subtitle: 'Disabled',
+    Icon: function NotificationsCheckbox() {
+      return (
+        <Checkbox
+          defaultChecked
+          value="uncontrolled"
+          color="primary"
+          inputProps={{ 'aria-label': 'uncontrolled-checkbox' }}
+        />
+      )
+    },
+  })
+
+  return data
 }
 
 const ChatInfo = ({ chatInfo }: IChatInfo): ReactNode => {
@@ -42,6 +106,21 @@ const ChatInfo = ({ chatInfo }: IChatInfo): ReactNode => {
           ? nFormatter(chatInfo.memberCount) + ` ${isChat ? 'members' : 'subscibers'}`
           : 'Online'}
       </S.Subtitle>
+      <S.Details>
+        {details(chatInfo).map(
+          ({ title, subtitle, Icon }, i): ReactNode => {
+            return (
+              <S.Detail key={i}>
+                <Icon />
+                <S.DetailInfo>
+                  <S.DetailTitle>{title}</S.DetailTitle>
+                  <S.DetailSubtitle>{subtitle}</S.DetailSubtitle>
+                </S.DetailInfo>
+              </S.Detail>
+            )
+          },
+        )}
+      </S.Details>
     </S.Wrapper>
   )
 }

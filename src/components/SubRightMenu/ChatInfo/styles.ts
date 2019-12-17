@@ -42,3 +42,44 @@ export const Circle = styled.div`
   display: flex;
   justify-content: center;
 `
+
+export const Details = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 100%;
+  margin: ${(props): string => get.margin(props).normal} 0px;
+  padding: 0px 5px;
+`
+
+export const Detail = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: ${(props): string => get.margin(props).tiny} 0px;
+  .MuiSvgIcon-root {
+    color: ${(props): string => get.colors(props).blackOffset};
+  }
+  .MuiCheckbox-root {
+    padding: 0 !important;
+    color: ${(props): string => get.colors(props).primary} !important;
+    .MuiSvgIcon-root {
+      color: ${(props): string => get.colors(props).primary} !important;
+    }
+  }
+`
+
+export const DetailTitle = styled.h4`
+  font-weight: 600;
+`
+
+export const DetailSubtitle = styled.p`
+  color: ${(props): string => get.colors(props).blackOffset};
+`
+
+export const DetailInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-left: ${(props): string => get.margin(props).small};
+`

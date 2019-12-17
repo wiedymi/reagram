@@ -7,6 +7,7 @@ export const Wrapper = styled.div`
   display: flex;
   width: 100%;
   justify-content: center;
+  border-bottom: 1px solid ${(props): string => get.colors(props).blackOffset};
 `
 
 export const Tabs = styled(tabs)`

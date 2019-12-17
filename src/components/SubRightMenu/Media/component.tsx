@@ -8,8 +8,7 @@ type IMedia = {
 const Media = (props: IMedia): ReactNode => {
   const [tab, setTab] = useState('Media')
 
-  const handleChange = ({ target: { value } }, nextTab): void => {
-    console.log(value, nextTab)
+  const handleChange = (e, nextTab): void => {
     setTab(nextTab)
   }
 

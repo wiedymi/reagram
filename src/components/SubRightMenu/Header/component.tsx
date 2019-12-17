@@ -4,7 +4,7 @@ import CloseIcon from '@material-ui/icons/Close'
 import MoreVertRoundedIcon from '@material-ui/icons/MoreVertRounded'
 
 type Props = {
-  children: ReactNode;
+  children: ReactNode
 }
 
 const Header = ({ toggleRightMenu }: Props): ReactNode => (

@@ -38,7 +38,7 @@ export const RightNav = styled.div`
 `
 
 export const Title = styled.b`
-  font-size: 1.1rem;
+  font-size: 1.25rem;
   width: 100%;
 `
 
