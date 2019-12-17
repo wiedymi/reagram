@@ -5,8 +5,9 @@ import { getAvatar } from '@/telegram/hooks'
 import { TYPES, LEFT_MENU } from '@/constants'
 import * as S from './styles'
 
-type Props = {
+type ISettings = {
   children: ReactNode;
+  me: object;
 }
 
 const options = [
@@ -37,7 +38,7 @@ const options = [
   },
 ]
 
-const Settings = (props: Props): ReactNode => {
+const Settings = (props: ISettings): ReactNode => {
   const { id } = props.me.profilePhoto.big
   const { firstName, phoneNumber, lastName } = props.me
   const query = {

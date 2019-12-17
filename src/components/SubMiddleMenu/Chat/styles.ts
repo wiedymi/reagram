@@ -12,11 +12,13 @@ export const Wrapper = styled.div`
 
 export const ChatWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
+
   justify-items: center;
   flex-flow: column;
   overflow: hidden;
   max-width: 800px;
   margin: 0 auto;
   min-width: 800px;
+  height: 100vh;
+  justify-content: start;
 `

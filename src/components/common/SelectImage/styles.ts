@@ -30,3 +30,11 @@ export const Circle = styled.div`
 export const Input = styled.input`
   display: none;
 `
+
+export const Title = styled.p`
+  font-size: 3rem;
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`

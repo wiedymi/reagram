@@ -1,16 +1,20 @@
-import { api, toObject } from '../core'
+import { api, toObject, createActionResponse } from '../core'
 
 export const sendTextMessage = async function(query): Promise {
-  const sent = await api.sendMessage({
-    ...query,
-    inputMessageContent: {
-      _: 'inputMessageText',
-      text: {
-        _: 'formattedText',
-        text: query.message,
+  try {
+    const sent = await api.sendMessage({
+      ...query,
+      inputMessageContent: {
+        _: 'inputMessageText',
+        text: {
+          _: 'formattedText',
+          text: query.message,
+        },
       },
-    },
-  })
+    })
 
-  return toObject(sent)
+    return createActionResponse(null, toObject(sent))
+  } catch (error) {
+    return createActionResponse(error)
+  }
 }

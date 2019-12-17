@@ -40,4 +40,5 @@ export const Wrapper = styled.div`
 `
 export const Header = styled(CardHeader)`
   padding: 0 10px !important;
+  width: 100%;
 `

@@ -7,7 +7,7 @@ import * as S from './styles'
 const { PHOTO, TEXT, AUDIO, STICKER, VIDEO, ANIMATION, UNSUPPORTED } = TYPES.MESSAGES
 
 type Props = {
-  children: ReactNode;
+  children: ReactNode
 }
 
 const chooseMessageView = (type, props): ReactNode => {
@@ -56,7 +56,7 @@ const ChatView = ({ messages, me, openChat, chatInfo }: Props): ReactNode => {
   return (
     <S.Wrapper messages={messages.length} ref={toBottom}>
       <S.MessagesWrapper ref={toBottom}>
-        {messages.reverse().map((message, index) => {
+        {messages.map((message, index) => {
           const type = handleMessage(message.content)
 
           return chooseMessageView(type, {

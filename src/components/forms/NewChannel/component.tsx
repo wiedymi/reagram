@@ -43,8 +43,7 @@ const CreateNewChannel = (props: ICreateNewChannel): ReactNode => {
         onChange={handleChange('title')}
         label={`Channel Name`}
         variant="outlined"
-        fluid
-      />
+        fluid/>
       <C.Input
         type="text"
         value={state.description}
@@ -53,8 +52,7 @@ const CreateNewChannel = (props: ICreateNewChannel): ReactNode => {
         variant="outlined"
         placeholder="Description (Optional)"
         fluid
-        helperText="You can provide an optional description for your channel."
-      />
+        helperText="You can provide an optional description for your channel."/>
       <S.Button onClick={handleClick}>
         <ArrowForward />
       </S.Button>

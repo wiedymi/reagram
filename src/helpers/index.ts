@@ -8,3 +8,4 @@ export { styleHelpers }
 export * from './fileConverters'
 export * from './message.tsx'
 export * from './menu'
+export * from './handleChat'
