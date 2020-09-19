@@ -1,1 +1,1 @@
-# reagram
+# Reagram - React Client for Telegram
