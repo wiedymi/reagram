@@ -5,6 +5,7 @@
   "author": "",
   "license": "MIT",
   "scripts": {
+    "start": "webpack-dev-server --env.ENVIRONMENT=production --config webpack.config.ts",
     "watch": "run-p watch:*",
     "watch:dev": "webpack-dev-server --env.ENVIRONMENT=development --config webpack.config.ts",
     "build": "webpack --env.ENVIRONMENT=development --config webpack.config.ts",
